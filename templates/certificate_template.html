@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado - Curso de Python</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .certificate {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            padding: 60px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #3776ab 0%, #4b8bbe 50%, #3776ab 100%);
+        }
+        
+        .certificate::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #3776ab 0%, #4b8bbe 50%, #3776ab 100%);
+        }
+        
+        .border-frame {
+            border: 3px solid #3776ab;
+            padding: 40px;
+            position: relative;
+        }
+        
+        .corner-decoration {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #ffd43b;
+        }
+        
+        .corner-decoration.top-left {
+            top: -3px;
+            left: -3px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner-decoration.top-right {
+            top: -3px;
+            right: -3px;
+            border-left: none;
+            border-bottom: none;
+        }
+        
+        .corner-decoration.bottom-left {
+            bottom: -3px;
+            left: -3px;
+            border-right: none;
+            border-top: none;
+        }
+        
+        .corner-decoration.bottom-right {
+            bottom: -3px;
+            right: -3px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .python-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            color: #3776ab;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #666;
+            font-weight: 300;
+        }
+        
+        .content {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .certify-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .student-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: #3776ab;
+            margin: 30px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffd43b;
+            display: inline-block;
+        }
+        
+        .course-info {
+            margin: 30px 0;
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .achievement-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .achievement-title {
+            font-size: 20px;
+            color: #3776ab;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            color: #ffd43b;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .signature-section {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .signature-line {
+            width: 200px;
+            border-bottom: 2px solid #333;
+            margin: 0 auto 10px;
+            height: 40px;
+        }
+        
+        .signature-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .date-section {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .certificate-id {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .certificate {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+        
+        .ribbon {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: #ffd43b;
+            color: #333;
+            padding: 10px 40px;
+            transform: rotate(45deg);
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="ribbon">COMPLETO</div>
+        <div class="border-frame">
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+            
+            <div class="header">
+                <svg class="python-logo" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="#3776ab"/>
+                    <path d="M 50,20 Q 30,20 30,40 L 30,60 Q 30,80 50,80 Q 70,80 70,60 L 70,40 Q 70,20 50,20" 
+                          fill="#ffd43b" opacity="0.8"/>
+                    <circle cx="40" cy="35" r="3" fill="white"/>
+                    <circle cx="60" cy="65" r="3" fill="white"/>
+                </svg>
+                <h1>Certificado</h1>
+                <p class="subtitle">de Conclusão</p>
+            </div>
+            
+            <div class="content">
+                <p class="certify-text">
+                    Certificamos que
+                </p>
+                
+                <h2 class="student-name">{{NOME_ALUNO}}</h2>
+                
+                <p class="certify-text">
+                    concluiu com êxito o<br>
+                    <strong>Curso Interativo de Python para Iniciantes</strong><br>
+                    com carga horária estimada de 20 horas
+                </p>
+                
+                <div class="achievement-section">
+                    <h3 class="achievement-title">Conquistas do Curso</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-value">{{MODULOS_COMPLETOS}}</div>
+                            <div class="stat-label">Módulos Concluídos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">{{PONTUACAO_TOTAL}}</div>
+                            <div class="stat-label">Pontuação Total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">{{PERCENTUAL}}%</div>
+                            <div class="stat-label">Aproveitamento</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="course-info">
+                    O aluno demonstrou domínio dos conceitos fundamentais de Python,<br>
+                    incluindo variáveis, estruturas de controle, funções e manipulação de dados.
+                </p>
+            </div>
+            
+            <div class="footer">
+                <div class="signature-section">
+                    <div class="signature-line"></div>
+                    <p class="signature-label">Instrutor do Curso</p>
+                </div>
+                
+                <div class="date-section">
+                    <p style="font-size: 16px; margin-bottom: 10px;">{{DATA_CONCLUSAO}}</p>
+                    <p class="signature-label">Data de Conclusão</p>
+                </div>
+            </div>
+            
+            <p class="certificate-id">
+                Certificado ID: {{CERTIFICADO_ID}}
+            </p>
+        </div>
+    </div>
+</body>
+</html>

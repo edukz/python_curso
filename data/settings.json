@@ -1,0 +1,58 @@
+{
+    "course": {
+        "name": "Curso Interativo de Python",
+        "version": "2.0",
+        "author": "Sistema de Ensino Python",
+        "language": "pt-BR"
+    },
+    "display": {
+        "use_colors": true,
+        "use_emojis": true,
+        "animation_speed": 0.03,
+        "clear_screen_between_modules": true,
+        "show_hints_delay": 3
+    },
+    "scoring": {
+        "points_per_correct_answer": 10,
+        "points_per_module_completion": 100,
+        "bonus_streak_3": 20,
+        "bonus_streak_5": 50,
+        "bonus_streak_10": 100,
+        "max_score": 2000
+    },
+    "features": {
+        "save_progress": true,
+        "show_module_timer": true,
+        "enable_achievements": true,
+        "enable_review_mode": true,
+        "enable_glossary": true,
+        "enable_shortcuts": true,
+        "enable_certificate": true
+    },
+    "paths": {
+        "progress_file": "progress.json",
+        "log_file": "course.log",
+        "certificate_template": "certificate_template.html",
+        "glossary_file": "glossary.json"
+    },
+    "keyboard_shortcuts": {
+        "next_module": "n",
+        "previous_module": "p",
+        "repeat_module": "r",
+        "show_progress": "s",
+        "toggle_hints": "h",
+        "quit": "q"
+    },
+    "logging": {
+        "enabled": true,
+        "level": "INFO",
+        "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        "max_file_size_mb": 10
+    },
+    "modules": {
+        "time_limit_minutes": 30,
+        "min_score_to_pass": 70,
+        "allow_skip": false,
+        "show_solutions": true
+    }
+}

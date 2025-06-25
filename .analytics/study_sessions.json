@@ -1,0 +1,14 @@
+[
+  {
+    "start_time": "2025-06-25T02:03:54.216978",
+    "end_time": "2025-06-25T02:03:54.216983",
+    "module_id": "test_module",
+    "topic": "test_topic",
+    "duration_minutes": 8.333333333333334e-08,
+    "exercises_completed": 0,
+    "errors_made": 0,
+    "score": 90.0,
+    "difficulty_level": 1,
+    "session_type": "study"
+  }
+]

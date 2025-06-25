@@ -1,0 +1,148 @@
+{
+  "xp_total": 1000,
+  "nivel_atual": "DESENVOLVEDOR",
+  "badges_desbloqueados": [
+    {
+      "id": "PRIMEIRO_PASSO",
+      "nome": "Primeiro Passo",
+      "descricao": "Complete seu primeiro módulo",
+      "icone": "🥇",
+      "data": "2025-06-25T03:02:20.574940"
+    },
+    {
+      "id": "SEM_ERROS",
+      "nome": "Perfeição",
+      "descricao": "Complete um módulo sem erros",
+      "icone": "✨",
+      "data": "2025-06-25T03:02:20.575941"
+    },
+    {
+      "id": "NOTTURNO",
+      "nome": "Coruja Noturna",
+      "descricao": "Estude após 22h",
+      "icone": "🦉",
+      "data": "2025-06-25T03:02:20.576940"
+    },
+    {
+      "id": "NOTTURNO",
+      "nome": "Coruja Noturna",
+      "descricao": "Estude após 22h",
+      "icone": "🦉",
+      "data": "2025-06-25T03:09:09.544868"
+    },
+    {
+      "id": "NOTTURNO",
+      "nome": "Coruja Noturna",
+      "descricao": "Estude após 22h",
+      "icone": "🦉",
+      "data": "2025-06-25T03:10:12.920309"
+    },
+    {
+      "id": "NOTTURNO",
+      "nome": "Coruja Noturna",
+      "descricao": "Estude após 22h",
+      "icone": "🦉",
+      "data": "2025-06-25T03:11:26.888797"
+    },
+    {
+      "id": "NOTTURNO",
+      "nome": "Coruja Noturna",
+      "descricao": "Estude após 22h",
+      "icone": "🦉",
+      "data": "2025-06-25T03:12:02.287007"
+    },
+    {
+      "id": "NOTTURNO",
+      "nome": "Coruja Noturna",
+      "descricao": "Estude após 22h",
+      "icone": "🦉",
+      "data": "2025-06-25T03:13:25.181030"
+    }
+  ],
+  "streak_atual": 1,
+  "maior_streak": 1,
+  "ultimo_acesso": "2025-06-24",
+  "moedas": 500,
+  "power_ups_comprados": [],
+  "desafios_completos": [],
+  "estatisticas": {
+    "modulos_sem_erro": 6,
+    "erros_resolvidos": 0,
+    "tempo_total_estudo": 0,
+    "ajudas_usadas": 0,
+    "exercicios_completos": 0
+  },
+  "historico_xp": [
+    {
+      "quantidade": 100,
+      "motivo": "Módulo 30 completo",
+      "timestamp": "2025-06-25T03:02:20.573934"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Primeiro Passo",
+      "timestamp": "2025-06-25T03:02:20.574940"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Perfeição",
+      "timestamp": "2025-06-25T03:02:20.575941"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Coruja Noturna",
+      "timestamp": "2025-06-25T03:02:20.576940"
+    },
+    {
+      "quantidade": 100,
+      "motivo": "Módulo 25 completo",
+      "timestamp": "2025-06-25T03:09:09.543581"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Coruja Noturna",
+      "timestamp": "2025-06-25T03:09:09.544868"
+    },
+    {
+      "quantidade": 100,
+      "motivo": "Módulo 26 completo",
+      "timestamp": "2025-06-25T03:10:12.919303"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Coruja Noturna",
+      "timestamp": "2025-06-25T03:10:12.920309"
+    },
+    {
+      "quantidade": 100,
+      "motivo": "Módulo 28 completo",
+      "timestamp": "2025-06-25T03:11:26.887792"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Coruja Noturna",
+      "timestamp": "2025-06-25T03:11:26.888797"
+    },
+    {
+      "quantidade": 100,
+      "motivo": "Módulo 24 completo",
+      "timestamp": "2025-06-25T03:12:02.286002"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Coruja Noturna",
+      "timestamp": "2025-06-25T03:12:02.287007"
+    },
+    {
+      "quantidade": 100,
+      "motivo": "Módulo 27 completo",
+      "timestamp": "2025-06-25T03:13:25.180025"
+    },
+    {
+      "quantidade": 50,
+      "motivo": "Badge desbloqueado: Coruja Noturna",
+      "timestamp": "2025-06-25T03:13:25.181030"
+    }
+  ],
+  "ranking_local": []
+}

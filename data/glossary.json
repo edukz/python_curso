@@ -1,0 +1,154 @@
+{
+    "termos": {
+        "algoritmo": {
+            "definicao": "Sequência finita de instruções bem definidas para resolver um problema ou realizar uma tarefa.",
+            "exemplo": "Um algoritmo para fazer café: 1) Ferver água, 2) Adicionar pó, 3) Coar, 4) Servir",
+            "modulos_relacionados": ["modulo_1"]
+        },
+        "variavel": {
+            "definicao": "Local na memória do computador onde armazenamos dados que podem mudar durante a execução do programa.",
+            "exemplo": "idade = 25",
+            "modulos_relacionados": ["modulo_3"]
+        },
+        "string": {
+            "definicao": "Tipo de dado que representa texto, sempre entre aspas simples ou duplas.",
+            "exemplo": "nome = 'Python'",
+            "modulos_relacionados": ["modulo_4"]
+        },
+        "int": {
+            "definicao": "Tipo de dado que representa números inteiros (sem casas decimais).",
+            "exemplo": "numero = 42",
+            "modulos_relacionados": ["modulo_4"]
+        },
+        "float": {
+            "definicao": "Tipo de dado que representa números decimais (com ponto flutuante).",
+            "exemplo": "preco = 19.99",
+            "modulos_relacionados": ["modulo_4"]
+        },
+        "bool": {
+            "definicao": "Tipo de dado booleano que pode ser True (verdadeiro) ou False (falso).",
+            "exemplo": "ativo = True",
+            "modulos_relacionados": ["modulo_4"]
+        },
+        "funcao": {
+            "definicao": "Bloco de código reutilizável que realiza uma tarefa específica.",
+            "exemplo": "def saudacao():\n    print('Olá!')",
+            "modulos_relacionados": ["modulo_10"]
+        },
+        "print": {
+            "definicao": "Função built-in que exibe informações na tela.",
+            "exemplo": "print('Olá, Mundo!')",
+            "modulos_relacionados": ["modulo_2"]
+        },
+        "input": {
+            "definicao": "Função built-in que recebe entrada do usuário via teclado.",
+            "exemplo": "nome = input('Digite seu nome: ')",
+            "modulos_relacionados": ["modulo_5"]
+        },
+        "if": {
+            "definicao": "Palavra-chave para criar condições. Executa código apenas se a condição for verdadeira.",
+            "exemplo": "if idade >= 18:\n    print('Maior de idade')",
+            "modulos_relacionados": ["modulo_7"]
+        },
+        "else": {
+            "definicao": "Palavra-chave usada com if para executar código quando a condição é falsa.",
+            "exemplo": "if x > 0:\n    print('Positivo')\nelse:\n    print('Não positivo')",
+            "modulos_relacionados": ["modulo_7"]
+        },
+        "elif": {
+            "definicao": "Abreviação de 'else if'. Permite testar múltiplas condições.",
+            "exemplo": "if x > 0:\n    print('Positivo')\nelif x < 0:\n    print('Negativo')\nelse:\n    print('Zero')",
+            "modulos_relacionados": ["modulo_7"]
+        },
+        "for": {
+            "definicao": "Loop que itera sobre uma sequência (lista, string, range, etc).",
+            "exemplo": "for i in range(5):\n    print(i)",
+            "modulos_relacionados": ["modulo_8"]
+        },
+        "while": {
+            "definicao": "Loop que repete enquanto uma condição for verdadeira.",
+            "exemplo": "while contador < 10:\n    contador += 1",
+            "modulos_relacionados": ["modulo_8"]
+        },
+        "lista": {
+            "definicao": "Estrutura de dados ordenada e mutável que pode conter múltiplos valores.",
+            "exemplo": "frutas = ['maçã', 'banana', 'laranja']",
+            "modulos_relacionados": ["modulo_9"]
+        },
+        "indice": {
+            "definicao": "Posição de um elemento em uma sequência. Em Python, começa em 0.",
+            "exemplo": "lista[0]  # Primeiro elemento",
+            "modulos_relacionados": ["modulo_9"]
+        },
+        "append": {
+            "definicao": "Método de lista que adiciona um elemento ao final.",
+            "exemplo": "lista.append('novo item')",
+            "modulos_relacionados": ["modulo_9"]
+        },
+        "len": {
+            "definicao": "Função built-in que retorna o tamanho/comprimento de uma sequência.",
+            "exemplo": "tamanho = len([1, 2, 3])  # Retorna 3",
+            "modulos_relacionados": ["modulo_9"]
+        },
+        "def": {
+            "definicao": "Palavra-chave para definir uma função.",
+            "exemplo": "def minha_funcao():\n    pass",
+            "modulos_relacionados": ["modulo_10"]
+        },
+        "return": {
+            "definicao": "Palavra-chave para retornar um valor de uma função.",
+            "exemplo": "def soma(a, b):\n    return a + b",
+            "modulos_relacionados": ["modulo_10"]
+        },
+        "parametro": {
+            "definicao": "Variável na definição de uma função que recebe valores quando a função é chamada.",
+            "exemplo": "def saudar(nome):  # 'nome' é um parâmetro",
+            "modulos_relacionados": ["modulo_10"]
+        },
+        "argumento": {
+            "definicao": "Valor passado para uma função quando ela é chamada.",
+            "exemplo": "saudar('João')  # 'João' é um argumento",
+            "modulos_relacionados": ["modulo_10"]
+        },
+        "comentario": {
+            "definicao": "Texto no código que é ignorado pelo Python, usado para documentação.",
+            "exemplo": "# Este é um comentário",
+            "modulos_relacionados": ["modulo_2"]
+        },
+        "operador": {
+            "definicao": "Símbolo que realiza operações em valores e variáveis.",
+            "exemplo": "+ (soma), - (subtração), * (multiplicação), / (divisão)",
+            "modulos_relacionados": ["modulo_6"]
+        },
+        "atribuicao": {
+            "definicao": "Processo de dar um valor a uma variável usando o operador =",
+            "exemplo": "x = 10",
+            "modulos_relacionados": ["modulo_3"]
+        },
+        "concatenacao": {
+            "definicao": "Junção de duas ou mais strings em uma só.",
+            "exemplo": "'Olá' + ' ' + 'Mundo'  # Resulta em 'Olá Mundo'",
+            "modulos_relacionados": ["modulo_4"]
+        },
+        "range": {
+            "definicao": "Função que gera uma sequência de números.",
+            "exemplo": "range(5)  # Gera 0, 1, 2, 3, 4",
+            "modulos_relacionados": ["modulo_8"]
+        },
+        "break": {
+            "definicao": "Palavra-chave que interrompe um loop prematuramente.",
+            "exemplo": "for i in range(10):\n    if i == 5:\n        break",
+            "modulos_relacionados": ["modulo_8"]
+        },
+        "continue": {
+            "definicao": "Palavra-chave que pula para a próxima iteração do loop.",
+            "exemplo": "for i in range(5):\n    if i == 2:\n        continue\n    print(i)",
+            "modulos_relacionados": ["modulo_8"]
+        },
+        "sintaxe": {
+            "definicao": "Conjunto de regras que define como escrever código válido em Python.",
+            "exemplo": "A sintaxe correta para if é: if condição:",
+            "modulos_relacionados": ["modulo_1"]
+        }
+    }
+}
