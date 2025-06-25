@@ -133,6 +133,7 @@ cython_debug/
 
 # Claude Code
 .claude_code/
+.claude/
 
 # Arquivos de log do curso
 *.log
