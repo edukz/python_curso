@@ -147,6 +147,34 @@ class PythonCourseUtils:
                 self.gamification_system.unlock_badge("DEZ_PROJETOS", "💎", "Dez Projetos", "Complete 10 mini projetos")
             elif mini_projetos_count >= 15:
                 self.gamification_system.unlock_badge("MESTRE_PROJETOS", "👑", "Mestre dos Projetos", "Complete 15+ mini projetos")
+    
+    def complete_module(self, module_id: str, pontos: int = 100) -> None:
+        """Marca um módulo como completo"""
+        print(f"\n🎉 MÓDULO CONCLUÍDO!")
+        print(f"📚 {module_id}")
+        print(f"⭐ Pontos ganhos: {pontos}")
+        print("🚀 Continue para o próximo módulo!")
+        
+        # Atualiza progresso se gerenciador estiver disponível
+        if self.progress_manager:
+            self.progress_manager.complete_module(module_id, pontos)
+        
+        # Atualiza gamificação se sistema estiver disponível
+        if self.gamification_system:
+            self.gamification_system.award_xp(pontos, f"Módulo {module_id} completo")
+            
+            # Conquistas especiais para módulos
+            completed_count = len(self.progress_manager.progress_data.get("modules_completed", []))
+            if completed_count == 1:
+                self.gamification_system.unlock_badge("PRIMEIRO_MODULO", "🥇", "Primeiro Módulo", "Complete seu primeiro módulo")
+            elif completed_count == 5:
+                self.gamification_system.unlock_badge("CINCO_MODULOS", "🏅", "Cinco Módulos", "Complete 5 módulos")
+            elif completed_count == 10:
+                self.gamification_system.unlock_badge("DEZ_MODULOS", "🏆", "Dez Módulos", "Complete 10 módulos")
+            elif completed_count == 20:
+                self.gamification_system.unlock_badge("VINTE_MODULOS", "💎", "Vinte Módulos", "Complete 20 módulos")
+            elif completed_count >= 30:
+                self.gamification_system.unlock_badge("MESTRE_PYTHON", "👑", "Mestre Python", "Complete todos os módulos")
         
         print(f"📈 Progresso atualizado!")
         input("\n⏭️ Pressione ENTER para continuar...")

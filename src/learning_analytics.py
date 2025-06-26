@@ -164,6 +164,53 @@ class LearningAnalytics:
             "modulos_completos": len(modulos_completos)
         }
     
+    def get_learning_insights(self) -> Dict[str, List[str]]:
+        """Retorna insights de aprendizado organizados por categoria"""
+        insights = {
+            "strongest_topics": [],
+            "needs_practice": []
+        }
+        
+        try:
+            # Analisa módulos com alta taxa de sucesso (pontos fortes)
+            for modulo, data in self.analytics_data.get("modules_performance", {}).items():
+                tentativas = data.get("attempts", 1)
+                sucessos = data.get("successes", 0)
+                taxa_sucesso = (sucessos / tentativas) * 100 if tentativas > 0 else 0
+                
+                if taxa_sucesso >= 80 and tentativas >= 2:
+                    modulo_nome = self._format_module_name(modulo)
+                    insights["strongest_topics"].append(modulo_nome)
+            
+            # Analisa módulos com baixa taxa de sucesso (precisa praticar)
+            modulos_dificeis = self.identificar_modulos_dificeis()
+            for modulo, tentativas in modulos_dificeis[:3]:
+                modulo_nome = self._format_module_name(modulo)
+                insights["needs_practice"].append(modulo_nome)
+            
+            # Se não há dados suficientes, adiciona dicas gerais
+            if not insights["strongest_topics"]:
+                insights["strongest_topics"] = ["Continue praticando para identificar seus pontos fortes"]
+            
+            if not insights["needs_practice"]:
+                insights["needs_practice"] = ["Mantenha a prática regular para melhor aprendizado"]
+                
+        except Exception as e:
+            # Fallback para quando não há dados suficientes
+            insights = {
+                "strongest_topics": ["Continue estudando para descobrir seus pontos fortes"],
+                "needs_practice": ["Pratique regularmente todos os conceitos"]
+            }
+        
+        return insights
+    
+    def _format_module_name(self, modulo: str) -> str:
+        """Formata nome do módulo para exibição"""
+        if modulo.startswith("modulo_"):
+            num = modulo.replace("modulo_", "")
+            return f"Módulo {num}"
+        return modulo.title()
+
     def gerar_insights_personalizados(self) -> List[Dict[str, str]]:
         """Gera insights personalizados baseados nos dados"""
         insights = []

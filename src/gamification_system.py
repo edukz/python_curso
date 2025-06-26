@@ -516,6 +516,37 @@ class GamificationSystem:
         """Adiciona XP (alias para adicionar_xp para compatibilidade)"""
         return self.adicionar_xp(quantidade, motivo)
     
+    def get_estatisticas(self) -> Dict[str, Any]:
+        """Retorna estatísticas completas do sistema de gamificação"""
+        nivel_info = self._get_nivel_info(self.game_data["nivel_atual"])
+        xp_atual = self.game_data["xp_total"]
+        
+        # Calcula XP para próximo nível
+        proximo_nivel = None
+        xp_proximo = 0
+        for nivel in PlayerLevel:
+            if nivel.value[0] > xp_atual:
+                proximo_nivel = nivel
+                xp_proximo = nivel.value[0]
+                break
+        
+        if xp_proximo == 0:  # Já está no nível máximo
+            xp_proximo = xp_atual
+        
+        progresso_nivel = ((xp_atual % 100) / 100) * 100 if xp_proximo > xp_atual else 100
+        
+        return {
+            "nivel": nivel_info[0],
+            "ranking": nivel_info[2],
+            "xp_atual": xp_atual,
+            "xp_proximo_nivel": xp_proximo,
+            "progresso_nivel": progresso_nivel,
+            "badges": len(self.game_data.get("badges_desbloqueados", [])),
+            "moedas": self.game_data.get("moedas", 0),
+            "streak_atual": self.game_data.get("streak_atual", 0),
+            "melhor_streak": self.game_data.get("melhor_streak", 0)
+        }
+
     def unlock_badge(self, badge_id: str, emoji: str, nome: str, descricao: str) -> bool:
         """Desbloqueia uma nova conquista/badge"""
         # Verifica se já possui este badge

@@ -45,6 +45,8 @@ class CourseController:
         self.debug_session = components['debug_session']
         self.analytics = components['analytics']
         self.tutor = components['tutor']
+        self.progressive_projects = components.get('progressive_projects')
+        self.methodical_debugging = components.get('methodical_debugging')
         
         # Novos componentes avançados
         self.advanced_analytics = components.get('advanced_analytics')
@@ -52,6 +54,14 @@ class CourseController:
         self.connectivity_manager = components.get('connectivity_manager')
         self.offline_manager = components.get('offline_manager')
         self.offline_sync = components.get('offline_sync')
+        
+        # Code Review components
+        self.code_analysis_engine = components.get('code_analysis_engine')
+        self.code_review_dashboard = components.get('code_review_dashboard')
+        self.exercise_code_reviewer = components.get('exercise_code_reviewer')
+        
+        # Error handler
+        self.error_handler = components.get('error_handler')
         
         self.menu_options = components['menu_options']
         self.navigation = components.get('navigation')
@@ -85,6 +95,12 @@ class CourseController:
         funcao, _ = self.menu_options[module_key]
         funcao()
         
+        # Mostrar projeto graduais se disponível
+        if self.progressive_projects and module_key.isdigit():
+            module_number = int(module_key)
+            if 1 <= module_number <= 30:
+                self._show_progressive_project(module_number)
+        
         # Remove da navegação ao terminar
         if self.navigation:
             self.navigation.pop()
@@ -93,29 +109,212 @@ class CourseController:
         time_spent = int(time.time() - start_time)
         self.progress.update_module_progress(module_id, time_spent, 1)
         
-        # Marca como completo se não estava
-        if module_id not in self.progress.progress_data["modules_completed"]:
-            pontos = 100  # Pontos por completar módulo
-            self.progress.mark_module_completed(module_id, pontos)
-            self.visual.celebration()
-            self.visual.add_score(pontos, "Módulo completo!")
-            self.logger.log_module_completion(module_id, pontos, time_spent)
-            
-            # Sistema de gamificação
-            xp_result = self.gamification.adicionar_xp(pontos, f"Módulo {module_key} completo")
-            
-            # Verifica badges por completar módulo
-            module_stats = self.error_tracker.end_module(module_id)
-            badges_novos = self.gamification.verificar_conquistas_modulo(
-                module_id, 
-                sem_erros=module_stats["sem_erros"],
-                tempo_segundos=time_spent
-            )
-            
-            # Exibe notificações
-            self._show_notifications(xp_result, badges_novos)
+        # Verifica se o módulo foi realmente completado (não marca automaticamente)
+        # A marcação como completo deve ser feita explicitamente pelo próprio módulo
+        # quando o usuário termina todas as seções
+        
+        # Apenas atualiza estatísticas do error_tracker
+        module_stats = self.error_tracker.end_module(module_id)
         
         return True
+    
+    def mark_module_completed(self, module_key: str) -> None:
+        """
+        Marca um módulo como completo explicitamente
+        Deve ser chamado apenas quando o usuário termina todas as seções
+        """
+        module_id = f"modulo_{module_key}"
+        
+        # Verifica se já está completo
+        if module_id in self.progress.progress_data["modules_completed"]:
+            return
+        
+        # Marca como completo
+        pontos = 100  # Pontos por completar módulo
+        self.progress.mark_module_completed(module_id, pontos)
+        self.visual.celebration()
+        self.visual.add_score(pontos, "Módulo completo!")
+        self.logger.log_module_completion(module_id, pontos, 0)
+        
+        # Sistema de gamificação
+        xp_result = self.gamification.adicionar_xp(pontos, f"Módulo {module_key} completo")
+        
+        # Verifica badges por completar módulo
+        badges_novos = self.gamification.verificar_conquistas_modulo(
+            module_id, 
+            sem_erros=True,  # Assumir sem erros se completou
+            tempo_segundos=0
+        )
+        
+        # Exibe notificações
+        self._show_notifications(xp_result, badges_novos)
+    
+    def _show_progressive_project(self, module_number: int) -> None:
+        """Mostra o passo do projeto gradual correspondente ao módulo"""
+        try:
+            print("\n" + "="*60)
+            print("🚀 PROJETO PRÁTICO DO MÓDULO")
+            print("="*60)
+            
+            choice = input("\nDeseja ver o projeto prático deste módulo? (s/N): ").strip().lower()
+            if choice in ['s', 'sim', 'y', 'yes']:
+                self.progressive_projects.show_project_step(module_number)
+            else:
+                print("Você pode acessar os projetos a qualquer momento no menu principal!")
+                input("Pressione ENTER para continuar...")
+                
+        except Exception as e:
+            self.logger.error(f"Erro ao mostrar projeto gradual: {e}")
+            print("Erro temporário ao carregar projeto. Continuando...")
+    
+    def _show_projects_menu(self) -> None:
+        """Mostra menu dos projetos graduais"""
+        if not self.progressive_projects:
+            print("❌ Sistema de projetos não disponível.")
+            return
+            
+        while True:
+            self.ui.clear_screen()
+            self.ui.header("🚀 PROJETOS GRADUAIS", "Projetos Reais do Curso")
+            
+            print("📚 PROJETOS DISPONÍVEIS:")
+            print("=" * 50)
+            print("1. 📖 Sistema de Biblioteca Pessoal (Módulos 1-10)")
+            print("2. 🛒 E-commerce Simples (Módulos 11-20)")
+            print("3. 📊 API e Dashboard Analytics (Módulos 21-30)")
+            print()
+            print("4. 📈 Ver progresso geral dos projetos")
+            print("5. 🎯 Ir para módulo específico")
+            print("0. 🔙 Voltar ao menu principal")
+            
+            choice = input("\nEscolha uma opção: ").strip()
+            
+            if choice == "0":
+                break
+            elif choice == "1":
+                self._show_project_overview("biblioteca_pessoal", "Sistema de Biblioteca", 1, 10)
+            elif choice == "2":
+                self._show_project_overview("ecommerce_simples", "E-commerce Simples", 11, 20)
+            elif choice == "3":
+                self._show_project_overview("api_dashboard", "API Dashboard", 21, 30)
+            elif choice == "4":
+                self._show_all_projects_progress()
+            elif choice == "5":
+                self._go_to_specific_module()
+            else:
+                print("❌ Opção inválida!")
+                input("Pressione ENTER para continuar...")
+    
+    def _show_project_overview(self, project_id: str, project_name: str, start_module: int, end_module: int):
+        """Mostra visão geral de um projeto específico"""
+        self.ui.clear_screen()
+        self.ui.header(f"📋 {project_name.upper()}", f"Módulos {start_module}-{end_module}")
+        
+        progress = self.progressive_projects.user_progress[project_id]
+        total_steps = len(self.progressive_projects.projects[project_id])
+        completed = len(progress.completed_steps)
+        completion_percentage = (completed / total_steps) * 100 if total_steps > 0 else 0
+        
+        print(f"📊 Progresso: {completed}/{total_steps} passos ({completion_percentage:.1f}%)")
+        print(f"⏱️ Tempo gasto: {progress.total_time_spent} minutos")
+        print(f"✅ Status: {'Completo' if progress.is_completed else 'Em andamento'}")
+        print()
+        
+        print("📋 PASSOS DO PROJETO:")
+        print("=" * 40)
+        
+        for i, step in enumerate(self.progressive_projects.projects[project_id]):
+            status = "✅" if step.step_id in progress.completed_steps else "⏳"
+            module_num = start_module + i
+            print(f"{status} Módulo {module_num}: {step.title}")
+        
+        print("\n🎮 OPÇÕES:")
+        print("1. Ver próximo passo")
+        print("2. Ir para módulo específico")
+        print("0. Voltar")
+        
+        choice = input("\nEscolha: ").strip()
+        if choice == "1":
+            next_module = start_module + progress.current_step
+            if next_module <= end_module:
+                self.progressive_projects.show_project_step(next_module)
+            else:
+                print("🎉 Projeto já foi completado!")
+                input("Pressione ENTER...")
+        elif choice == "2":
+            try:
+                module = int(input(f"Qual módulo ({start_module}-{end_module})? "))
+                if start_module <= module <= end_module:
+                    self.progressive_projects.show_project_step(module)
+                else:
+                    print("❌ Módulo fora do range!")
+                    input("Pressione ENTER...")
+            except ValueError:
+                print("❌ Digite um número válido!")
+                input("Pressione ENTER...")
+    
+    def _show_all_projects_progress(self):
+        """Mostra progresso geral de todos os projetos"""
+        self.ui.clear_screen()
+        self.ui.header("📊 PROGRESSO GERAL DOS PROJETOS", "Visão Completa")
+        
+        projects_info = [
+            ("biblioteca_pessoal", "📖 Sistema de Biblioteca", 1, 10),
+            ("ecommerce_simples", "🛒 E-commerce Simples", 11, 20),
+            ("api_dashboard", "📊 API Dashboard", 21, 30)
+        ]
+        
+        total_completed = 0
+        total_steps = 0
+        
+        for project_id, name, start, end in projects_info:
+            progress = self.progressive_projects.user_progress[project_id]
+            project_steps = len(self.progressive_projects.projects[project_id])
+            completed = len(progress.completed_steps)
+            percentage = (completed / project_steps) * 100 if project_steps > 0 else 0
+            
+            print(f"{name}")
+            print(f"  📊 {completed}/{project_steps} passos ({percentage:.1f}%)")
+            print(f"  ⏱️ {progress.total_time_spent} minutos")
+            print(f"  🎯 Status: {'Completo ✅' if progress.is_completed else 'Em andamento ⏳'}")
+            print()
+            
+            total_completed += completed
+            total_steps += project_steps
+        
+        overall_percentage = (total_completed / total_steps) * 100 if total_steps > 0 else 0
+        
+        print("=" * 50)
+        print(f"🏆 PROGRESSO TOTAL: {total_completed}/{total_steps} ({overall_percentage:.1f}%)")
+        
+        if overall_percentage >= 100:
+            print("🎉 PARABÉNS! Você completou todos os projetos graduais!")
+        elif overall_percentage >= 66:
+            print("💪 Excelente progresso! Continue assim!")
+        elif overall_percentage >= 33:
+            print("👍 Bom progresso! Você está no caminho certo!")
+        else:
+            print("🚀 Comece seus projetos práticos para acelerar o aprendizado!")
+        
+        input("\nPressione ENTER para continuar...")
+    
+    def _go_to_specific_module(self):
+        """Permite ir diretamente para um módulo específico"""
+        try:
+            module = int(input("Digite o número do módulo (1-30): "))
+            if 1 <= module <= 30:
+                project_info = self.progressive_projects.get_project_for_module(module)
+                if project_info:
+                    self.progressive_projects.show_project_step(module)
+                else:
+                    print("❌ Projeto não encontrado para este módulo.")
+                    input("Pressione ENTER...")
+            else:
+                print("❌ Módulo deve estar entre 1 e 30!")
+                input("Pressione ENTER...")
+        except ValueError:
+            print("❌ Digite um número válido!")
+            input("Pressione ENTER...")
     
     def _show_notifications(self, xp_result: Dict[str, Any], badges: list) -> None:
         """Exibe notificações de XP e badges"""
@@ -184,40 +383,55 @@ class CourseController:
         print("\n📚 PROGRESSO POR MÓDULO:")
         print("=" * 60)
         
-        modules_progress = self.progress.progress_data["modules_progress"]
-        
-        for module_id in sorted(modules_progress.keys(), 
-                               key=lambda x: int(x.split('_')[1]) if x.split('_')[1].isdigit() else 999):
-            if not module_id.startswith("modulo_"):
-                continue
+        try:
+            modules_progress = self.progress.progress_data.get("modules_progress", {})
+            
+            if not modules_progress:
+                print("📝 Nenhum progresso de módulo registrado ainda.")
+                return
+            
+            for module_id in sorted(modules_progress.keys(), 
+                                   key=lambda x: int(x.split('_')[1]) if x.split('_')[1].isdigit() else 999):
+                if not module_id.startswith("modulo_"):
+                    continue
+                    
+                module_data = modules_progress[module_id]
+                module_num = module_id.replace("modulo_", "")
                 
-            module_data = modules_progress[module_id]
-            module_num = module_id.replace("modulo_", "")
-            
-            if module_data["completed"]:
-                status = "✅ Completo"
-                color = "green"
-            else:
-                status = "⏳ Pendente"
-                color = "yellow"
-            
-            print(f"{module_num:>3}. {status:<15} "
-                  f"Pontos: {module_data['score']:>4} | "
-                  f"Tentativas: {module_data['attempts']:>2}")
+                if module_data.get("completed", False):
+                    status = "✅ Completo"
+                    color = "green"
+                else:
+                    status = "⏳ Pendente"
+                    color = "yellow"
+                
+                print(f"{module_num:>3}. {status:<15} "
+                      f"Pontos: {module_data.get('score', 0):>4} | "
+                      f"Tentativas: {module_data.get('attempts', 0):>2}")
+        except Exception as e:
+            print(f"❌ Erro ao exibir progresso dos módulos: {str(e)}")
+            print("📝 Dados de progresso não disponíveis no momento.")
     
     def _display_gamification_stats(self) -> None:
         """Exibe estatísticas de gamificação"""
-        game_stats = self.gamification.get_estatisticas()
-        
-        game_box = self.ui.create_box(
-            "Sistema de Gamificação",
-            f"🎮 Nível: {game_stats['nivel']} - {game_stats['ranking']}\n"
-            f"⭐ XP: {game_stats['xp_atual']}/{game_stats['xp_proximo_nivel']}\n"
-            f"📊 Progresso do Nível: {game_stats['progresso_nivel']:.1f}%\n"
-            f"🏅 Badges Conquistados: {game_stats['badges']}",
-            "🎮"
-        )
-        print(game_box)
+        try:
+            if self.gamification:
+                game_stats = self.gamification.get_estatisticas()
+                
+                game_box = self.ui.create_box(
+                    "Sistema de Gamificação",
+                    f"🎮 Nível: {game_stats['nivel']} - {game_stats['ranking']}\n"
+                    f"⭐ XP: {game_stats['xp_atual']}/{game_stats['xp_proximo_nivel']}\n"
+                    f"📊 Progresso do Nível: {game_stats['progresso_nivel']:.1f}%\n"
+                    f"🏅 Badges Conquistados: {game_stats['badges']}",
+                    "🎮"
+                )
+                print(game_box)
+            else:
+                print("\n🎮 Sistema de gamificação não disponível no momento.")
+        except Exception as e:
+            print(f"\n❌ Erro ao exibir estatísticas de gamificação: {str(e)}")
+            print("🎮 Dados de gamificação não disponíveis no momento.")
     
     def _display_mini_projects_progress(self, summary: Dict[str, Any]) -> None:
         """Exibe progresso dos mini projetos"""
@@ -232,17 +446,24 @@ class CourseController:
     
     def _display_analytics(self) -> None:
         """Exibe analytics de aprendizado"""
-        insights = self.analytics.get_learning_insights()
-        
-        if insights['strongest_topics']:
-            print("\n💪 SEUS PONTOS FORTES:")
-            for topic in insights['strongest_topics'][:3]:
-                print(f"  • {topic}")
-        
-        if insights['needs_practice']:
-            print("\n📚 PRECISA PRATICAR:")
-            for topic in insights['needs_practice'][:3]:
-                print(f"  • {topic}")
+        try:
+            if self.analytics:
+                insights = self.analytics.get_learning_insights()
+                
+                if insights.get('strongest_topics'):
+                    print("\n💪 SEUS PONTOS FORTES:")
+                    for topic in insights['strongest_topics'][:3]:
+                        print(f"  • {topic}")
+                
+                if insights.get('needs_practice'):
+                    print("\n📚 PRECISA PRATICAR:")
+                    for topic in insights['needs_practice'][:3]:
+                        print(f"  • {topic}")
+            else:
+                print("\n📊 Analytics não disponível no momento.")
+        except Exception as e:
+            print(f"\n❌ Erro ao exibir analytics: {str(e)}")
+            print("📊 Dados de analytics não disponíveis no momento.")
     
     def handle_special_features(self, choice: str) -> bool:
         """
@@ -255,39 +476,77 @@ class CourseController:
             True se tratou a opção, False caso contrário
         """
         choice = choice.upper()
+        self.logger.debug(f"Processing special feature: '{choice}'")
         
-        if choice == "V":
-            self.interactive_demos.start_demo_session()
-            return True
-        elif choice == "E":
-            self._show_exercise_menu()
-            return True
-        elif choice == "D":
-            self.debug_session.start_debug_session()
-            return True
-        elif choice == "R":
-            self.review.start_review_session()
-            return True
-        elif choice == "G":
-            self.glossary.show_glossary_menu()
-            return True
-        elif choice == "P":
-            self.show_progress()
-            return True
-        elif choice == "C":
-            self._generate_certificate()
-            return True
-        elif choice == "A":
-            self.tutor.start_interactive_session()
-            return True
-        elif choice == "S":
-            self._show_analytics_dashboard()
-            return True
-        elif choice == "O":
-            self._show_offline_status()
-            return True
-        
-        return False
+        try:
+            if choice == "V":
+                self.logger.info("User accessed Interactive Demos")
+                self.interactive_demos.start_demo_session()
+                return True
+            elif choice == "E":
+                self.logger.info("User accessed Adaptive Exercises")
+                self._show_exercise_menu()
+                return True
+            elif choice == "D":
+                self.logger.info("User accessed Visual Debugger")
+                self.debug_session.start_debug_session()
+                return True
+            elif choice == "R":
+                self.logger.info("User started Review Mode")
+                self.review.start_review_session()
+                return True
+            elif choice == "G":
+                self.logger.info("User accessed Glossary")
+                self.glossary.show_glossary_menu()
+                return True
+            elif choice == "P":
+                self.logger.info("User accessed Progress display")
+                self.show_progress()
+                return True
+            elif choice == "C":
+                self.logger.info("User requested Certificate generation")
+                self._generate_certificate()
+                return True
+            elif choice == "A":
+                self.logger.info("User accessed AI Tutor Assistant")
+                self.tutor.sessao_ajuda()
+                return True
+            elif choice == "J":
+                self.logger.info("User accessed Progressive Projects")
+                self._show_projects_menu()
+                return True
+            elif choice == "S":
+                self.logger.info("User accessed Analytics Dashboard")
+                self._show_analytics_dashboard()
+                return True
+            elif choice == "O":
+                self.logger.info("User accessed Offline Status")
+                self._show_offline_status()
+                return True
+            elif choice == "Q":
+                self.logger.info("User accessed Code Review Dashboard")
+                self._show_code_review_dashboard()
+                return True
+            elif choice == "T":
+                self.logger.info("User accessed Theme Manager")
+                self._show_theme_manager()
+                return True
+            elif choice == "M":
+                self.logger.info("User accessed Mini Projects Gallery")
+                self._show_mini_projects_gallery()
+                return True
+            elif choice == "B":
+                self.logger.info("User accessed Methodical Debugging")
+                self._show_methodical_debugging()
+                return True
+            else:
+                self.logger.debug(f"Unhandled special feature choice: '{choice}'")
+                return False
+                
+        except Exception as e:
+            self.logger.error(f"Error in handle_special_features with choice '{choice}': {str(e)}")
+            self.error_handler.handle_error(e, f"handle_special_features({choice})", "high")
+            return False
     
     def _generate_certificate(self) -> None:
         """Gera certificado se elegível"""
@@ -610,3 +869,76 @@ class CourseController:
         
         print(f"\n💡 DICA: Use 'O' no menu principal para acessar opções de sincronização")
         self.ui.pause()
+    
+    def _show_methodical_debugging(self) -> None:
+        """Mostra sistema de debugging metodológico"""
+        if self.methodical_debugging:
+            try:
+                self.methodical_debugging.start_debugging_course()
+            except Exception as e:
+                self.ui.error(f"Erro ao abrir debugging metodológico: {str(e)}")
+                self.ui.pause()
+        else:
+            self.ui.error("Sistema de debugging metodológico não disponível")
+            self.ui.pause()
+    
+    def _show_mini_projects_gallery(self) -> None:
+        """Mostra galeria de mini projetos"""
+        self.ui.clear_screen()
+        self.ui.header("🚀 GALERIA DE MINI PROJETOS", "18 projetos práticos")
+        
+        print("🎯 MINI PROJETOS DISPONÍVEIS:")
+        print("=" * 50)
+        print("📝 Esta funcionalidade está sendo desenvolvida!")
+        print("🔜 Em breve você terá acesso a 18 mini projetos práticos.")
+        print()
+        print("💡 Por enquanto, use os 'Projetos Graduais' (opção J)")
+        print("   que oferecem 3 projetos completos e evolutivos!")
+        
+        self.ui.pause()
+    
+    def _show_theme_manager(self) -> None:
+        """Mostra gerenciador de temas"""
+        self.ui.clear_screen() 
+        self.ui.header("🎨 GERENCIADOR DE TEMAS", "Personalização visual")
+        
+        print("🎨 TEMAS DISPONÍVEIS:")
+        print("=" * 50)
+        print("📝 Esta funcionalidade está sendo desenvolvida!")
+        print("🔜 Em breve você poderá personalizar:")
+        print("   • Cores do terminal")
+        print("   • Esquemas de cores (dark/light)")
+        print("   • Fonts e estilos")
+        print("   • Animações e efeitos")
+        
+        self.ui.pause()
+    
+    def _show_code_review_dashboard(self) -> None:
+        """Mostra dashboard de code review"""
+        try:
+            if hasattr(self, 'code_review_dashboard') and self.code_review_dashboard:
+                self.code_review_dashboard.show_main_dashboard()
+            else:
+                self.ui.clear_screen()
+                self.ui.header("🔍 CODE REVIEW DASHBOARD", "Análise de código Python")
+                
+                print("🔍 ANÁLISE DE CÓDIGO PYTHON:")
+                print("=" * 50)
+                print("📝 Esta funcionalidade está sendo desenvolvida!")
+                print("🔜 Em breve você terá acesso a:")
+                print("   • Análise automática de código")
+                print("   • Sugestões de melhorias")
+                print("   • Detecção de code smells")
+                print("   • Verificação de boas práticas")
+                print("   • Relatórios detalhados de qualidade")
+                print()
+                print("💡 Por enquanto, use o 'Debugging Metodológico' (opção B)")
+                print("   que oferece técnicas avançadas de debugging!")
+                
+                self.ui.pause()
+        except Exception as e:
+            self.ui.clear_screen()
+            self.ui.header("🔍 CODE REVIEW DASHBOARD", "Erro")
+            print(f"❌ Erro ao abrir code review: {str(e)}")
+            print("💡 Tente novamente mais tarde ou use outras funcionalidades.")
+            self.ui.pause()

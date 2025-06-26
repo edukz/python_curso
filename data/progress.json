@@ -1,9 +1,12 @@
 {
     "user_name": "Eduardo",
     "start_date": "2025-06-24T14:19:46.821690",
-    "last_access": "2025-06-24T19:25:01.039745",
-    "total_score": 0,
-    "modules_completed": [],
+    "last_access": "2025-06-26T19:51:08.423287",
+    "total_score": 200,
+    "modules_completed": [
+        "modulo_24",
+        "modulo_26"
+    ],
     "modules_progress": {
         "modulo_1": {
             "completed": false,
@@ -15,16 +18,16 @@
         "modulo_2": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 2,
+            "last_access": "2025-06-26T14:24:01.093094",
+            "time_spent": 191
         },
         "modulo_3": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 1,
+            "last_access": "2025-06-26T02:47:43.125214",
+            "time_spent": 13
         },
         "modulo_4": {
             "completed": false,
@@ -71,9 +74,9 @@
         "modulo_10": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 1,
+            "last_access": "2025-06-26T02:47:26.404353",
+            "time_spent": 51
         },
         "modulo_11": {
             "completed": false,
@@ -85,9 +88,9 @@
         "modulo_12": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 5,
+            "last_access": "2025-06-26T01:45:40.467578",
+            "time_spent": 80
         },
         "modulo_13": {
             "completed": false,
@@ -167,11 +170,11 @@
             "time_spent": 0
         },
         "modulo_24": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 1,
+            "last_access": "2025-06-25T18:45:57.360247",
+            "time_spent": 48
         },
         "modulo_25": {
             "completed": false,
@@ -181,11 +184,11 @@
             "time_spent": 0
         },
         "modulo_26": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 1,
+            "last_access": "2025-06-25T19:11:51.611318",
+            "time_spent": 8
         }
     },
     "achievements": [
@@ -194,5 +197,5 @@
             "date": "2025-06-24T14:19:56.892146"
         }
     ],
-    "total_time_spent": 0
+    "total_time_spent": 113992
 }

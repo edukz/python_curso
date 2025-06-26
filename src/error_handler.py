@@ -52,10 +52,23 @@ class ErrorHandler:
         Returns:
             Resultado do handler ou None
         """
-        # Log do erro
-        self.logger.error(
-            f"[{severity.upper()}] {type(error).__name__} in {context}: {str(error)}"
-        )
+        # Log detalhado do erro com stack trace
+        error_msg = f"[{severity.upper()}] {type(error).__name__} in {context}: {str(error)}"
+        self.logger.error(error_msg)
+        
+        # Log adicional com stack trace para debugging
+        if severity in ["high", "critical"]:
+            self.logger.error(f"Stack trace: {traceback.format_exc()}")
+            
+        # Log de debug com informações do contexto
+        self.logger.debug(f"Error context details - Function: {context}, Error type: {type(error).__name__}")
+        
+        # Alerta para console em erros críticos
+        if severity == "critical":
+            print(f"\n🚨 ERRO CRÍTICO DETECTADO: {type(error).__name__}")
+            print(f"📍 Contexto: {context}")
+            print(f"💬 Mensagem: {str(error)}")
+            print("📋 Verifique o arquivo de log para mais detalhes\n")
         
         # Rastreia erro se tracker disponível
         if self.error_tracker:

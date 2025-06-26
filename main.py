@@ -29,10 +29,10 @@ from src.security import SecureInput
 from src.theming import AdvancedThemeManager, ThemeCustomizer
 
 # Lazy imports (carregados sob demanda)
-from src.module_loader import module_loader, lazy_import
-
-# Essential Modules
-from src.modules.essential_modules import EssentialModules
+from src.modules.module_loader import module_loader  # Para módulos do curso
+from src.module_loader import LazyModuleLoader  # Para componentes do sistema
+from src.progressive_projects import ProgressiveProjectsSystem
+from src.methodical_debugging import MethodicalDebuggingSystem
 
 # Analytics e Offline imports
 from src.analytics.advanced_analytics import AdvancedAnalytics
@@ -95,8 +95,11 @@ class PythonCourse:
     
     def _initialize_advanced_systems(self) -> None:
         """Inicializa sistemas avançados com lazy loading"""
+        # Inicializa loader para componentes do sistema
+        self.system_loader = LazyModuleLoader()
+        
         # Sistemas essenciais (carregados imediatamente)
-        VisualFeedback = module_loader.get_module("VisualFeedback")
+        VisualFeedback = self.system_loader.get_module("VisualFeedback")
         self.visual = VisualFeedback()
         self.shortcuts = KeyboardShortcuts(self.config.get_section('keyboard_shortcuts'))
         
@@ -114,10 +117,9 @@ class PythonCourse:
         self._lazy_adaptive_session = None
         self._lazy_debug_session = None
         self._lazy_sync_manager = None
-        self._lazy_modules = None
-        self._lazy_advanced_modules = None
-        self._lazy_essential_modules = None
         self._lazy_utils = None
+        self._lazy_progressive_projects = None
+        self._lazy_methodical_debugging = None
         
         # Sistemas avançados
         self._lazy_advanced_analytics = None
@@ -136,73 +138,74 @@ class PythonCourse:
     @property
     def analytics(self):
         if self._lazy_analytics is None:
-            LearningAnalytics = module_loader.get_module("LearningAnalytics")
+            LearningAnalytics = self.system_loader.get_module("LearningAnalytics")
             self._lazy_analytics = LearningAnalytics(self.progress)
         return self._lazy_analytics
     
     @property
     def gamification(self):
         if self._lazy_gamification is None:
-            GamificationSystem = module_loader.get_module("GamificationSystem")
+            GamificationSystem = self.system_loader.get_module("GamificationSystem")
             self._lazy_gamification = GamificationSystem(self.progress)
         return self._lazy_gamification
     
     @property
     def review(self):
         if self._lazy_review is None:
-            ReviewMode = module_loader.get_module("ReviewMode")
+            ReviewMode = self.system_loader.get_module("ReviewMode")
             self._lazy_review = ReviewMode(self.progress)
         return self._lazy_review
     
     @property
     def glossary(self):
         if self._lazy_glossary is None:
-            Glossary = module_loader.get_module("Glossary")
+            Glossary = self.system_loader.get_module("Glossary")
             self._lazy_glossary = Glossary()
         return self._lazy_glossary
     
     @property
     def certificate(self):
         if self._lazy_certificate is None:
-            CertificateGenerator = module_loader.get_module("CertificateGenerator")
+            CertificateGenerator = self.system_loader.get_module("CertificateGenerator")
             self._lazy_certificate = CertificateGenerator()
         return self._lazy_certificate
     
-    @property
-    def modules(self):
-        if self._lazy_modules is None:
-            CourseModules = module_loader.get_module("CourseModules")
-            self._lazy_modules = CourseModules()
-            # Configura integrações
-            self._lazy_modules.visual_feedback = self.visual
-            self._lazy_modules.progress_manager = self.progress
-        return self._lazy_modules
+    def load_and_execute_module(self, module_id: str) -> None:
+        """Carrega e executa um módulo usando o module_loader"""
+        try:
+            module_instance = module_loader.get_module(module_id)
+            if module_instance:
+                # Define dependências se o módulo suportar
+                if hasattr(module_instance, 'set_dependencies'):
+                    module_instance.set_dependencies(self.ui, self.progress)
+                
+                # Executa o módulo
+                module_instance.execute()
+            else:
+                self.ui.error(f"❌ Módulo {module_id} não encontrado")
+                self.ui.pause()
+        except Exception as e:
+            self.error_handler.handle_error(e, f"load_and_execute_module({module_id})", "high")
+            self.ui.error(f"❌ Erro ao executar módulo {module_id}: {str(e)}")
+            self.ui.pause()
     
     @property
-    def advanced_modules(self):
-        if self._lazy_advanced_modules is None:
-            AdvancedModules = module_loader.get_module("AdvancedModules")
-            self._lazy_advanced_modules = AdvancedModules()
-        return self._lazy_advanced_modules
-    
-    @property
-    def essential_modules(self):
-        if self._lazy_essential_modules is None:
-            self._lazy_essential_modules = EssentialModules()
-            self._lazy_essential_modules.set_dependencies(self.ui, self.progress)
-        return self._lazy_essential_modules
+    def progressive_projects(self):
+        if self._lazy_progressive_projects is None:
+            self._lazy_progressive_projects = ProgressiveProjectsSystem(self.ui, self.progress)
+        return self._lazy_progressive_projects
     
     @property
     def tutor(self):
         if self._lazy_tutor is None:
-            TutorAssistant = module_loader.get_module("TutorAssistant")
+            TutorAssistant = self.system_loader.get_module("TutorAssistant")
             self._lazy_tutor = TutorAssistant()
         return self._lazy_tutor
     
     @property
     def interactive_demos(self):
         if self._lazy_interactive_demos is None:
-            InteractiveDemoSession = module_loader.get_module("InteractiveDemoSession")
+            InteractiveDemoSession = self.system_loader.get_module("InteractiveDemoSession")
             self._lazy_interactive_demos = InteractiveDemoSession(self.ui)
         return self._lazy_interactive_demos
     
@@ -210,30 +213,30 @@ class PythonCourse:
     def adaptive_session(self):
         if self._lazy_adaptive_session is None:
             if self._lazy_adaptive_generator is None:
-                AdaptiveExerciseGenerator = module_loader.get_module("AdaptiveExerciseGenerator")
+                AdaptiveExerciseGenerator = self.system_loader.get_module("AdaptiveExerciseGenerator")
                 self._lazy_adaptive_generator = AdaptiveExerciseGenerator(self.progress, self.analytics)
-            AdaptiveExerciseSession = module_loader.get_module("AdaptiveExerciseSession")
+            AdaptiveExerciseSession = self.system_loader.get_module("AdaptiveExerciseSession")
             self._lazy_adaptive_session = AdaptiveExerciseSession(self._lazy_adaptive_generator, self.ui)
         return self._lazy_adaptive_session
     
     @property
     def debug_session(self):
         if self._lazy_debug_session is None:
-            DebugSession = module_loader.get_module("DebugSession")
+            DebugSession = self.system_loader.get_module("DebugSession")
             self._lazy_debug_session = DebugSession(self.ui)
         return self._lazy_debug_session
     
     @property
     def sync_manager(self):
         if self._lazy_sync_manager is None:
-            SyncManager = module_loader.get_module("SyncManager")
+            SyncManager = self.system_loader.get_module("SyncManager")
             self._lazy_sync_manager = SyncManager()
         return self._lazy_sync_manager
     
     @property
     def utils(self):
         if self._lazy_utils is None:
-            PythonCourseUtils = module_loader.get_module("PythonCourseUtils")
+            PythonCourseUtils = self.system_loader.get_module("PythonCourseUtils")
             self._lazy_utils = PythonCourseUtils()
             self._lazy_utils.set_managers(self.progress, self.gamification)
         return self._lazy_utils
@@ -294,6 +297,12 @@ class PythonCourse:
             self._lazy_exercise_code_reviewer = ExerciseCodeReviewer(self.code_analysis_engine, self.progress)
         return self._lazy_exercise_code_reviewer
     
+    @property
+    def methodical_debugging(self):
+        if self._lazy_methodical_debugging is None:
+            self._lazy_methodical_debugging = MethodicalDebuggingSystem(self.ui)
+        return self._lazy_methodical_debugging
+    
     def _initialize_controllers(self) -> None:
         """Inicializa controladores do sistema"""
         # Inicializa menu manager primeiro
@@ -308,6 +317,7 @@ class PythonCourse:
             'gamification': self.gamification,
             'ui': self.ui,
             'error_tracker': self.error_tracker,
+            'error_handler': self.error_handler,
             'review': self.review,
             'glossary': self.glossary,
             'certificate': self.certificate,
@@ -316,6 +326,8 @@ class PythonCourse:
             'debug_session': self.debug_session,
             'analytics': self.analytics,
             'tutor': self.tutor,
+            'progressive_projects': self.progressive_projects,
+            'methodical_debugging': self.methodical_debugging,
             'sync_manager': self.sync_manager,
             'secure_input': self.secure_input,
             'menu_options': self.menu_options,
@@ -343,42 +355,49 @@ class PythonCourse:
         """Configura opções do menu principal"""
         self.menu_options = {
             # Módulos Básicos (1-11)
-            "1": (self.modules.modulo_1_introducao, "Introdução ao Python"),
-            "2": (self.modules.modulo_2_primeiro_programa, "Seu Primeiro Programa"),
-            "3": (self.modules.modulo_3_variaveis, "Variáveis"),
-            "4": (self.modules.modulo_4_tipos_dados, "Tipos de Dados"),
-            "5": (self.modules.modulo_5_entrada_dados, "Entrada de Dados"),
-            "6": (self.modules.modulo_6_operacoes, "Operações Matemáticas"),
-            "7": (self.modules.modulo_7_condicoes, "Condições (if/else)"),
-            "8": (self.modules.modulo_8_loops, "Repetições (loops)"),
-            "9": (self.modules.modulo_9_listas, "Listas"),
-            "10": (self.modules.modulo_10_funcoes, "Funções"),
-            "11": (self.modules.projeto_final, "PROJETO: Calculadora Básica"),
+            "1": (lambda: self.load_and_execute_module("modulo_1"), "Introdução ao Python"),
+            "2": (lambda: self.load_and_execute_module("modulo_2"), "Seu Primeiro Programa"),
+            "3": (lambda: self.load_and_execute_module("modulo_3"), "Variáveis"),
+            "4": (lambda: self.load_and_execute_module("modulo_4"), "Tipos de Dados"),
+            "5": (lambda: self.load_and_execute_module("modulo_5"), "Entrada de Dados"),
+            "6": (lambda: self.load_and_execute_module("modulo_6"), "Operações Matemáticas"),
+            "7": (lambda: self.load_and_execute_module("modulo_7"), "Condições (if/else)"),
+            "8": (lambda: self.load_and_execute_module("modulo_8"), "Repetições (loops)"),
+            "9": (lambda: self.load_and_execute_module("modulo_9"), "Listas"),
+            "10": (lambda: self.load_and_execute_module("modulo_10"), "Funções"),
+            "11": (lambda: self.load_and_execute_module("modulo_11"), "PROJETO: Calculadora Básica"),
             
             # Módulos Intermediários (12-17)
-            "12": (self.advanced_modules.modulo_12_dicionarios, "Dicionários e Sets"),
-            "13": (self.advanced_modules.modulo_13_funcoes_avancadas, "Funções Avançadas & Lambda"),
-            "14": (self.advanced_modules.modulo_14_comprehensions, "List/Dict Comprehensions"),
-            "15": (self.advanced_modules.modulo_15_arquivos, "Manipulação de Arquivos"),
-            "16": (self.advanced_modules.modulo_16_excecoes, "Tratamento de Erros"),
-            "17": (self.advanced_modules.modulo_17_modulos, "Módulos e Packages"),
+            "12": (lambda: self.load_and_execute_module("modulo_12"), "Dicionários e Sets"),
+            "13": (lambda: self.load_and_execute_module("modulo_13"), "Funções Avançadas & Lambda"),
+            "14": (lambda: self.load_and_execute_module("modulo_14"), "List/Dict Comprehensions"),
+            "15": (lambda: self.load_and_execute_module("modulo_15"), "Manipulação de Arquivos"),
+            "16": (lambda: self.load_and_execute_module("modulo_16"), "Tratamento de Erros"),
+            "17": (lambda: self.load_and_execute_module("modulo_17"), "Módulos e Packages"),
             
             # Módulos Avançados (18-23)
-            "18": (self.advanced_modules.modulo_18_oop_basico, "Programação Orientada a Objetos"),
-            "19": (self.advanced_modules.modulo_19_oop_avancado, "Herança e Polimorfismo"),
-            "20": (self.advanced_modules.modulo_20_decorators, "Decorators e Context Managers"),
-            "21": (self.advanced_modules.modulo_21_geradores, "Generators e Iterators"),
-            "22": (self.advanced_modules.modulo_22_regex, "Regular Expressions (Regex)"),
-            "23": (self.advanced_modules.modulo_23_debugging, "Debugging e Profiling"),
+            "18": (lambda: self.load_and_execute_module("modulo_18"), "Programação Orientada a Objetos"),
+            "19": (lambda: self.load_and_execute_module("modulo_19"), "Herança e Polimorfismo"),
+            "20": (lambda: self.load_and_execute_module("modulo_20"), "Decorators e Context Managers"),
+            "21": (lambda: self.load_and_execute_module("modulo_21"), "Generators e Iterators"),
+            "22": (lambda: self.load_and_execute_module("modulo_22"), "Regular Expressions (Regex)"),
+            "23": (lambda: self.load_and_execute_module("modulo_23"), "Debugging e Profiling"),
             
             # Módulos Essenciais (24-30)
-            "24": (self.essential_modules.modulo_24_git_github, "🐙 Git e GitHub Essencial"),
-            "25": (self.essential_modules.modulo_25_terminal_cli, "🐧 Terminal e Command Line"),
-            "26": (self.essential_modules.modulo_26_ambientes_virtuais, "📦 Ambientes Virtuais e Dependências"),
-            "27": (self.essential_modules.modulo_27_testes_tdd, "🧪 Testes e TDD"),
-            "28": (self.essential_modules.modulo_28_estrutura_projetos, "🏗️ Estrutura de Projetos Python"),
-            "29": (self.essential_modules.modulo_29_apis_web_requests, "🌐 APIs e Web Requests"),
-            "30": (self.essential_modules.modulo_30_seguranca_basica, "🛡️ Segurança Básica"),
+            "24": (lambda: self.load_and_execute_module("modulo_24"), "🐙 Git e GitHub Essencial"),
+            "25": (lambda: self.load_and_execute_module("modulo_25"), "🐧 Terminal e Command Line"),
+            "26": (lambda: self.load_and_execute_module("modulo_26"), "📦 Ambientes Virtuais e Dependências"),
+            "27": (lambda: self.load_and_execute_module("modulo_27"), "🧪 Testes e TDD"),
+            "28": (lambda: self.load_and_execute_module("modulo_28"), "🏗️ Estrutura de Projetos Python"),
+            "29": (lambda: self.load_and_execute_module("modulo_29"), "🌐 APIs e Web Requests"),
+            "30": (lambda: self.load_and_execute_module("modulo_30"), "🛡️ Segurança Básica"),
+            
+            # Módulos Enterprise (31-35) - Arquitetura e Padrões Avançados
+            "31": (lambda: self.load_and_execute_module("modulo_31"), "🏗️ Design Patterns & SOLID"),
+            "32": (lambda: self.load_and_execute_module("modulo_32"), "🏛️ Clean Architecture & DDD"),
+            "33": (lambda: self.load_and_execute_module("modulo_33"), "🚀 DevOps Completo"),
+            "34": (lambda: self.load_and_execute_module("modulo_34"), "🗄️ Database Design"),
+            "35": (lambda: self.load_and_execute_module("modulo_35"), "🎓 Capstone Project"),
         }
     
     def run(self) -> None:
@@ -432,69 +451,68 @@ class PythonCourse:
         Returns:
             True se deve continuar, False se deve sair
         """
+        original_choice = escolha
         escolha = escolha.upper()
+        self.logger.debug(f"Processing user choice: '{original_choice}' -> '{escolha}'")
         
-        # Sair
-        if escolha == "0":
-            return False
+        try:
+            # Sair
+            if escolha == "0":
+                self.logger.info("User chose to exit the program")
+                return False
+                
+            # Voltar (se disponível) - usando BACKSPACE ao invés de B
+            if escolha == "VOLTAR" and self.menu_manager.navigation.can_go_back():
+                self.logger.info("User chose to go back")
+                callback = self.menu_manager.navigation.execute_back()
+                if callback:
+                    callback()
+                return True
             
-        # Voltar (se disponível)
-        if escolha == "B" and self.menu_manager.navigation.can_go_back():
-            callback = self.menu_manager.navigation.execute_back()
-            if callback:
-                callback()
-            return True
-        
-        # Módulos do curso
-        if escolha in self.menu_options:
-            return self.course_controller.execute_module(escolha)
-        
-        # Recursos especiais
-        if self.course_controller.handle_special_features(escolha):
-            return True
-        
-        # Galeria de mini projetos
-        if escolha == "M":
-            self._mostrar_galeria_mini_projetos()
-            return True
-        
-        # Code Review
-        if escolha == "Q" and escolha != "0":  # Q para Code Review, não para quit
-            self._show_code_review()
-            return True
-        
-        # Temas e Personalização
-        if escolha == "T":
-            self._open_theme_customizer()
+            # Módulos do curso
+            if escolha in self.menu_options:
+                self.logger.info(f"User selected module: {escolha}")
+                return self.course_controller.execute_module(escolha)
+            
+            # Recursos especiais
+            if self.course_controller.handle_special_features(escolha):
+                return True
+            
+            # Ajuda
+            if escolha == "H":
+                self.logger.info("User accessed Help menu")
+                shortcuts_dict = {
+                    "1-30": "Acessar módulos do curso",
+                    "V": "Demos interativas",
+                    "E": "Central de Exercícios (Ricos + Adaptativos)", 
+                    "D": "Debugger visual",
+                    "M": "Galeria mini projetos",
+                    "R": "Modo revisão",
+                    "G": "Glossário",
+                    "P": "Ver progresso",
+                    "C": "Gerar certificado",
+                    "A": "Assistente tutor interativo",
+                    "S": "📊 Analytics Dashboard",
+                    "O": "🌐 Status Offline/Online",
+                    "Q": "🔍 Code Review",
+                    "T": "Temas e Personalização",
+                    "H": "❓ Ajuda (este menu)",
+                    "0": "Sair do curso"
+                }
+                self.menu_manager.display_help_menu(shortcuts_dict)
+                return True
+            
+            # Opção inválida
+            self.logger.warning(f"Invalid user choice: '{original_choice}' -> '{escolha}'")
+            self.ui.warning(f"❌ Opção '{escolha}' não reconhecida. Tente novamente.")
+            self.ui.pause()
             return True
             
-        # Ajuda
-        if escolha == "H":
-            shortcuts_dict = {
-                "1-30": "Acessar módulos do curso",
-                "V": "Demos interativas",
-                "E": "Central de Exercícios (Ricos + Adaptativos)", 
-                "D": "Debugger visual",
-                "M": "Galeria mini projetos",
-                "R": "Modo revisão",
-                "G": "Glossário",
-                "P": "Ver progresso",
-                "C": "Gerar certificado",
-                "A": "Assistente tutor interativo",
-                "S": "📊 Analytics Dashboard",
-                "O": "🌐 Status Offline/Online",
-                "Q": "🔍 Code Review",
-                "T": "Temas e Personalização",
-                "H": "❓ Ajuda (este menu)",
-                "0": "Sair do curso"
-            }
-            self.menu_manager.display_help_menu(shortcuts_dict)
+        except Exception as e:
+            self.logger.error(f"Error processing user choice '{original_choice}': {str(e)}")
+            self.error_handler.handle_error(e, f"_process_user_choice({original_choice})", "critical")
+            self.ui.warning("❌ Erro interno. Tente novamente.")
             return True
-        
-        # Opção inválida
-        self.ui.warning(f"❌ Opção '{escolha}' não reconhecida. Tente novamente.")
-        self.ui.pause()
-        return True
     
     def _mostrar_galeria_mini_projetos(self) -> None:
         """Exibe galeria de mini projetos"""

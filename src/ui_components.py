@@ -29,6 +29,9 @@ class UIComponents:
                 "info": Fore.BLUE if USE_COLORS else "",
                 "warning": Fore.YELLOW if USE_COLORS else "",
                 "accent": Fore.MAGENTA if USE_COLORS else "",
+                "highlight": f"{Style.BRIGHT}{Fore.WHITE}" if USE_COLORS else "",
+                "enterprise": f"{Style.BRIGHT}{Fore.MAGENTA}" if USE_COLORS else "",
+                "code": Fore.GREEN if USE_COLORS else "",
                 "reset": Style.RESET_ALL if USE_COLORS else ""
             },
             "dark": {

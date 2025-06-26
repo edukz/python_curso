@@ -2,18 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-Módulos do Curso de Python
+Módulos do Curso de Python - Sistema Modular Independente
 """
 
-try:
-    from .course_modules import CourseModules
-    from .advanced_modules import AdvancedModules
-except ImportError:
-    # Fallback para quando executado diretamente
-    import sys
-    import os
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from course_modules import CourseModules
-    from advanced_modules import AdvancedModules
+# O sistema agora usa carregamento dinâmico via module_loader
+# As classes legadas foram removidas para tornar o sistema 100% independente
 
-__all__ = ['CourseModules', 'AdvancedModules']
+from .module_loader import module_loader, load_module
+
+__all__ = ['module_loader', 'load_module']

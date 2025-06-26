@@ -18,10 +18,6 @@ class LazyModuleLoader:
     def __init__(self):
         self._loaded_modules: Dict[str, Any] = {}
         self._module_paths: Dict[str, str] = {
-            # Módulos básicos
-            "CourseModules": "src.modules.course_modules",
-            "AdvancedModules": "src.modules.advanced_modules",
-            
             # Controladores
             "MenuManager": "src.controllers.menu_manager",
             "CourseController": "src.controllers.course_controller",

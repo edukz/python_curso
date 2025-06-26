@@ -223,7 +223,7 @@ class SessionManager:
         
         🚀 Continue sua jornada Python!
         
-        ⭐ Desenvolvido com ❤️ para facilitar seu aprendizado
+        ⭐ Desenvolvido para facilitar seu aprendizado
         """
         
         print(farewell_message)

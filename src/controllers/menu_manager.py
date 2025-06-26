@@ -27,11 +27,11 @@ class MenuManager:
     def display_main_menu(self, menu_options: Dict[str, Tuple[Any, str]]) -> None:
         """Exibe o menu principal do curso"""
         # Calcula estatísticas
-        total_modules = 30
+        total_modules = 35
         completed_modules = len([
             m for m in self.progress.progress_data["modules_completed"]
             if m.startswith("modulo_") and m.replace("modulo_", "").isdigit()
-            and int(m.replace("modulo_", "")) <= 30
+            and int(m.replace("modulo_", "")) <= 35
         ])
         
         # Obtém informações do progresso
@@ -105,22 +105,29 @@ class MenuManager:
         intermediate_modules = [opt for opt in module_options if 12 <= int(opt['key']) <= 17]
         advanced_modules = [opt for opt in module_options if 18 <= int(opt['key']) <= 23]
         essential_modules = [opt for opt in module_options if 24 <= int(opt['key']) <= 30]
+        enterprise_modules = [opt for opt in module_options if 31 <= int(opt['key']) <= 35]
         
-        # Exibe cada categoria
-        self._display_module_category("📚 BÁSICO (1-11):", basic_modules)
+        # Exibe cada categoria com cores específicas
+        self._display_module_category("📚 BÁSICO (1-11):", basic_modules, "info")
         
         if intermediate_modules:
-            self._display_module_category("\n🎓 INTERMEDIÁRIO (12-17):", intermediate_modules)
+            self._display_module_category("\n🎓 INTERMEDIÁRIO (12-17):", intermediate_modules, "primary")
         
         if advanced_modules:
-            self._display_module_category("\n🚀 AVANÇADO (18-23):", advanced_modules)
+            self._display_module_category("\n🚀 AVANÇADO (18-23):", advanced_modules, "warning")
         
         if essential_modules:
-            self._display_module_category("\n⚡ ESSENCIAIS (24-30):", essential_modules)
+            self._display_module_category("\n⚡ ESSENCIAIS (24-30):", essential_modules, "success")
+        
+        if enterprise_modules:
+            self._display_enterprise_modules(enterprise_modules)
     
-    def _display_module_category(self, title: str, modules: List[Dict[str, Any]]) -> None:
-        """Exibe uma categoria de módulos em duas colunas"""
-        print(title)
+    def _display_module_category(self, title: str, modules: List[Dict[str, Any]], color_theme: str = "primary") -> None:
+        """Exibe uma categoria de módulos em duas colunas com cores"""
+        color = self.ui.get_color(color_theme)
+        reset = self.ui.get_color("reset")
+        
+        print(f"{color}{title}{reset}")
         
         for i in range(0, len(modules), 2):
             left = modules[i]
@@ -134,6 +141,42 @@ class MenuManager:
             else:
                 print(left_text)
     
+    def _display_enterprise_modules(self, enterprise_modules: List[Dict[str, Any]]) -> None:
+        """Exibe módulos enterprise com destaque especial"""
+        accent = self.ui.get_color("accent")
+        primary = self.ui.get_color("primary")
+        secondary = self.ui.get_color("secondary")
+        reset = self.ui.get_color("reset")
+        
+        # Título destacado para Enterprise
+        print(f"\n{accent}{'=' * 60}{reset}")
+        print(f"{accent}🏢 MÓDULOS ENTERPRISE (31-35) - ARQUITETURA PROFISSIONAL{reset}")
+        print(f"{accent}{'=' * 60}{reset}")
+        
+        # Descrição dos módulos enterprise
+        enterprise_descriptions = {
+            "31": ("🏗️ Design Patterns & SOLID", "Padrões de design e princípios fundamentais"),
+            "32": ("🏛️ Clean Architecture & DDD", "Arquitetura limpa e design orientado ao domínio"),
+            "33": ("🚀 DevOps Completo", "Docker, CI/CD, Kubernetes e Cloud"),
+            "34": ("🗄️ Database Design", "Design de banco de dados e performance"),
+            "35": ("🎓 Capstone Project", "Projeto final integrando todos os conceitos")
+        }
+        
+        for module in enterprise_modules:
+            key = module['key']
+            icon = module['icon']
+            status_color = primary if module['status'] == 'completed' else secondary
+            
+            if key in enterprise_descriptions:
+                title, description = enterprise_descriptions[key]
+                print(f"  {status_color}{icon} {key}. {title:<35}{reset} {accent}│{reset} {description}")
+            else:
+                print(f"  {status_color}{icon} {key}. {module['text']:<35}{reset}")
+        
+        print(f"{accent}{'─' * 60}{reset}")
+        print(f"{accent}💡 Módulos para desenvolvimento enterprise e arquitetura avançada{reset}")
+        print(f"{accent}🎯 Prepare-se para projetos de grande escala!{reset}")
+    
     def _display_special_features(self) -> None:
         """Exibe recursos especiais do curso"""
         print("\n🌟 RECURSOS ESPECIAIS:")
@@ -142,8 +185,9 @@ class MenuManager:
             ("V", "🎪 Demos Interativas", "Visualizações educativas"),
             ("E", "🧠 Exercícios Adaptativos", "Prática personalizada"),
             ("D", "🔍 Debugger Visual", "Debug passo a passo"),
+            ("J", "🚀 Projetos Graduais", "3 projetos evolutivos"),
             ("M", "🚀 Galeria Mini Projetos", "18 projetos práticos"),
-            ("Q", "🔍 Code Review", "Análise de código Python")
+            ("B", "🧠 Debugging Metodológico", "Framework RSAD científico")
         ]
         
         for i in range(0, len(features), 2):
