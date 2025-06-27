@@ -25,7 +25,7 @@ class Modulo23Debugging(BaseModule):
     def execute(self) -> None:
         """Executa o módulo sobre debugging e profiling"""
         if not self.ui or not self.progress:
-            print("❌ Erro: Dependências não configuradas para este módulo")
+            self.print_warning("Dependências não configuradas para este módulo", "❌")
             input("Pressione ENTER para continuar...")
             return
         
@@ -41,11 +41,11 @@ class Modulo23Debugging(BaseModule):
             self.ui.header("🐛 MÓDULO 23: DEBUGGING E PROFILING")
         else:
             print("\n" + "="*60)
-            print("🐛 MÓDULO 23: DEBUGGING E PROFILING")
+            self.print_section("MÓDULO 23: DEBUGGING E PROFILING", "🐛")
             print("="*60)
         
-        print("🔍 Aprenda a encontrar e corrigir problemas no código!")
-        print("🎯 Técnicas abordadas:")
+        self.print_colored("🔍 Aprenda a encontrar e corrigir problemas no código!", "info")
+        self.print_tip("Técnicas abordadas:", "🎯")
         print("• Debugging com print e logging")
         print("• Uso do debugger interativo (pdb)")
         print("• Profiling de performance")
@@ -64,7 +64,7 @@ class Modulo23Debugging(BaseModule):
         # Marcar módulo como completo
         if self.progress:
             self.progress.complete_module(self.module_id)
-            print(f"\n🎉 Módulo {self.module_id} concluído!")
+            self.print_success(f"Módulo {self.module_id} concluído!", "🎉")
     
     def _tecnicas_debugging(self):
         """Técnicas básicas de debugging"""
@@ -72,11 +72,11 @@ class Modulo23Debugging(BaseModule):
             self.ui.clear_screen()
             self.ui.header("🔧 TÉCNICAS DE DEBUGGING")
         
-        print("🐛 Métodos básicos para encontrar problemas:")
-        print("• Print debugging - simples mas eficaz")
-        print("• Logging - mais profissional")
-        print("• Assert statements - verificações automáticas")
-        print("• Try/except - captura de erros")
+        self.print_section("Métodos básicos para encontrar problemas:", "🐛")
+        self.print_colored("• Print debugging - simples mas eficaz", "warning")
+        self.print_colored("• Logging - mais profissional", "warning")
+        self.print_colored("• Assert statements - verificações automáticas", "warning")
+        self.print_colored("• Try/except - captura de erros", "warning")
         
         codigo = '''import logging
 import sys
@@ -157,7 +157,7 @@ except Exception as e:
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -167,20 +167,20 @@ except Exception as e:
             self.ui.clear_screen()
             self.ui.header("🐞 DEBUGGER INTERATIVO (PDB)")
         
-        print("🔍 O debugger PDB permite:")
-        print("• Pausar execução em pontos específicos")
-        print("• Examinar variáveis em tempo real")
-        print("• Executar código passo a passo")
-        print("• Navegar pela stack de chamadas")
+        self.print_section("O debugger PDB permite:", "🔍")
+        self.print_colored("• Pausar execução em pontos específicos", "warning")
+        self.print_colored("• Examinar variáveis em tempo real", "warning")
+        self.print_colored("• Executar código passo a passo", "warning")
+        self.print_colored("• Navegar pela stack de chamadas", "warning")
         
-        print("\n📋 Comandos principais do PDB:")
-        print("• n (next) - próxima linha")
-        print("• s (step) - entrar em função")
-        print("• c (continue) - continuar execução")
-        print("• l (list) - mostrar código")
-        print("• p <var> - mostrar variável")
-        print("• pp <var> - pretty print")
-        print("• q (quit) - sair do debugger")
+        self.print_tip("Comandos principais do PDB:", "📋")
+        self.print_colored("• n (next) - próxima linha", "warning")
+        self.print_colored("• s (step) - entrar em função", "warning")
+        self.print_colored("• c (continue) - continuar execução", "warning")
+        self.print_colored("• l (list) - mostrar código", "warning")
+        self.print_colored("• p <var> - mostrar variável", "warning")
+        self.print_colored("• pp <var> - pretty print", "warning")
+        self.print_colored("• q (quit) - sair do debugger", "warning")
         
         codigo = '''import pdb
 
@@ -245,7 +245,7 @@ print("4. Digite 'c' para continuar ou 'q' para sair")'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -255,11 +255,11 @@ print("4. Digite 'c' para continuar ou 'q' para sair")'''
             self.ui.clear_screen()
             self.ui.header("⚡ PROFILING DE PERFORMANCE")
         
-        print("📊 cProfile mostra onde seu código gasta tempo:")
-        print("• Tempo total de execução")
-        print("• Número de chamadas de função")
-        print("• Tempo por chamada")
-        print("• Funções mais custosas")
+        self.print_section("cProfile mostra onde seu código gasta tempo:", "📊")
+        self.print_colored("• Tempo total de execução", "warning")
+        self.print_colored("• Número de chamadas de função", "warning")
+        self.print_colored("• Tempo por chamada", "warning")
+        self.print_colored("• Funções mais custosas", "warning")
         
         codigo = '''import cProfile
 import pstats
@@ -372,7 +372,7 @@ print(stream.getvalue())'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -382,11 +382,11 @@ print(stream.getvalue())'''
             self.ui.clear_screen()
             self.ui.header("⏱️ MEDIÇÃO DE TEMPO E MEMÓRIA")
         
-        print("📏 Ferramentas para medir performance:")
-        print("• time.time() - tempo simples")
-        print("• time.perf_counter() - alta precisão")
-        print("• timeit - múltiplas execuções")
-        print("• sys.getsizeof() - tamanho de objetos")
+        self.print_section("Ferramentas para medir performance:", "📏")
+        self.print_colored("• time.time() - tempo simples", "warning")
+        self.print_colored("• time.perf_counter() - alta precisão", "warning")
+        self.print_colored("• timeit - múltiplas execuções", "warning")
+        self.print_colored("• sys.getsizeof() - tamanho de objetos", "warning")
         
         codigo = '''import time
 import timeit
@@ -507,7 +507,7 @@ for nome, estrutura in estruturas.items():
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -517,11 +517,11 @@ for nome, estrutura in estruturas.items():
             self.ui.clear_screen()
             self.ui.header("🎯 DECORATORS PARA PROFILING")
         
-        print("🧰 Decorators úteis para análise:")
-        print("• @cronometro - medir tempo")
-        print("• @cache - otimizar com cache")
-        print("• @debug - log de entrada/saída")
-        print("• @retry - tentar novamente em caso de erro")
+        self.print_section("Decorators úteis para análise:", "🧰")
+        self.print_colored("• @cronometro - medir tempo", "warning")
+        self.print_colored("• @cache - otimizar com cache", "warning")
+        self.print_colored("• @debug - log de entrada/saída", "warning")
+        self.print_colored("• @retry - tentar novamente em caso de erro", "warning")
         
         codigo = '''import time
 import functools
@@ -672,7 +672,7 @@ fibonacci_com_cache(15)'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -682,13 +682,13 @@ fibonacci_com_cache(15)'''
             self.ui.clear_screen()
             self.ui.header("🚀 MINI PROJETO: SISTEMA DE PROFILING COMPLETO")
         
-        print("📊 Vamos criar um sistema completo de profiling!")
-        print("🎯 Funcionalidades:")
-        print("• Monitoramento de tempo de execução")
-        print("• Análise de uso de memória")
-        print("• Detecção de gargalos")
-        print("• Relatórios detalhados")
-        print("• Dashboard de performance")
+        self.print_section("Vamos criar um sistema completo de profiling!", "📊")
+        self.print_colored("🎯 Funcionalidades:", "info")
+        self.print_tip("Monitoramento de tempo de execução")
+        self.print_tip("Análise de uso de memória")
+        self.print_tip("Detecção de gargalos")
+        self.print_tip("Relatórios detalhados")
+        self.print_tip("Dashboard de performance")
         
         input("\n🔸 Pressione ENTER para começar o projeto...")
         
@@ -967,11 +967,11 @@ print("   • Análise de tendências temporais")'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         # Pontos do mini projeto
         if self.progress:
             self.progress.add_points(self.mini_project_points)
-            print(f"\n🎁 +{self.mini_project_points} pontos pelo mini projeto!")
+            self.print_success(f"+{self.mini_project_points} pontos pelo mini projeto!", "🎁")
         
         input("\n🔸 Pressione ENTER para finalizar o módulo...")

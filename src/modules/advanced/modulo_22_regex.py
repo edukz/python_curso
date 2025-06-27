@@ -21,7 +21,7 @@ class Modulo22Regex(BaseModule):
     def execute(self) -> None:
         """Executa o módulo sobre expressões regulares"""
         if not self.ui or not self.progress:
-            print("❌ Erro: Dependências não configuradas para este módulo")
+            self.print_warning("Dependências não configuradas para este módulo", "❌")
             input("Pressione ENTER para continuar...")
             return
         
@@ -37,11 +37,11 @@ class Modulo22Regex(BaseModule):
             self.ui.header("🔍 MÓDULO 22: EXPRESSÕES REGULARES - BUSCA AVANÇADA EM TEXTO")
         else:
             print("\n" + "="*60)
-            print("🔍 MÓDULO 22: EXPRESSÕES REGULARES - BUSCA AVANÇADA EM TEXTO")
+            self.print_section("MÓDULO 22: EXPRESSÕES REGULARES - BUSCA AVANÇADA EM TEXTO", "🔍")
             print("="*60)
         
-        print("📝 Aprenda a usar Regex para busca avançada em texto!")
-        print("🎯 Expressões regulares são uma ferramenta poderosa para:")
+        self.print_colored("📝 Aprenda a usar Regex para busca avançada em texto!", "info")
+        self.print_tip("Expressões regulares são uma ferramenta poderosa para:", "🎯")
         print("• Validação de dados (email, telefone, CPF)")
         print("• Busca e substituição avançada em textos")
         print("• Extração de informações específicas")
@@ -52,7 +52,7 @@ class Modulo22Regex(BaseModule):
         self._introducao_regex()
         self._metacaracteres()
         self._grupos_capturas()
-        self._validacao_dados_moderna()
+        self._validacao_dados()
         self._parsing_dados_estruturados()
         self._web_scraping_basico()
         self._processamento_logs_avancado()
@@ -68,10 +68,10 @@ class Modulo22Regex(BaseModule):
             self.ui.clear_screen()
             self.ui.header("📖 INTRODUÇÃO ÀS EXPRESSÕES REGULARES")
         
-        print("🔍 O que são Expressões Regulares (Regex)?")
+        self.print_section("O que são Expressões Regulares (Regex)?", "🔍")
         print("• Sequências de caracteres que formam padrões de busca")
         print("• Usadas para encontrar, extrair ou validar texto")
-        print("• Muito poderosas mas podem ser complexas")
+        self.print_warning("Muito poderosas mas podem ser complexas")
         
         codigo = '''import re
 
@@ -108,7 +108,7 @@ else:
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -118,16 +118,16 @@ else:
             self.ui.clear_screen()
             self.ui.header("🎯 METACARACTERES E PADRÕES")
         
-        print("🔤 Principais metacaracteres:")
-        print("• . (ponto) - qualquer caractere")
-        print("• * - zero ou mais repetições")
-        print("• + - uma ou mais repetições")
-        print("• ? - zero ou uma repetição")
-        print("• ^ - início da string")
-        print("• $ - fim da string")
-        print("• \\d - dígito (0-9)")
-        print("• \\w - caractere de palavra")
-        print("• \\s - espaço em branco")
+        self.print_section("Principais metacaracteres:", "🔤")
+        self.print_colored("• . (ponto) - qualquer caractere", "warning")
+        self.print_colored("• * - zero ou mais repetições", "warning")
+        self.print_colored("• + - uma ou mais repetições", "warning")
+        self.print_colored("• ? - zero ou uma repetição", "warning")
+        self.print_colored("• ^ - início da string", "warning")
+        self.print_colored("• $ - fim da string", "warning")
+        self.print_colored("• \\d - dígito (0-9)", "warning")
+        self.print_colored("• \\w - caractere de palavra", "warning")
+        self.print_colored("• \\s - espaço em branco", "warning")
         
         codigo = '''import re
 
@@ -164,7 +164,7 @@ print(f"Anônimo: {texto_anonimo}")'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -174,10 +174,10 @@ print(f"Anônimo: {texto_anonimo}")'''
             self.ui.clear_screen()
             self.ui.header("👥 GRUPOS E CAPTURAS")
         
-        print("📋 Grupos permitem capturar partes específicas:")
-        print("• () - grupo de captura")
-        print("• (?P<nome>) - grupo nomeado")
-        print("• (?:) - grupo não capturante")
+        self.print_section("Grupos permitem capturar partes específicas:", "📋")
+        self.print_colored("• () - grupo de captura", "warning")
+        self.print_colored("• (?P<nome>) - grupo nomeado", "warning")
+        self.print_colored("• (?:) - grupo não capturante", "warning")
         
         codigo = '''import re
 
@@ -222,7 +222,7 @@ for nome, ddd, telefone in matches:
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -232,7 +232,7 @@ for nome, ddd, telefone in matches:
             self.ui.clear_screen()
             self.ui.header("✅ VALIDAÇÃO DE DADOS")
         
-        print("🔐 Regex para validação comum:")
+        self.print_section("Regex para validação comum:", "🔐")
         
         codigo = '''import re
 
@@ -283,7 +283,7 @@ print(f"Senha '123': {validar_senha_forte('123')}")'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -293,7 +293,7 @@ print(f"Senha '123': {validar_senha_forte('123')}")'''
             self.ui.clear_screen()
             self.ui.header("📊 PARSING DE DADOS ESTRUTURADOS")
         
-        print("🔍 Extraindo informações de dados estruturados:")
+        self.print_section("Extraindo informações de dados estruturados:", "🔍")
         
         codigo = '''import re
 from typing import Dict, List, Optional
@@ -422,7 +422,7 @@ for key, value in config_data.items():
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -432,7 +432,7 @@ for key, value in config_data.items():
             self.ui.clear_screen()
             self.ui.header("🌐 WEB SCRAPING BÁSICO COM REGEX")
         
-        print("🕷️ Extraindo dados de páginas web com regex:")
+        self.print_section("Extraindo dados de páginas web com regex:", "🕷️")
         
         codigo = '''import re
 from typing import Dict, List, Optional, NamedTuple
@@ -610,7 +610,7 @@ for elemento, qtd in estrutura.items():
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -620,7 +620,7 @@ for elemento, qtd in estrutura.items():
             self.ui.clear_screen()
             self.ui.header("📊 PROCESSAMENTO AVANÇADO DE LOGS")
         
-        print("🔍 Análise profissional de logs de sistema:")
+        self.print_section("Análise profissional de logs de sistema:", "🔍")
         
         codigo = '''import re
 from collections import defaultdict, Counter
@@ -816,7 +816,7 @@ print("   • Compliance e auditoria")'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -826,7 +826,7 @@ print("   • Compliance e auditoria")'''
             self.ui.clear_screen()
             self.ui.header("🔄 BUSCA E SUBSTITUIÇÃO")
         
-        print("✏️ Usando regex para buscar e substituir:")
+        self.print_section("Usando regex para buscar e substituir:", "✏️")
         
         codigo = '''import re
 
@@ -878,7 +878,7 @@ print(cpfs_mascarados)'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
@@ -888,14 +888,14 @@ print(cpfs_mascarados)'''
             self.ui.clear_screen()
             self.ui.header("🚀 MINI PROJETO AVANÇADO: SISTEMA DE ANÁLISE DE DADOS")
         
-        print("🔍 Vamos criar um sistema completo de análise de dados!")
-        print("🎯 Funcionalidades profissionais:")
-        print("• Processamento de logs de múltiplos formatos")
-        print("• Detecção automática de ameaças de segurança")
-        print("• Web scraping de informações corporativas")
-        print("• Parsing de dados estruturados (CSV, JSON, configs)")
-        print("• Análise de padrões e geração de relatórios")
-        print("• Dashboard com métricas em tempo real")
+        self.print_section("Vamos criar um sistema completo de análise de dados!", "🔍")
+        self.print_colored("🎯 Funcionalidades profissionais:", "info")
+        self.print_tip("Processamento de logs de múltiplos formatos")
+        self.print_tip("Detecção automática de ameaças de segurança")
+        self.print_tip("Web scraping de informações corporativas")
+        self.print_tip("Parsing de dados estruturados (CSV, JSON, configs)")
+        self.print_tip("Análise de padrões e geração de relatórios")
+        self.print_tip("Dashboard com métricas em tempo real")
         
         input("\n🔸 Pressione ENTER para começar o projeto...")
         
@@ -1024,9 +1024,10 @@ print("   • Criar alertas em tempo real")'''
         try:
             exec(codigo)
         except Exception as e:
-            print(f"❌ Erro na execução: {e}")
+            self.print_warning(f"Erro na execução: {e}", "❌")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema Avançado de Análise de Dados com Regex")
+        self.print_success("Mini projeto concluído com sucesso!", "🎉")
         
         input("\n🔸 Pressione ENTER para finalizar o módulo...")
