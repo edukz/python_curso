@@ -20,7 +20,7 @@ class Modulo21Geradores(BaseModule):
     def execute(self) -> None:
         """Executa o módulo sobre generators"""
         if not self.ui or not self.progress:
-            print("❌ Erro: Dependências não configuradas para este módulo")
+            self.print_warning("❌ Erro: Dependências não configuradas para este módulo")
             input("Pressione ENTER para continuar...")
             return
         
@@ -35,23 +35,17 @@ class Modulo21Geradores(BaseModule):
             self.ui.clear_screen()
             self.ui.header("⚡ MÓDULO 21: GENERATORS E ITERATORS")
         else:
-            print("\n" + "="*50)
-            print("⚡ MÓDULO 21: GENERATORS E ITERATORS")
-            print("="*50)
+            self.print_section("⚡ MÓDULO 21: GENERATORS E ITERATORS")
         
-        print("⚡ Generators são uma das funcionalidades mais EFICIENTES do Python!")
-        print("🔄 Iterators permitem percorrer sequências de forma elegante!")
+        self.print_concept("⚡ Generators são uma das funcionalidades mais EFICIENTES do Python!")
+        self.print_concept("🔄 Iterators permitem percorrer sequências de forma elegante!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        ITERATORS - PERCORRENDO SEQUÊNCIAS")
-        print("═══════════════════════════════════════════════")
+        self.print_section("ITERATORS - PERCORRENDO SEQUÊNCIAS")
         
-        print("\n🎯 Iterator = objeto que implementa __iter__ e __next__")
-        print("🔄 Protocolo de iteração:")
-        print("• __iter__(): retorna o próprio iterator")
-        print("• __next__(): retorna próximo item ou StopIteration")
-        
-        self.pausar()
+        self.print_concept("🎯 Iterator = objeto que implementa __iter__ e __next__")
+        self.print_tip("🔄 Protocolo de iteração:")
+        self.print_colored("• __iter__(): retorna o próprio iterator", 'green')
+        self.print_colored("• __next__(): retorna próximo item ou StopIteration", 'green')
         
         codigo1 = '''# Criando um Iterator customizado
 class ContadorIterator:
@@ -118,9 +112,7 @@ except StopIteration:
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
         
-        self.pausar()
-        
-        print("\n🌟 GENERATORS - Iterators Simplificados:")
+        self.print_section("🌟 GENERATORS - Iterators Simplificados")
         
         codigo2 = '''# Generators - muito mais simples que iterators!
 def contador_generator(limite):
@@ -188,9 +180,7 @@ for linha in ler_linhas_grandes("teste_grande.txt"):
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
-        self.pausar()
-        
-        print("\n⚡ Vantagens dos Generators:")
+        self.print_section("⚡ Vantagens dos Generators")
         
         codigo3 = '''# Comparando memória: Lista vs Generator
 import sys
@@ -292,12 +282,10 @@ print(f"Números de 1-10 -> pares -> quadrados: {resultado}")'''
             self.ui.clear_screen()
             self.ui.header("🎯 MINI PROJETO: PIPELINE DE PROCESSAMENTO DE DADOS")
         else:
-            print("\n" + "="*50)
-            print("🎯 MINI PROJETO: PIPELINE DE PROCESSAMENTO DE DADOS")
-            print("="*50)
+            self.print_section("🎯 MINI PROJETO: PIPELINE DE PROCESSAMENTO DE DADOS")
         
-        print("🔄 Pipeline eficiente usando Generators e Iterators!")
-        print("🛠️ Usando: Generators, Yield, Iterator Protocol, Memory Efficiency")
+        self.print_concept("🔄 Pipeline eficiente usando Generators e Iterators!")
+        self.print_tip("🛠️ Usando: Generators, Yield, Iterator Protocol, Memory Efficiency")
         
         self.pausar()
         
@@ -586,8 +574,8 @@ print("  • Memory-efficient data processing")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Pipeline de Processamento criado!")
-        print("🎯 Aplicação real: big data, ETL, processamento de streams")
+        self.print_success("\n🏆 PARABÉNS! Pipeline de Processamento criado!")
+        self.print_tip("🎯 Aplicação real: big data, ETL, processamento de streams")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Pipeline de Processamento de Dados")

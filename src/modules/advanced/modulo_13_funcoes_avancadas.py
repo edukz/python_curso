@@ -39,18 +39,14 @@ class Modulo13FuncoesAvancadas(BaseModule):
             print("⚡ MÓDULO 13: FUNÇÕES AVANÇADAS & LAMBDA")
             print("="*50)
         
-        print("⚡ Vamos dominar funcionalidades AVANÇADAS de funções!")
-        print("🚀 Lambda, *args, **kwargs e muito mais!")
+        self.print_concept("⚡ Vamos dominar funcionalidades AVANÇADAS de funções!")
+        self.print_concept("🚀 Lambda, *args, **kwargs e muito mais!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        PARÂMETROS FLEXÍVEIS")
-        print("═══════════════════════════════════════════════")
+        self.print_section("PARÂMETROS FLEXÍVEIS")
         
-        print("\n🎯 *args = argumentos posicionais variáveis")
-        print("🎯 **kwargs = argumentos nomeados variáveis")
-        print("✨ Tornam funções muito mais flexíveis!")
-        
-        self.pausar()
+        self.print_concept("🎯 *args = argumentos posicionais variáveis")
+        self.print_concept("🎯 **kwargs = argumentos nomeados variáveis")
+        self.print_tip("✨ Tornam funções muito mais flexíveis!")
         
         codigo1 = '''# *args - argumentos posicionais variáveis
 def somar_todos(*numeros):
@@ -93,9 +89,7 @@ funcao_completa("necessário", "customizado", 1, 2, 3, nome="Python", ano=2023)'
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
         
-        self.pausar()
-        
-        print("\n⚡ LAMBDA - Funções Anônimas:")
+        self.print_section("⚡ LAMBDA - Funções Anônimas")
         
         codigo2 = '''# Lambda - funções anônimas
 print("=== FUNÇÕES LAMBDA ===")
@@ -171,8 +165,8 @@ print(f"Bem pagos: {[p['nome'] for p in bem_pagos]}")'''
             print("🎯 MINI PROJETO: PROCESSADOR DE DADOS AVANÇADO")
             print("="*50)
         
-        print("🧮 Sistema de análise de dados usando funções lambda e avançadas!")
-        print("🛠️ Usando: Lambda, map(), filter(), reduce(), *args, **kwargs")
+        self.print_concept("🧮 Sistema de análise de dados usando funções lambda e avançadas!")
+        self.print_tip("🛠️ Usando: Lambda, map(), filter(), reduce(), *args, **kwargs")
         
         self.pausar()
         
@@ -408,8 +402,8 @@ print("  • Análises estatísticas avançadas")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Sistema de processamento de dados criado!")
-        print("🎯 Aplicação real: análise de vendas, business intelligence, ETL")
+        self.print_success("🏆 PARABÉNS! Sistema de processamento de dados criado!")
+        self.print_tip("🎯 Aplicação real: análise de vendas, business intelligence, ETL")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Processador de Dados Avançado")

@@ -52,8 +52,6 @@ class Modulo18OopBasico(BaseModule):
         self.print_colored("• 📦 ATRIBUTOS = características do objeto", "yellow")
         self.print_colored("• ⚡ MÉTODOS = ações que o objeto pode fazer", "yellow")
         
-        self.pausar()
-        
         self.print_concept("\n🏗️ Criando sua primeira classe:")
         
         codigo1 = '''# Primeira classe em Python
@@ -113,8 +111,6 @@ print(f"{pessoa2.nome} tem {pessoa2.energia} de energia")'''
         
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
-        
-        self.pausar()
         
         self.print_section("\n💰 Exemplo mais avançado - Conta Bancária:")
         
@@ -235,8 +231,6 @@ ContaBancaria.relatorio_banco()'''
         
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
-        
-        self.pausar()
         
         self.print_section("\n🎮 Exemplo de jogo - Personagem RPG:")
         

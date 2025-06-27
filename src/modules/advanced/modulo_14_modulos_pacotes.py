@@ -39,24 +39,20 @@ class Modulo14ModulosPacotes(BaseModule):
             print("📦 MÓDULO 14: MÓDULOS E PACOTES")
             print("="*50)
         
-        print("📦 Agora vamos aprender a ORGANIZAR e REUTILIZAR código!")
-        print("🔧 Módulos são a base da programação profissional!")
+        self.print_concept("📦 Agora vamos aprender a ORGANIZAR e REUTILIZAR código!")
+        self.print_concept("🔧 Módulos são a base da programação profissional!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        O QUE SÃO MÓDULOS?")
-        print("═══════════════════════════════════════════════")
+        self.print_section("O QUE SÃO MÓDULOS?")
         
-        print("\n🎯 Módulo = arquivo .py com funções e classes")
-        print("📚 Biblioteca = conjunto de módulos")
-        print("🌟 Vantagens:")
-        print("• ♻️  Reutilização de código")
-        print("• 🗂️  Organização melhor")
-        print("• 👥 Colaboração em equipe")
-        print("• 🐛 Menos bugs")
+        self.print_concept("🎯 Módulo = arquivo .py com funções e classes")
+        self.print_concept("📚 Biblioteca = conjunto de módulos")
+        self.print_tip("🌟 Vantagens:")
+        self.print_colored("• ♻️  Reutilização de código", "green")
+        self.print_colored("• 🗂️  Organização melhor", "blue")
+        self.print_colored("• 👥 Colaboração em equipe", "cyan")
+        self.print_colored("• 🐛 Menos bugs", "green")
         
-        self.pausar()
-        
-        print("\n🔍 Importando Módulos:")
+        self.print_section("🔍 Importando Módulos")
         
         codigo1 = '''# Diferentes formas de importar
 import math
@@ -90,9 +86,7 @@ print(f"Formatado: {agora.strftime('%d/%m/%Y %H:%M')}")'''
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
         
-        self.pausar()
-        
-        print("\n⚡ Importação Específica:")
+        self.print_section("⚡ Importação Específica")
         
         codigo2 = '''# Importando funções específicas
 from math import pi, sqrt, sin, cos
@@ -123,9 +117,7 @@ print("⚠️ Cuidado: pode sobrescrever variáveis!")'''
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
-        self.pausar()
-        
-        print("\n🔨 Criando Seus Próprios Módulos:")
+        self.print_section("🔨 Criando Seus Próprios Módulos")
         
         codigo3 = '''# Vamos criar funções que poderiam estar em um módulo separado
 def calcular_imc(peso, altura):
@@ -189,9 +181,7 @@ print(f"Valor de PI: {PI}")'''
         self.exemplo(codigo3)
         self.executar_codigo(codigo3)
         
-        self.pausar()
-        
-        print("\n📚 Bibliotecas Úteis para Aprender:")
+        self.print_section("📚 Bibliotecas Úteis para Aprender")
         
         codigo4 = '''# Principais bibliotecas Python
 print("=== BIBLIOTECAS ESSENCIAIS ===")
@@ -263,8 +253,8 @@ print("📖 Exemplo: pip install requests pandas matplotlib")'''
             print("🎯 MINI PROJETO: FRAMEWORK DE PLUGINS")
             print("="*50)
         
-        print("🧩 Sistema completo de plugins modulares e extensíveis!")
-        print("🛠️ Usando: Importação dinâmica, ABC, configuração, hooks")
+        self.print_concept("🧩 Sistema completo de plugins modulares e extensíveis!")
+        self.print_tip("🛠️ Usando: Importação dinâmica, ABC, configuração, hooks")
         
         self.pausar()
         
@@ -603,8 +593,8 @@ print("  • Arquitetura modular profissional")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Framework de plugins profissional criado!")
-        print("🎯 Aplicação real: sistemas modulares, arquitetura de microserviços")
+        self.print_success("🏆 PARABÉNS! Framework de plugins profissional criado!")
+        self.print_tip("🎯 Aplicação real: sistemas modulares, arquitetura de microserviços")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Framework de Plugins Modular")

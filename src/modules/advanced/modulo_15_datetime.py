@@ -52,8 +52,6 @@ class Modulo15Datetime(BaseModule):
         self.print_colored("• 'a' - Anexar (append) - adiciona no final", "cyan")
         self.print_colored("• 'r+' - Leitura e escrita", "cyan")
         
-        self.pausar()
-        
         # Escrevendo arquivos
         codigo1 = '''# Escrevendo arquivos
 # Método básico
@@ -86,8 +84,6 @@ print("✅ Arquivo com múltiplas linhas criado!")'''
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
         
-        self.pausar()
-        
         self.print_concept("\n📖 Lendo arquivos:")
         
         codigo2 = '''# Lendo arquivos
@@ -118,8 +114,6 @@ with open("teste.txt", "r", encoding="utf-8") as arquivo:
         
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
-        
-        self.pausar()
         
         self.print_section("\n💼 Exemplo Prático - Sistema de Cadastro:")
         
@@ -176,8 +170,6 @@ listar_pessoas()'''
         
         self.exemplo(codigo3)
         self.executar_codigo(codigo3)
-        
-        self.pausar()
         
         self.print_section("\n🛡️ Tratamento de Erros com Arquivos:")
         

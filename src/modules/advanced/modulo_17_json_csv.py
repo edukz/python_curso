@@ -53,8 +53,6 @@ class Modulo17JsonCsv(BaseModule):
         self.print_colored("• 🐍 Nativo no Python", "green")
         self.print_colored("• 🏗️ Suporta estruturas complexas", "green")
         
-        self.pausar()
-        
         codigo1 = '''# Trabalhando com JSON
 import json
 from datetime import datetime
@@ -122,8 +120,6 @@ print(f"Disponível: {'Sim' if produto['disponivel'] else 'Não'}")'''
         
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
-        
-        self.pausar()
         
         self.print_section("\n📊 TRABALHANDO COM CSV:")
         
@@ -210,8 +206,6 @@ if vendas_lidas:
         
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
-        
-        self.pausar()
         
         self.print_section("\n🔄 CONVERSÃO ENTRE FORMATOS:")
         

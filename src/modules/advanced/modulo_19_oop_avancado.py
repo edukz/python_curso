@@ -20,7 +20,7 @@ class Modulo19OopAvancado(BaseModule):
     def execute(self) -> None:
         """Executa o módulo sobre OOP avançado"""
         if not self.ui or not self.progress:
-            print("❌ Erro: Dependências não configuradas para este módulo")
+            self.print_warning("❌ Erro: Dependências não configuradas para este módulo")
             input("Pressione ENTER para continuar...")
             return
         
@@ -35,24 +35,18 @@ class Modulo19OopAvancado(BaseModule):
             self.ui.clear_screen()
             self.ui.header("🧬 MÓDULO 19: OOP AVANÇADO")
         else:
-            print("\n" + "="*50)
-            print("🧬 MÓDULO 19: OOP AVANÇADO")
-            print("="*50)
+            self.print_section("🧬 MÓDULO 19: OOP AVANÇADO")
         
-        print("🧬 Agora vamos aprender os conceitos AVANÇADOS de OOP!")
-        print("👑 Herança e Polimorfismo são o coração da programação orientada a objetos!")
+        self.print_concept("🧬 Agora vamos aprender os conceitos AVANÇADOS de OOP!")
+        self.print_concept("👑 Herança e Polimorfismo são o coração da programação orientada a objetos!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        HERANÇA - REUTILIZANDO CLASSES")
-        print("═══════════════════════════════════════════════")
+        self.print_section("HERANÇA - REUTILIZANDO CLASSES")
         
-        print("\n🎯 Herança = uma classe 'filha' herda de uma classe 'pai'")
-        print("📚 Vantagens:")
-        print("• ♻️  Reutilização de código")
-        print("• 🏗️  Hierarquia organizada")
-        print("• 🔧 Especialização de comportamentos")
-        
-        self.pausar()
+        self.print_concept("🎯 Herança = uma classe 'filha' herda de uma classe 'pai'")
+        self.print_tip("📚 Vantagens:")
+        self.print_colored("• ♻️  Reutilização de código", 'green')
+        self.print_colored("• 🏗️  Hierarquia organizada", 'green')
+        self.print_colored("• 🔧 Especialização de comportamentos", 'green')
         
         codigo1 = '''# Exemplo de Herança - Sistema de Veículos
 class Veiculo:
@@ -133,9 +127,7 @@ moto.empinar()'''
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
         
-        self.pausar()
-        
-        print("\n🎭 POLIMORFISMO - Múltiplas Formas:")
+        self.print_section("🎭 POLIMORFISMO - Múltiplas Formas")
         
         codigo2 = '''# Polimorfismo - mesma interface, comportamentos diferentes
 class Animal:
@@ -199,9 +191,7 @@ for animal in animais:
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
-        self.pausar()
-        
-        print("\n🏛️ Classes Abstratas:")
+        self.print_section("🏛️ Classes Abstratas")
         
         codigo3 = '''# Classes abstratas - não podem ser instanciadas
 from abc import ABC, abstractmethod
@@ -290,12 +280,10 @@ for forma in formas:
             self.ui.clear_screen()
             self.ui.header("🎯 MINI PROJETO: SISTEMA DE JOGOS RPG")
         else:
-            print("\n" + "="*50)
-            print("🎯 MINI PROJETO: SISTEMA DE JOGOS RPG")
-            print("="*50)
+            self.print_section("🎯 MINI PROJETO: SISTEMA DE JOGOS RPG")
         
-        print("⚔️ Sistema de RPG usando Herança e Polimorfismo!")
-        print("🛠️ Usando: Herança, Polimorfismo, Classes Abstratas, Super()")
+        self.print_concept("⚔️ Sistema de RPG usando Herança e Polimorfismo!")
+        self.print_tip("🛠️ Usando: Herança, Polimorfismo, Classes Abstratas, Super()")
         
         self.pausar()
         
@@ -676,8 +664,8 @@ print("  • Enums para constantes")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Sistema de RPG criado!")
-        print("🎯 Aplicação real: jogos, simulações, sistemas com hierarquias")
+        self.print_success("\n🏆 PARABÉNS! Sistema de RPG criado!")
+        self.print_tip("🎯 Aplicação real: jogos, simulações, sistemas com hierarquias")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema de Jogos RPG")

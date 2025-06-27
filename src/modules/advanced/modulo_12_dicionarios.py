@@ -39,21 +39,17 @@ class Modulo12Dicionarios(BaseModule):
             print("🔑 MÓDULO 12: DICIONÁRIOS E SETS - ESTRUTURAS AVANÇADAS")
             print("="*50)
         
-        print("📚 Vamos aprender sobre Dicionários e Sets!")
-        print("🔑 Estruturas de dados fundamentais para programação avançada!")
+        self.print_concept("📚 Vamos aprender sobre Dicionários e Sets!")
+        self.print_concept("🔑 Estruturas de dados fundamentais para programação avançada!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        DICIONÁRIOS - CHAVE:VALOR")
-        print("═══════════════════════════════════════════════")
+        self.print_section("DICIONÁRIOS - CHAVE:VALOR")
         
-        print("\n🎯 Dicionário = coleção de pares chave:valor")
-        print("📋 Características:")
-        print("• 🔑 Chaves únicas")
-        print("• 📦 Valores podem ser qualquer tipo")
-        print("• 🚀 Busca muito rápida")
-        print("• 🔄 Mutável (pode ser modificado)")
-        
-        self.pausar()
+        self.print_concept("🎯 Dicionário = coleção de pares chave:valor")
+        self.print_tip("📋 Características:")
+        self.print_colored("• 🔑 Chaves únicas", "blue")
+        self.print_colored("• 📦 Valores podem ser qualquer tipo", "blue")
+        self.print_colored("• 🚀 Busca muito rápida", "green")
+        self.print_colored("• 🔄 Mutável (pode ser modificado)", "blue")
         
         codigo1 = '''# Criando e usando dicionários
 # Diferentes formas de criar
@@ -81,9 +77,7 @@ print("\\nDicionário atualizado:", dicionario1)'''
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
         
-        self.pausar()
-        
-        print("\n🛠️ Métodos de Dicionários:")
+        self.print_section("🛠️ Métodos de Dicionários")
         
         codigo2 = '''# Métodos importantes de dicionários
 pessoa = {
@@ -128,9 +122,7 @@ print("Dicionário limpo:", copia)'''
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
-        self.pausar()
-        
-        print("\n📦 SETS - Conjuntos:")
+        self.print_section("📦 SETS - Conjuntos")
         
         codigo3 = '''# Sets - conjuntos únicos
 # Criando sets
@@ -199,8 +191,8 @@ print(f"9 está em B? {9 in B}")'''
             print("🎯 MINI PROJETO: SISTEMA DE CONTATOS")
             print("="*50)
             
-        print("📱 Vamos criar um sistema completo de gerenciamento de contatos!")
-        print("🛠️ Usando: Dicionários, Sets e Manipulação de Dados")
+        self.print_concept("📱 Vamos criar um sistema completo de gerenciamento de contatos!")
+        self.print_tip("🛠️ Usando: Dicionários, Sets e Manipulação de Dados")
         
         self.pausar()
         
@@ -364,8 +356,8 @@ print("  • Manipulação de dados complexos")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Você criou um sistema completo de contatos!")
-        print("🎯 Aplicação real: CRM, agenda pessoal, sistema corporativo")
+        self.print_success("🏆 PARABÉNS! Você criou um sistema completo de contatos!")
+        self.print_tip("🎯 Aplicação real: CRM, agenda pessoal, sistema corporativo")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema de Contatos Inteligente")

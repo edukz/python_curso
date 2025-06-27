@@ -20,7 +20,7 @@ class Modulo20Decorators(BaseModule):
     def execute(self) -> None:
         """Executa o módulo sobre decorators"""
         if not self.ui or not self.progress:
-            print("❌ Erro: Dependências não configuradas para este módulo")
+            self.print_warning("❌ Erro: Dependências não configuradas para este módulo")
             input("Pressione ENTER para continuar...")
             return
         
@@ -35,25 +35,19 @@ class Modulo20Decorators(BaseModule):
             self.ui.clear_screen()
             self.ui.header("🎭 MÓDULO 20: DECORATORS E CONTEXT MANAGERS")
         else:
-            print("\n" + "="*50)
-            print("🎭 MÓDULO 20: DECORATORS E CONTEXT MANAGERS")
-            print("="*50)
+            self.print_section("🎭 MÓDULO 20: DECORATORS E CONTEXT MANAGERS")
         
-        print("🎭 Decorators são uma das funcionalidades mais PODEROSAS do Python!")
-        print("🔧 Context managers garantem limpeza automática de recursos!")
+        self.print_concept("🎭 Decorators são uma das funcionalidades mais PODEROSAS do Python!")
+        self.print_concept("🔧 Context managers garantem limpeza automática de recursos!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        DECORATORS - MODIFICANDO FUNÇÕES")
-        print("═══════════════════════════════════════════════")
+        self.print_section("DECORATORS - MODIFICANDO FUNÇÕES")
         
-        print("\n🎯 Decorator = função que modifica outra função")
-        print("✨ Usado para:")
-        print("• ⏱️  Medir tempo de execução")
-        print("• 🔐 Autenticação e autorização")
-        print("• 📝 Logs automáticos")
-        print("• 🧪 Validação de entrada")
-        
-        self.pausar()
+        self.print_concept("🎯 Decorator = função que modifica outra função")
+        self.print_tip("✨ Usado para:")
+        self.print_colored("• ⏱️  Medir tempo de execução", 'green')
+        self.print_colored("• 🔐 Autenticação e autorização", 'green')
+        self.print_colored("• 📝 Logs automáticos", 'green')
+        self.print_colored("• 🧪 Validação de entrada", 'green')
         
         codigo1 = '''# Decorators básicos
 import time
@@ -107,9 +101,7 @@ print(f"Resultado: {resultado2}")'''
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
         
-        self.pausar()
-        
-        print("\n🔧 Decorators com Parâmetros:")
+        self.print_section("🔧 Decorators com Parâmetros")
         
         codigo2 = '''# Decorators parametrizados
 def validar_tipos(*tipos):
@@ -193,9 +185,7 @@ print(f"Resultado: {resultado4}")'''
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
-        self.pausar()
-        
-        print("\n🏠 Context Managers:")
+        self.print_section("🏠 Context Managers")
         
         codigo3 = '''# Context Managers - with statement
 import os
@@ -301,12 +291,10 @@ print(f"Diretório ainda existe? {os.path.exists('temp_dir')}")'''
             self.ui.clear_screen()
             self.ui.header("🎯 MINI PROJETO: SISTEMA DE CACHE INTELIGENTE")
         else:
-            print("\n" + "="*50)
-            print("🎯 MINI PROJETO: SISTEMA DE CACHE INTELIGENTE")
-            print("="*50)
+            self.print_section("🎯 MINI PROJETO: SISTEMA DE CACHE INTELIGENTE")
         
-        print("💾 Sistema avançado de cache com decorators e context managers!")
-        print("🛠️ Usando: Decorators avançados, Context managers, Threading")
+        self.print_concept("💾 Sistema avançado de cache com decorators e context managers!")
+        self.print_tip("🛠️ Usando: Decorators avançados, Context managers, Threading")
         
         self.pausar()
         
@@ -644,8 +632,8 @@ print("  • Estatísticas detalhadas")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Sistema de cache inteligente criado!")
-        print("🎯 Aplicação real: APIs, web apps, sistemas de alta performance")
+        self.print_success("\n🏆 PARABÉNS! Sistema de cache inteligente criado!")
+        self.print_tip("🎯 Aplicação real: APIs, web apps, sistemas de alta performance")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema de Cache Inteligente")
