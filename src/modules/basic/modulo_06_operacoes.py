@@ -39,7 +39,7 @@ class Modulo06Operacoes(BaseModule):
             print("🧮 MÓDULO 6: OPERAÇÕES MATEMÁTICAS")
             print("="*50)
         
-        print("Python é uma calculadora poderosa!")
+        self.print_success("Python é uma calculadora poderosa!")
         
         codigo = '''# Operações básicas
 a = 10
@@ -55,8 +55,6 @@ print(f"Potência: {a} ** 2 = {a ** 2}")'''
         
         self.exemplo(codigo)
         self.executar_codigo(codigo)
-        
-        self.pausar()
         
         self.exercicio(
             "Qual operador usamos para calcular o resto de uma divisão?",
@@ -80,16 +78,14 @@ print(f"Potência: {a} ** 2 = {a ** 2}")'''
             print("🎯 MINI PROJETO: CALCULADORA FINANCEIRA INTELIGENTE")
             print("="*50)
         
-        print("💰 Vamos criar uma calculadora para planejamento financeiro!")
-        print("Sistema usado em:")
-        print("• Apps bancários (Nubank, Itaú)")
-        print("• Consultorias financeiras")
-        print("• Sistemas de investimento")
-        print("• Planilhas empresariais")
+        self.print_success("💰 Vamos criar uma calculadora para planejamento financeiro!")
+        self.print_colored("Sistema usado em:", "cyan")
+        self.print_colored("• Apps bancários (Nubank, Itaú)", "green")
+        self.print_colored("• Consultorias financeiras", "green")
+        self.print_colored("• Sistemas de investimento", "green")
+        self.print_colored("• Planilhas empresariais", "green")
         
-        self.pausar()
-        
-        print("\n💻 Calculadora completa com análises automáticas:")
+        self.print_section("\n💻 Calculadora completa com análises automáticas:")
         
         codigo_financeiro = '''# 💰 CALCULADORA FINANCEIRA INTELIGENTE
 print("💰" * 30)
@@ -159,22 +155,22 @@ print("💰" * 30)'''
         self.exemplo(codigo_financeiro)
         self.executar_codigo(codigo_financeiro)
         
-        print("\n🎉 CALCULADORA FINANCEIRA CRIADA!")
-        print("\n🌍 ONDE ESSA TECNOLOGIA É USADA:")
-        print("• 🏦 Bancos: Análise de crédito e planejamento")
-        print("• 💳 Fintechs: Apps de controle financeiro")
-        print("• 🏢 Empresas: Orçamentos e projeções")
-        print("• 📊 Consultorias: Relatórios para clientes")
-        print("• 🎓 Educação: Simuladores financeiros")
+        self.print_success("\n🎉 CALCULADORA FINANCEIRA CRIADA!")
+        self.print_concept("\n🌍 ONDE ESSA TECNOLOGIA É USADA:")
+        self.print_colored("• 🏦 Bancos: Análise de crédito e planejamento", "green")
+        self.print_colored("• 💳 Fintechs: Apps de controle financeiro", "green")
+        self.print_colored("• 🏢 Empresas: Orçamentos e projeções", "green")
+        self.print_colored("• 📊 Consultorias: Relatórios para clientes", "green")
+        self.print_colored("• 🎓 Educação: Simuladores financeiros", "green")
         
-        print("\n💡 MATEMÁTICA FINANCEIRA APLICADA:")
-        print("• Cálculo de percentuais automatizado")
-        print("• Projeções de crescimento")
-        print("• Regra 50-30-20 (planejamento inteligente)")
-        print("• Análise de risco financeiro")
-        print("• Metas SMART (específicas e mensuráveis)")
+        self.print_concept("\n💡 MATEMÁTICA FINANCEIRA APLICADA:")
+        self.print_colored("• Cálculo de percentuais automatizado", "yellow")
+        self.print_colored("• Projeções de crescimento", "yellow")
+        self.print_colored("• Regra 50-30-20 (planejamento inteligente)", "yellow")
+        self.print_colored("• Análise de risco financeiro", "yellow")
+        self.print_colored("• Metas SMART (específicas e mensuráveis)", "yellow")
         
-        print("\n🏆 CONQUISTA: Analista Financeiro!")
+        self.print_success("\n🏆 CONQUISTA: Analista Financeiro!")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Calculadora Financeira Inteligente")

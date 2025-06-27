@@ -39,96 +39,80 @@ class Modulo02PrimeiroPrograma(BaseModule):
             print("🎉 MÓDULO 2: SEU PRIMEIRO PROGRAMA")
             print("="*50)
         
-        print("🎉 Chegou a hora de escrever seu PRIMEIRO programa em Python!")
-        print("\n═══════════════════════════════════════════════")
-        print("        O TRADICIONAL 'OLÁ, MUNDO!'")
-        print("═══════════════════════════════════════════════")
+        self.print_success("🎉 Chegou a hora de escrever seu PRIMEIRO programa em Python!")
+        self.print_section("O TRADICIONAL 'OLÁ, MUNDO!'")
         
-        print("\n🌍 Por que todo programador começa com 'Olá, Mundo!'?")
-        print("Esta é uma tradição que começou em 1978 com o livro")
-        print("'The C Programming Language'. É o primeiro programa")
-        print("que todo programador escreve em uma nova linguagem!")
+        self.print_concept("\n🌍 Por que todo programador começa com 'Olá, Mundo!'?")
+        self.print_colored("Esta é uma tradição que começou em 1978 com o livro", "cyan")
+        self.print_colored("'The C Programming Language'. É o primeiro programa", "cyan")
+        self.print_colored("que todo programador escreve em uma nova linguagem!", "cyan")
         
-        self.pausar()
-        
-        print("\n💻 Vamos ao nosso primeiro código:")
+        self.print_section("\n💻 Vamos ao nosso primeiro código:")
         
         codigo = 'print("Olá, Mundo!")'
         self.exemplo(codigo)
         self.executar_codigo(codigo)
         
-        print("\n🎯 PARABÉNS! Você acabou de executar seu primeiro programa!")
+        self.print_success("\n🎯 PARABÉNS! Você acabou de executar seu primeiro programa!")
         
-        self.pausar()
+        self.print_section("\n🔍 Vamos DISSECAR este código:")
+        self.print_colored("• 'print' - É o NOME da função", "yellow")
+        self.print_colored("• '('  - Abre os parênteses (início dos parâmetros)", "yellow")
+        self.print_colored("• '\"'  - Abre as aspas (início do texto)", "yellow")
+        self.print_colored("• 'Olá, Mundo!' - O TEXTO que queremos exibir", "yellow")
+        self.print_colored("• '\"'  - Fecha as aspas (fim do texto)", "yellow")
+        self.print_colored("• ')'  - Fecha os parênteses (fim dos parâmetros)", "yellow")
         
-        print("\n🔍 Vamos DISSECAR este código:")
-        print("• 'print' - É o NOME da função")
-        print("• '('  - Abre os parênteses (início dos parâmetros)")
-        print("• '\"'  - Abre as aspas (início do texto)")
-        print("• 'Olá, Mundo!' - O TEXTO que queremos exibir")
-        print("• '\"'  - Fecha as aspas (fim do texto)")
-        print("• ')'  - Fecha os parênteses (fim dos parâmetros)")
+        self.print_concept("\n📚 O que é a função print()?")
+        self.print_colored("• É uma FUNÇÃO BUILT-IN (já vem com Python)", "green")
+        self.print_colored("• Sua única missão: EXIBIR coisas na tela", "green")
+        self.print_colored("• Você pode imprimir textos, números, resultados...", "green")
+        self.print_colored("• É uma das funções mais usadas em Python!", "green")
         
-        self.pausar()
-        
-        print("\n📚 O que é a função print()?")
-        print("• É uma FUNÇÃO BUILT-IN (já vem com Python)")
-        print("• Sua única missão: EXIBIR coisas na tela")
-        print("• Você pode imprimir textos, números, resultados...")
-        print("• É uma das funções mais usadas em Python!")
-        
-        self.pausar()
-        
-        print("\n✏️ Vamos experimentar variações:")
+        self.print_section("\n✏️ Vamos experimentar variações:")
         
         # Exemplo 2
         codigo2 = "print('Olá, Mundo!')"
-        print("\n🔸 Com aspas simples:")
+        self.print_colored("\n🔸 Com aspas simples:", "blue")
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
         # Exemplo 3
         codigo3 = '''print("Python é incrível!")
 print("Estou aprendendo a programar!")'''
-        print("\n🔸 Múltiplas linhas:")
+        self.print_colored("\n🔸 Múltiplas linhas:", "blue")
         self.exemplo(codigo3)
         self.executar_codigo(codigo3)
         
         # Exemplo 4
         codigo4 = 'print("🐍 Python 🐍")'
-        print("\n🔸 Com emojis:")
+        self.print_colored("\n🔸 Com emojis:", "blue")
         self.exemplo(codigo4)
         self.executar_codigo(codigo4)
         
-        self.pausar()
-        
-        print("\n❓ ASPAS SIMPLES vs ASPAS DUPLAS")
-        print("Em Python, tanto faz usar ' ou \" para textos.")
-        print("A regra é: seja CONSISTENTE!")
+        self.print_concept("\n❓ ASPAS SIMPLES vs ASPAS DUPLAS")
+        self.print_colored("Em Python, tanto faz usar ' ou \" para textos.", "cyan")
+        self.print_tip("A regra é: seja CONSISTENTE!")
         print("")
-        print("✅ CORRETO:")
-        print('   print("Olá!")')
-        print("   print('Oi!')")
+        self.print_success("✅ CORRETO:")
+        self.print_colored('   print("Olá!")', "green")
+        self.print_colored("   print('Oi!')", "green")
         print("")
-        print("❌ ERRO COMUM:")
-        print("   print('Olá\")")  # Misturou aspas!
+        self.print_warning("❌ ERRO COMUM:")
+        self.print_colored("   print('Olá\")", "red")  # Misturou aspas!
         
-        self.pausar()
+        self.print_warning("\n🚨 ERROS COMUNS que iniciantes cometem:")
+        self.print_colored("1. print(Olá)      ❌ - Esqueceu as aspas", "red")
+        self.print_colored("2. Print('Olá')    ❌ - 'P' maiúsculo", "red")
+        self.print_colored("3. print 'Olá'     ❌ - Esqueceu os parênteses", "red")
+        self.print_colored("4. print('Olá'     ❌ - Esqueceu de fechar", "red")
+        self.print_colored("5. print(\"Olá')    ❌ - Misturou tipos de aspas", "red")
         
-        print("\n🚨 ERROS COMUNS que iniciantes cometem:")
-        print("1. print(Olá)      ❌ - Esqueceu as aspas")
-        print("2. Print('Olá')    ❌ - 'P' maiúsculo")
-        print("3. print 'Olá'     ❌ - Esqueceu os parênteses")
-        print("4. print('Olá'     ❌ - Esqueceu de fechar")
-        print("5. print(\"Olá')    ❌ - Misturou tipos de aspas")
-        
-        self.pausar()
-        
-        print("\n🔧 DICA PROFISSIONAL:")
-        print("Use o print() para 'debugar' seus programas!")
-        print("Quando algo não funciona, adicione prints para")
-        print("ver o que está acontecendo. É como acender uma")
-        print("lanterna no código!")
+        self.print_tip("\n🔧 DICA PROFISSIONAL:")
+        self.print_colored("Use o print() para 'debugar' seus programas!", "yellow")
+        self.print_colored("Quando algo não funciona, adicione prints para", "yellow")
+        self.print_colored("ver o que está acontecendo. É como acender uma", "yellow")
+        self.print_colored("lanterna no código!", "yellow")
         
         # Exercícios práticos
         self.exercicio(
@@ -165,34 +149,29 @@ print("Estou aprendendo a programar!")'''
             print("🎯 MINI PROJETO: GERADOR DE MENSAGENS MOTIVACIONAIS")
             print("="*50)
         
-        print("🌟 Vamos criar um programa que gera mensagens motivacionais!")
-        print("Tipo de programa usado em:")
-        print("• Apps de bem-estar mental")
-        print("• Sistemas de coaching")
-        print("• Jogos com sistema de conquistas")
-        print("• Chatbots motivacionais")
+        self.print_success("🌟 Vamos criar um programa que gera mensagens motivacionais!")
+        self.print_colored("Tipo de programa usado em:", "cyan")
+        self.print_colored("• Apps de bem-estar mental", "green")
+        self.print_colored("• Sistemas de coaching", "green")
+        self.print_colored("• Jogos com sistema de conquistas", "green")
+        self.print_colored("• Chatbots motivacionais", "green")
         
-        self.pausar()
+        self.print_concept("\n📱 CONTEXTO REAL:")
+        self.print_colored("Apps como Headspace, Calm e Duolingo usam", "yellow")
+        self.print_colored("sistemas similares para motivar usuários!", "yellow")
         
-        print("\n📱 CONTEXTO REAL:")
-        print("Apps como Headspace, Calm e Duolingo usam")
-        print("sistemas similares para motivar usuários!")
-        
-        self.pausar()
-        
-        print("\n💻 Vamos construir o programa passo a passo:")
+        self.print_section("\n💻 Vamos construir o programa passo a passo:")
         
         # Passo 1 - Mensagem básica
-        print("\n🔸 PASSO 1: Mensagem de bom dia")
+        self.print_colored("\n🔸 PASSO 1: Mensagem de bom dia", "blue")
         codigo1 = '''print("🌅 Bom dia!")
 print("Hoje é um novo dia cheio de possibilidades!")'''
         
         self.exemplo(codigo1)
         self.executar_codigo(codigo1)
-        self.pausar()
         
         # Passo 2 - Adicionar personalização
-        print("\n🔸 PASSO 2: Vamos personalizar com emojis")
+        self.print_colored("\n🔸 PASSO 2: Vamos personalizar com emojis", "blue")
         codigo2 = '''print("=" * 40)
 print("     🌟 MENSAGEM DO DIA 🌟")
 print("=" * 40)
@@ -206,10 +185,9 @@ print("=" * 40)'''
         
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
-        self.pausar()
         
         # Passo 3 - Sistema completo
-        print("\n🔸 PASSO 3: Sistema completo como apps reais")
+        self.print_colored("\n🔸 PASSO 3: Sistema completo como apps reais", "blue")
         codigo3 = '''# 🌟 GERADOR DE MOTIVAÇÃO DIÁRIA
 print("🎊" * 20)
 print("        MOTIVAÇÃO PYTHON")  
@@ -233,22 +211,22 @@ print("🎊" * 20)'''
         self.exemplo(codigo3)
         self.executar_codigo(codigo3)
         
-        print("\n🎉 PROJETO CONCLUÍDO!")
-        print("\n🌍 COMO ISSO É USADO NO MUNDO REAL:")
-        print("• 📱 WhatsApp: Mensagens de status")
-        print("• 🎮 Games: Sistemas de conquistas")
-        print("• 📚 Duolingo: Motivação para estudar")
-        print("• 💼 LinkedIn: Posts motivacionais")
-        print("• 🏃 Apps fitness: Encorajamento diário")
+        self.print_success("\n🎉 PROJETO CONCLUÍDO!")
+        self.print_concept("\n🌍 COMO ISSO É USADO NO MUNDO REAL:")
+        self.print_colored("• 📱 WhatsApp: Mensagens de status", "green")
+        self.print_colored("• 🎮 Games: Sistemas de conquistas", "green")
+        self.print_colored("• 📚 Duolingo: Motivação para estudar", "green")
+        self.print_colored("• 💼 LinkedIn: Posts motivacionais", "green")
+        self.print_colored("• 🏃 Apps fitness: Encorajamento diário", "green")
         
-        print("\n🚀 PRÓXIMO NÍVEL:")
-        print("Com o que você vai aprender, poderá criar:")
-        print("• Apps que lembram de beber água")
-        print("• Sistemas de metas pessoais")
-        print("• Chatbots para empresas")
-        print("• Jogos educativos")
+        self.print_section("\n🚀 PRÓXIMO NÍVEL:")
+        self.print_colored("Com o que você vai aprender, poderá criar:", "cyan")
+        self.print_colored("• Apps que lembram de beber água", "yellow")
+        self.print_colored("• Sistemas de metas pessoais", "yellow")
+        self.print_colored("• Chatbots para empresas", "yellow")
+        self.print_colored("• Jogos educativos", "yellow")
         
-        print("\n🏆 CONQUISTA: Criador de Experiências!")
+        self.print_success("\n🏆 CONQUISTA: Criador de Experiências!")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Gerador de Mensagens Motivacionais")

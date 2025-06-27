@@ -39,26 +39,33 @@ class Modulo03Variaveis(BaseModule):
             print("🗃️ MÓDULO 3: VARIÁVEIS - A MEMÓRIA DO SEU PROGRAMA")
             print("="*50)
         
-        print("🗃️ Imagine que variáveis são como CAIXAS ETIQUETADAS")
-        print("onde você guarda suas coisas favoritas!")
+        self.print_concept(
+            "Variáveis",
+            "São como CAIXAS ETIQUETADAS onde você guarda suas coisas favoritas!",
+            "🗃️"
+        )
         
-        print("\n═══════════════════════════════════════════════")
-        print("        O QUE SÃO VARIÁVEIS?")
-        print("═══════════════════════════════════════════════")
+        self.print_section("O QUE SÃO VARIÁVEIS?", "📦")
         
-        print("\n🏠 Na vida real:")
-        print("📦 CAIXA 'Roupas de Inverno' → Contém casacos e blusas")
-        print("📦 CAIXA 'Documentos' → Contém RG, CPF, diplomas")
-        print("📦 CAIXA 'Fotos' → Contém suas memórias")
+        self.print_colored("\n🏠 Na vida real:", "warning")
+        exemplos_vida = [
+            ("CAIXA 'Roupas de Inverno'", "Contém casacos e blusas"),
+            ("CAIXA 'Documentos'", "Contém RG, CPF, diplomas"),
+            ("CAIXA 'Fotos'", "Contém suas memórias")
+        ]
+        for caixa, conteudo in exemplos_vida:
+            self.print_colored(f"📦 {caixa} → {conteudo}", "text")
         
-        print("\n💻 Em Python:")
-        print("📦 VARIÁVEL 'nome' → Contém 'João Silva'")
-        print("📦 VARIÁVEL 'idade' → Contém 25")
-        print("📦 VARIÁVEL 'salario' → Contém 3500.00")
+        self.print_colored("\n💻 Em Python:", "success")
+        exemplos_python = [
+            ("VARIÁVEL 'nome'", "Contém 'João Silva'"),
+            ("VARIÁVEL 'idade'", "Contém 25"),
+            ("VARIÁVEL 'salario'", "Contém 3500.00")
+        ]
+        for var, valor in exemplos_python:
+            self.print_colored(f"📦 {var} → {valor}", "primary")
         
-        self.pausar()
-        
-        print("\n🎯 Vamos criar nossas primeiras variáveis:")
+        self.print_section("Vamos criar nossas primeiras variáveis", "🎯", "accent")
         
         codigo = '''nome = "Python"
 idade = 30
@@ -68,24 +75,24 @@ print("Idade:", idade)'''
         self.exemplo(codigo)
         self.executar_codigo(codigo)
         
-        print("\n🔍 O que aconteceu aqui?")
-        print("1. Criamos uma caixa chamada 'nome' e guardamos 'Python'")
-        print("2. Criamos uma caixa chamada 'idade' e guardamos 30")
-        print("3. Pedimos para mostrar o conteúdo das caixas")
+        self.print_colored("\n🔍 O que aconteceu aqui?", "info")
+        passos = [
+            "Criamos uma caixa chamada 'nome' e guardamos 'Python'",
+            "Criamos uma caixa chamada 'idade' e guardamos 30",
+            "Pedimos para mostrar o conteúdo das caixas"
+        ]
+        for i, passo in enumerate(passos, 1):
+            self.print_colored(f"{i}. {passo}", "text")
         
-        self.pausar()
-        
-        print("\n⚡ ATRIBUIÇÃO - O sinal '=' é especial!")
-        print("• Em matemática: 2 + 2 = 4 (igualdade)")
-        print("• Em Python: nome = 'João' (ATRIBUIÇÃO)")
+        self.print_section("ATRIBUIÇÃO - O sinal '=' é especial!", "⚡", "warning")
+        self.print_colored("• Em matemática: 2 + 2 = 4 (igualdade)", "text")
+        self.print_colored("• Em Python: nome = 'João' (ATRIBUIÇÃO)", "success")
         print("")
         print("🎯 Leia sempre da DIREITA para ESQUERDA:")
         print("   nome = 'João'")
         print("   ↑       ↑")
         print("   |       └─ Valor que vai ser guardado")
         print("   └─ Nome da caixa onde vai ser guardado")
-        
-        self.pausar()
         
         print("\n📝 Vamos ver mais exemplos práticos:")
         
@@ -105,8 +112,6 @@ print("Tem carteira de motorista:", tem_carteira)'''
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
-        self.pausar()
-        
         print("\n🔄 Variáveis podem MUDAR de valor:")
         
         codigo3 = '''pontos = 0
@@ -123,8 +128,6 @@ print("Depois de ganhar mais:", pontos)'''
         
         print("\n💡 Por isso se chama VARIÁVEL - o valor pode VARIAR!")
         
-        self.pausar()
-        
         print("\n📋 REGRAS IMPORTANTES para nomes de variáveis:")
         print("") 
         print("✅ PODE usar:")
@@ -137,8 +140,6 @@ print("Depois de ganhar mais:", pontos)'''
         print("• Caracteres especiais (@, #, !, etc)")
         print("• Palavras reservadas do Python")
         print("• Começar com números")
-        
-        self.pausar()
         
         print("\n💯 EXEMPLOS de nomes VÁLIDOS:")
         print("✅ nome")
@@ -155,15 +156,11 @@ print("Depois de ganhar mais:", pontos)'''
         print("❌ for (palavra reservada)")
         print("❌ nome@ (caractere especial)")
         
-        self.pausar()
-        
         print("\n🎨 CONVENÇÕES de nomenclatura:")
         print("• snake_case: nome_da_variavel (recomendado em Python)")
         print("• camelCase: nomeDaVariavel (mais usado em outras linguagens)")
         print("• PascalCase: NomeDaVariavel (para classes)")
         print("• CONSTANTES: VALOR_FIXO (para valores que não mudam)")
-        
-        self.pausar()
         
         print("\n⚠️ PYTHON É CASE-SENSITIVE (diferencia maiúsculas/minúsculas):")
         
@@ -178,8 +175,6 @@ print("NOME:", NOME)'''
         print("São 3 variáveis DIFERENTES!")
         self.exemplo(codigo4)
         self.executar_codigo(codigo4)
-        
-        self.pausar()
         
         print("\n🧮 Operações com variáveis:")
         
@@ -257,8 +252,6 @@ print("Dobro de a:", dobro_de_a)'''
         print("• Apps de fitness (Nike Training, Strava)")
         print("• Redes sociais (Instagram, LinkedIn)")
         print("• Sistemas de e-learning")
-        
-        self.pausar()
         
         print("\n📝 Vamos criar variáveis para armazenar dados do jogador:")
         

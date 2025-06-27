@@ -50,8 +50,6 @@ class Modulo05EntradaDados(BaseModule):
         print("• Patterns de validação (email, telefone, CPF)")
         print("• Sistema de retry automático")
         
-        input("\n🔸 Pressione ENTER para continuar...")
-        
         self._conceitos_basicos()
         self._validacao_robusta()
         self._tratamento_excecoes()
@@ -118,7 +116,6 @@ print(f"✅ Dados válidos: {nome}, {idade} anos")
 '''
         
         print(codigo_profissional)
-        input("\n🔸 Pressione ENTER para continuar...")
     
     def _validacao_robusta(self):
         """Validação robusta de dados"""
@@ -241,7 +238,6 @@ except ValueError as e:
 '''
         
         print(codigo_validacao)
-        input("\n🔸 Pressione ENTER para continuar...")
     
     def _tratamento_excecoes(self):
         """Tratamento profissional de exceções"""
@@ -397,7 +393,6 @@ else:
 '''
         
         print(codigo_excecoes)
-        input("\n🔸 Pressione ENTER para continuar...")
     
     def _sanitizacao_dados(self):
         """Sanitização e limpeza de dados"""
@@ -547,7 +542,6 @@ for chave, valor in dados_limpos.items():
 '''
         
         print(codigo_sanitizacao)
-        input("\n🔸 Pressione ENTER para continuar...")
     
     def _patterns_validacao(self):
         """Patterns de validação comuns"""
@@ -712,7 +706,6 @@ for tipo, documento in documentos_teste:
 '''
         
         print(codigo_patterns)
-        input("\n🔸 Pressione ENTER para continuar...")
     
     def _sistema_validacao_avancado(self):
         """Sistema avançado de validação"""
@@ -938,7 +931,6 @@ else:
 '''
         
         print(codigo_sistema)
-        input("\n🔸 Pressione ENTER para continuar...")
     
     def _mini_projeto_cadastro_completo(self):
         """Mini projeto: Sistema completo de cadastro"""

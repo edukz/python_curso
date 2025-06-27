@@ -39,7 +39,7 @@ class Modulo09Listas(BaseModule):
             print("📋 MÓDULO 9: LISTAS E COLEÇÕES")
             print("="*50)
         
-        print("Listas armazenam múltiplos valores organizados!")
+        self.print_concept("Listas e Coleções", "Listas armazenam múltiplos valores organizados de forma sequencial!", "📋")
         
         codigo = '''# Criando e usando listas
 frutas = ["maçã", "banana", "laranja", "uva"]
@@ -66,7 +66,16 @@ for fruta in frutas:
         self.exemplo(codigo)
         self.executar_codigo(codigo)
         
-        self.pausar()
+        self.print_section("Métodos Úteis de Listas", "🔧")
+        self.print_colored("• append() - Adiciona item no final", "info")
+        self.print_colored("• insert() - Adiciona item em posição específica", "info")
+        self.print_colored("• remove() - Remove item por valor", "info")
+        self.print_colored("• pop() - Remove e retorna item por índice", "info")
+        self.print_colored("• len() - Retorna tamanho da lista", "info")
+        self.print_colored("• sort() - Ordena a lista", "info")
+        
+        self.print_tip("Use índices negativos para acessar do final: lista[-1] é o último item")
+        self.print_warning("Cuidado com índices fora do alcance - podem causar erro!")
         
         # Mini Projeto
         self._mini_projeto_inventario()
@@ -84,10 +93,15 @@ for fruta in frutas:
             print("🎯 MINI PROJETO: SISTEMA DE INVENTÁRIO")
             print("="*50)
         
-        print("📦 Vamos criar um sistema de inventário!")
-        print("Usado em: e-commerce, lojas, almoxarifados, empresas")
+        self.print_concept("Sistema de Inventário Inteligente", "Vamos criar um sistema de inventário profissional!", "📦")
         
-        self.pausar()
+        self.print_section("Aplicações Comerciais", "💼")
+        self.print_colored("• E-commerce e lojas virtuais", "success")
+        self.print_colored("• Lojas físicas e varejos", "success")
+        self.print_colored("• Almoxarifados e depósitos", "success")
+        self.print_colored("• Empresas e indústrias", "success")
+        
+        self.print_tip("Listas são ideais para organizar dados que podem mudar de tamanho")
         
         codigo_projeto = '''# 📦 SISTEMA DE INVENTÁRIO INTELIGENTE
 print("📦 SISTEMA DE INVENTÁRIO V1.0")
@@ -165,7 +179,8 @@ print("\\n✅ SISTEMA FUNCIONANDO PERFEITAMENTE!")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 CONQUISTA: Gerente de Inventário!")
+        self.print_success("CONQUISTA: Gerente de Inventário!", "🏆")
+        self.print_tip("Listas são fundamentais para organizar dados em qualquer sistema!")
         self.complete_mini_project("Sistema de Inventário Inteligente")
         self.pausar()
 

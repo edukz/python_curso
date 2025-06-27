@@ -39,75 +39,102 @@ class Modulo01Introducao(BaseModule):
             print("🐍 MÓDULO 1: INTRODUÇÃO AO PYTHON")
             print("="*50)
         
-        print("🐍 Bem-vindo ao fascinante mundo da programação Python! 🎉")
-        print("\n═══════════════════════════════════════════════")
-        print("            O QUE É PYTHON?")
-        print("═══════════════════════════════════════════════")
+        self.print_success("🐍 Bem-vindo ao fascinante mundo da programação Python! 🎉")
         
-        print("\nPython é uma linguagem de programação criada por Guido van Rossum")
-        print("em 1991. O nome vem do grupo de comédia britânico 'Monty Python'!")
+        self.print_section("O QUE É PYTHON?", "🐍")
         
-        print("\n🌟 Por que Python é especial?")
-        print("• 📚 FÁCIL DE APRENDER - Sintaxe simples e intuitiva")
-        print("• 🚀 PODEROSA E VERSÁTIL - Resolve problemas complexos")
-        print("• 🌍 MUITO POPULAR - Uma das linguagens mais usadas no mundo")
-        print("• 🤝 COMUNIDADE ATIVA - Milhões de programadores ajudam uns aos outros")
+        self.print_concept(
+            "Python",
+            "Uma linguagem de programação criada por Guido van Rossum em 1991.\n" +
+            "O nome vem do grupo de comédia britânico 'Monty Python'!"
+        )
         
-        self.pausar()
+        self.print_section("Por que Python é especial?", "🌟", "warning")
         
-        print("\n🔧 Onde Python é usado no mundo real?")
-        print("• 🤖 INTELIGÊNCIA ARTIFICIAL - Netflix, Tesla, Google")
-        print("• 🌐 DESENVOLVIMENTO WEB - Instagram, Spotify, Pinterest")
-        print("• 📊 ANÁLISE DE DADOS - NASA, Banco Central, universidades")
-        print("• 🎮 JOGOS - Civilization IV, EVE Online")
-        print("• 🏢 AUTOMAÇÃO - Dropbox, Reddit, BitTorrent")
-        print("• 🧬 CIÊNCIA - Descobertas médicas, pesquisa espacial")
+        características = [
+            ("📚 FÁCIL DE APRENDER", "Sintaxe simples e intuitiva"),
+            ("🚀 PODEROSA E VERSÁTIL", "Resolve problemas complexos"),
+            ("🌍 MUITO POPULAR", "Uma das linguagens mais usadas no mundo"),
+            ("🤝 COMUNIDADE ATIVA", "Milhões de programadores ajudam uns aos outros")
+        ]
         
-        self.pausar()
+        for titulo, desc in características:
+            self.print_colored(f"• {titulo}", "accent")
+            self.print_colored(f"  {desc}", "text")
         
-        print("\n🔹 O que é PROGRAMAÇÃO?")
-        print("Programar é como dar instruções para um computador, mas de forma")
-        print("muito específica e organizada. É como escrever uma receita de bolo:")
-        print("")
-        print("📝 RECEITA DE BOLO:")
-        print("1. Pegue 3 ovos")
-        print("2. Misture com farinha")
-        print("3. Asse por 30 minutos")
-        print("")
-        print("💻 PROGRAMA EM PYTHON:")
-        print("1. Peça o nome do usuário")
-        print("2. Calcule a idade")
-        print("3. Mostre uma mensagem personalizada")
+        self.print_section("Onde Python é usado no mundo real?", "🔧", "info")
         
-        self.pausar()
+        aplicacoes = [
+            ("🤖 INTELIGÊNCIA ARTIFICIAL", "Netflix, Tesla, Google", "warning"),
+            ("🌐 DESENVOLVIMENTO WEB", "Instagram, Spotify, Pinterest", "success"),
+            ("📊 ANÁLISE DE DADOS", "NASA, Banco Central, universidades", "info"),
+            ("🎮 JOGOS", "Civilization IV, EVE Online", "accent"),
+            ("🏢 AUTOMAÇÃO", "Dropbox, Reddit, BitTorrent", "primary"),
+            ("🧬 CIÊNCIA", "Descobertas médicas, pesquisa espacial", "warning")
+        ]
         
-        print("\n🧠 Como o computador 'entende' Python?")
-        print("O computador só entende 0s e 1s (código binário).")
-        print("Python é traduzido para essa linguagem por um 'interpretador'.")
-        print("")
-        print("VOCÊ ESCREVE: print('Olá!')")
-        print("PYTHON TRADUZ: 01001000 01100101 01101100...")
-        print("COMPUTADOR EXECUTA: Olá!")
+        for titulo, exemplos, cor in aplicacoes:
+            self.print_colored(f"• {titulo}", cor)
+            self.print_colored(f"  {exemplos}", "text")
         
-        self.pausar()
+        self.print_section("O que é PROGRAMAÇÃO?", "🔹")
         
-        print("\n🎯 O que você vai aprender neste curso?")
-        print("1. 📝 Como 'falar' com o computador")
-        print("2. 🗃️  Como guardar e organizar informações")
-        print("3. 🤔 Como fazer o programa tomar decisões")
-        print("4. 🔄 Como repetir tarefas automaticamente")
-        print("5. 📋 Como trabalhar com listas de dados")
-        print("6. ⚙️  Como criar suas próprias 'ferramentas'")
-        print("7. 🧮 Como construir uma calculadora completa!")
+        self.print_concept(
+            "Programação",
+            "É como dar instruções para um computador, mas de forma\n" +
+            "muito específica e organizada. É como escrever uma receita de bolo:"
+        )
         
-        self.pausar()
+        self.print_colored("\n📝 RECEITA DE BOLO:", "warning")
+        self.print_colored("1. Pegue 3 ovos", "text")
+        self.print_colored("2. Misture com farinha", "text")
+        self.print_colored("3. Asse por 30 minutos", "text")
         
-        print("\n💡 CURIOSIDADES SOBRE PYTHON:")
-        print("• Python executa aproximadamente 100.000 linhas por segundo!")
-        print("• O Instagram processa 95 milhões de fotos por dia usando Python")
-        print("• Python ajudou a descobrir ondas gravitacionais no espaço")
-        print("• Netflix usa Python para recomendar filmes para você")
-        print("• Python pode controlar robôs, drones e até mesmo carros!")
+        self.print_colored("\n💻 PROGRAMA EM PYTHON:", "success")
+        self.print_colored("1. Peça o nome do usuário", "text")
+        self.print_colored("2. Calcule a idade", "text")
+        self.print_colored("3. Mostre uma mensagem personalizada", "text")
+        
+        self.print_section("Como o computador 'entende' Python?", "🧠", "accent")
+        
+        self.print_colored(
+            "O computador só entende 0s e 1s (código binário).\n" +
+            "Python é traduzido para essa linguagem por um 'interpretador'.",
+            "text"
+        )
+        
+        self.print_colored("\nPROCESSO DE TRADUÇÃO:", "warning")
+        self.print_colored("VOCÊ ESCREVE: print('Olá!')", "success")
+        self.print_colored("PYTHON TRADUZ: 01001000 01100101 01101100...", "info")
+        self.print_colored("COMPUTADOR EXECUTA: Olá!", "accent")
+        
+        self.print_section("O que você vai aprender neste curso?", "🎯", "success")
+        
+        topicos = [
+            ("1. 📝", "Como 'falar' com o computador"),
+            ("2. 🗃️", "Como guardar e organizar informações"),
+            ("3. 🤔", "Como fazer o programa tomar decisões"),
+            ("4. 🔄", "Como repetir tarefas automaticamente"),
+            ("5. 📋", "Como trabalhar com listas de dados"),
+            ("6. ⚙️", "Como criar suas próprias 'ferramentas'")
+        ]
+        
+        for num, desc in topicos:
+            self.print_colored(f"{num} {desc}", "primary")
+        self.print_colored("7. 🧮 Como construir uma calculadora completa!", "primary")
+        
+        self.print_section("CURIOSIDADES SOBRE PYTHON", "💡", "warning")
+        
+        curiosidades = [
+            "Python executa aproximadamente 100.000 linhas por segundo!",
+            "O Instagram processa 95 milhões de fotos por dia usando Python",
+            "Python ajudou a descobrir ondas gravitacionais no espaço",
+            "Netflix usa Python para recomendar filmes para você",
+            "Python pode controlar robôs, drones e até mesmo carros!"
+        ]
+        
+        for curiosidade in curiosidades:
+            self.print_colored(f"• {curiosidade}", "info")
         
         # Exercício interativo
         correto = self.exercicio(
@@ -132,42 +159,63 @@ class Modulo01Introducao(BaseModule):
             print("🎯 MINI PROJETO: CARTÃO DE APRESENTAÇÃO PYTHON")
             print("="*50)
         
-        print("🎉 Vamos criar seu primeiro projeto prático!")
-        print("Você vai fazer um programa que cria um cartão de apresentação.")
-        print("Este tipo de programa é útil para:")
-        print("• Páginas pessoais")
-        print("• Assinaturas de email")
-        print("• Perfis profissionais")
-        print("• Cartões de visita digitais")
+        self.print_success("🎉 Vamos criar seu primeiro projeto prático!")
         
-        self.pausar()
+        self.print_concept(
+            "Cartão de Apresentação Digital",
+            "Um programa que cria um cartão de apresentação personalizado"
+        )
         
-        print("\n📝 PASSO 1: Vamos coletar suas informações")
-        print("Digite suas informações (pode ser real ou fictício):")
+        self.print_colored("\nEste tipo de programa é útil para:", "text")
+        usos = [
+            "Páginas pessoais",
+            "Assinaturas de email",
+            "Perfis profissionais",
+            "Cartões de visita digitais"
+        ]
+        for uso in usos:
+            self.print_colored(f"• {uso}", "accent")
+        
+        self.print_section("PASSO 1: Vamos coletar suas informações", "📝", "info")
+        self.print_tip("Digite suas informações (pode ser real ou fictício)")
         
         try:
-            nome = input("👤 Seu nome: ").strip()
-            if not nome:
-                nome = "Estudante Python"
-            
-            profissao = input("💼 Sua profissão/área de interesse: ").strip()
-            if not profissao:
-                profissao = "Futuro Programador Python"
-            
-            hobby = input("🎮 Um hobby ou interesse: ").strip()
-            if not hobby:
-                hobby = "Aprender programação"
+            if self.ui:
+                input_color = self.ui.get_color("warning")
+                reset = self.ui.get_color("reset")
                 
-            print(f"\n✅ Informações coletadas para {nome}!")
+                nome = input(f"{input_color}👤 Seu nome: {reset}").strip()
+                if not nome:
+                    nome = "Estudante Python"
+                
+                profissao = input(f"{input_color}💼 Sua profissão/área de interesse: {reset}").strip()
+                if not profissao:
+                    profissao = "Futuro Programador Python"
+                
+                hobby = input(f"{input_color}🎮 Um hobby ou interesse: {reset}").strip()
+                if not hobby:
+                    hobby = "Aprender programação"
+            else:
+                nome = input("👤 Seu nome: ").strip()
+                if not nome:
+                    nome = "Estudante Python"
+                
+                profissao = input("💼 Sua profissão/área de interesse: ").strip()
+                if not profissao:
+                    profissao = "Futuro Programador Python"
+                
+                hobby = input("🎮 Um hobby ou interesse: ").strip()
+                if not hobby:
+                    hobby = "Aprender programação"
+                
+            self.print_success(f"Informações coletadas para {nome}!")
             
         except KeyboardInterrupt:
-            print("\n⚠️ Projeto cancelado pelo usuário")
+            self.print_warning("Projeto cancelado pelo usuário")
             return
             
-        self.pausar()
-        
-        print("\n💻 PASSO 2: Agora vamos PROGRAMAR o cartão!")
-        print("Aqui está o código que você criou:")
+        self.print_section("PASSO 2: Agora vamos PROGRAMAR o cartão!", "💻", "success")
+        self.print_colored("Aqui está o código que você criou:", "text")
         
         codigo_gerado = f'''# 🐍 MEU PRIMEIRO PROJETO PYTHON
 # Cartão de Apresentação Digital
@@ -186,19 +234,23 @@ print("🚀 Feito com Python - A linguagem do futuro!")
 print("=" * 50)'''
         
         self.exemplo(codigo_gerado)
-        self.pausar()
         
-        print("\n🎬 RESULTADO FINAL:")
+        self.print_section("RESULTADO FINAL", "🎬", "warning")
         self.executar_codigo(codigo_gerado)
         
-        print("\n🎉 PARABÉNS! Você criou seu primeiro projeto!")
-        print("\n💡 APLICAÇÕES NA VIDA REAL:")
-        print("• Sites pessoais usam códigos similares")
-        print("• Apps de rede social fazem perfis assim")
-        print("• Sistemas de RH organizam dados de funcionários")
-        print("• Jogos criam fichas de personagens")
+        self.print_success("🎉 PARABÉNS! Você criou seu primeiro projeto!")
         
-        print("\n🏆 CONQUISTA DESBLOQUEADA: Primeiro Projeto!")
+        self.print_section("APLICAÇÕES NA VIDA REAL", "💡", "info")
+        aplicacoes = [
+            "Sites pessoais usam códigos similares",
+            "Apps de rede social fazem perfis assim",
+            "Sistemas de RH organizam dados de funcionários",
+            "Jogos criam fichas de personagens"
+        ]
+        for app in aplicacoes:
+            self.print_colored(f"• {app}", "primary")
+        
+        self.print_success("\n🏆 CONQUISTA DESBLOQUEADA: Primeiro Projeto!")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Cartão de Apresentação Python")

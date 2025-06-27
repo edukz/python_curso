@@ -39,32 +39,28 @@ class Modulo04TiposDados(BaseModule):
             print("🧬 MÓDULO 4: TIPOS DE DADOS - O DNA DAS INFORMAÇÕES")
             print("="*50)
         
-        print("🧬 Cada informação em Python tem um 'DNA' especial!")
-        print("Esse DNA define o que podemos fazer com ela.")
+        self.print_concept("🧬 Cada informação em Python tem um 'DNA' especial!")
+        self.print_colored("Esse DNA define o que podemos fazer com ela.", "cyan")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        OS 4 TIPOS FUNDAMENTAIS")
-        print("═══════════════════════════════════════════════")
+        self.print_section("OS 4 TIPOS FUNDAMENTAIS")
         
-        print("\n🔢 1. NÚMEROS INTEIROS (int)")
-        print("   São números SEM vírgula: 1, 100, -5, 0")
-        print("   Usamos para: idades, quantidade, posições...")
+        self.print_concept("\n🔢 1. NÚMEROS INTEIROS (int)")
+        self.print_colored("   São números SEM vírgula: 1, 100, -5, 0", "yellow")
+        self.print_colored("   Usamos para: idades, quantidade, posições...", "green")
         
-        print("\n🔢 2. NÚMEROS DECIMAIS (float)")  
-        print("   São números COM vírgula: 3.14, 1.75, -2.5")
-        print("   Usamos para: preços, medidas, percentuais...")
+        self.print_concept("\n🔢 2. NÚMEROS DECIMAIS (float)")  
+        self.print_colored("   São números COM vírgula: 3.14, 1.75, -2.5", "yellow")
+        self.print_colored("   Usamos para: preços, medidas, percentuais...", "green")
         
-        print("\n📝 3. TEXTOS (string)")
-        print("   São palavras entre aspas: 'João', \"Python\"")
-        print("   Usamos para: nomes, mensagens, descrições...")
+        self.print_concept("\n📝 3. TEXTOS (string)")
+        self.print_colored("   São palavras entre aspas: 'João', \"Python\"", "yellow")
+        self.print_colored("   Usamos para: nomes, mensagens, descrições...", "green")
         
-        print("\n✅ 4. VERDADEIRO/FALSO (boolean)")
-        print("   Apenas dois valores: True ou False")
-        print("   Usamos para: decisões, estados, flags...")
+        self.print_concept("\n✅ 4. VERDADEIRO/FALSO (boolean)")
+        self.print_colored("   Apenas dois valores: True ou False", "yellow")
+        self.print_colored("   Usamos para: decisões, estados, flags...", "green")
         
-        self.pausar()
-        
-        print("\n🎯 Vamos ver cada tipo em ação:")
+        self.print_section("\n🎯 Vamos ver cada tipo em ação:")
         
         codigo = '''# Números inteiros (int)
 idade = 25
@@ -111,10 +107,8 @@ print("Tem medo de Python:", tem_medo_python)'''
         self.exemplo(codigo)
         self.executar_codigo(codigo)
         
-        self.pausar()
-        
-        print("\n🔍 Como descobrir o tipo de uma variável?")
-        print("Use a função type()!")
+        self.print_concept("\n🔍 Como descobrir o tipo de uma variável?")
+        self.print_tip("Use a função type()!")
         
         codigo2 = '''# Testando tipos
 nome = "João"
@@ -130,9 +124,7 @@ print("Tipo de 'tem_pets':", type(tem_pets))'''
         self.exemplo(codigo2)
         self.executar_codigo(codigo2)
         
-        self.pausar()
-        
-        print("\n🔄 CONVERSÃO ENTRE TIPOS (Type Casting):")
+        self.print_section("\n🔄 CONVERSÃO ENTRE TIPOS (Type Casting):")
         
         codigo3 = '''# Convertendo entre tipos
 numero_texto = "123"
@@ -159,9 +151,7 @@ print("bool(''):", bool(""))'''
         self.exemplo(codigo3)
         self.executar_codigo(codigo3)
         
-        self.pausar()
-        
-        print("\n⚠️ CUIDADOS com conversões:")
+        self.print_warning("\n⚠️ CUIDADOS com conversões:")
         
         codigo4 = '''# Conversões que podem dar erro
 try:
@@ -183,16 +173,14 @@ print("Conversão correta:", numero_correto)'''
         self.exemplo(codigo4)
         self.executar_codigo(codigo4)
         
-        self.pausar()
+        self.print_section("\n🧮 OPERAÇÕES por tipo:")
         
-        print("\n🧮 OPERAÇÕES por tipo:")
-        
-        print("\n📊 COM NÚMEROS (int/float):")
-        print("• Soma: 5 + 3 = 8")
-        print("• Subtração: 10 - 4 = 6") 
-        print("• Multiplicação: 3 * 7 = 21")
-        print("• Divisão: 15 / 3 = 5.0")
-        print("• Potência: 2 ** 3 = 8")
+        self.print_concept("\n📊 COM NÚMEROS (int/float):")
+        self.print_colored("• Soma: 5 + 3 = 8", "yellow")
+        self.print_colored("• Subtração: 10 - 4 = 6", "yellow") 
+        self.print_colored("• Multiplicação: 3 * 7 = 21", "yellow")
+        self.print_colored("• Divisão: 15 / 3 = 5.0", "yellow")
+        self.print_colored("• Potência: 2 ** 3 = 8", "yellow")
         
         codigo5 = '''a = 10
 b = 3
@@ -205,9 +193,9 @@ print(f"{a} ** {b} = {a ** b}")'''
         self.exemplo(codigo5)
         self.executar_codigo(codigo5)
         
-        print("\n📝 COM TEXTOS (string):")
-        print("• Concatenação: 'Olá' + ' ' + 'Mundo' = 'Olá Mundo'")
-        print("• Repetição: 'Python! ' * 3 = 'Python! Python! Python! '")
+        self.print_concept("\n📝 COM TEXTOS (string):")
+        self.print_colored("• Concatenação: 'Olá' + ' ' + 'Mundo' = 'Olá Mundo'", "yellow")
+        self.print_colored("• Repetição: 'Python! ' * 3 = 'Python! Python! Python! '", "yellow")
         
         codigo6 = '''nome = "Ana"
 sobrenome = "Silva"
@@ -223,14 +211,12 @@ print("Tamanho do nome:", len(nome_completo))'''
         self.exemplo(codigo6)
         self.executar_codigo(codigo6)
         
-        self.pausar()
-        
-        print("\n💡 CURIOSIDADES sobre tipos:")
-        print("• Python descobre o tipo automaticamente!")
-        print("• Uma variável pode mudar de tipo durante o programa")
-        print("• Strings podem usar aspas simples ' ou duplas \"")
-        print("• Números muito grandes são automaticamente int")
-        print("• True e False SEMPRE começam com maiúscula")
+        self.print_concept("\n💡 CURIOSIDADES sobre tipos:")
+        self.print_colored("• Python descobre o tipo automaticamente!", "cyan")
+        self.print_colored("• Uma variável pode mudar de tipo durante o programa", "cyan")
+        self.print_colored("• Strings podem usar aspas simples ' ou duplas \"", "cyan")
+        self.print_colored("• Números muito grandes são automaticamente int", "cyan")
+        self.print_colored("• True e False SEMPRE começam com maiúscula", "cyan")
         
         codigo7 = '''# Variável mudando de tipo
 variavel = 42          # int
@@ -250,13 +236,13 @@ print("Como boolean:", variavel, type(variavel))'''
         
         self.pausar()
         
-        print("\n🎯 DICAS PROFISSIONAIS:")
-        print("• Use int para contadores, idades, quantidades")
-        print("• Use float para medidas, preços, cálculos precisos")
-        print("• Use string para nomes, mensagens, textos")
-        print("• Use boolean para flags, estados, condições")
-        print("• Sempre valide entradas do usuário!")
-        print("• Nomes de variáveis devem indicar o tipo esperado")
+        self.print_tip("\n🎯 DICAS PROFISSIONAIS:")
+        self.print_colored("• Use int para contadores, idades, quantidades", "green")
+        self.print_colored("• Use float para medidas, preços, cálculos precisos", "green")
+        self.print_colored("• Use string para nomes, mensagens, textos", "green")
+        self.print_colored("• Use boolean para flags, estados, condições", "green")
+        self.print_colored("• Sempre valide entradas do usuário!", "yellow")
+        self.print_colored("• Nomes de variáveis devem indicar o tipo esperado", "yellow")
         
         # Exercícios práticos
         self.exercicio(
@@ -293,16 +279,14 @@ print("Como boolean:", variavel, type(variavel))'''
             print("🎯 MINI PROJETO: CALCULADORA DE ESTATÍSTICAS PESSOAIS")
             print("="*50)
         
-        print("📊 Vamos criar uma calculadora que processa diferentes tipos de dados!")
-        print("Sistema similar aos usados em:")
-        print("• Apps de saúde (Apple Health, Google Fit)")
-        print("• Sistemas bancários (controle financeiro)")
-        print("• E-commerce (análise de compras)")
-        print("• Redes sociais (estatísticas de perfil)")
+        self.print_success("📊 Vamos criar uma calculadora que processa diferentes tipos de dados!")
+        self.print_colored("Sistema similar aos usados em:", "cyan")
+        self.print_colored("• Apps de saúde (Apple Health, Google Fit)", "green")
+        self.print_colored("• Sistemas bancários (controle financeiro)", "green")
+        self.print_colored("• E-commerce (análise de compras)", "green")
+        self.print_colored("• Redes sociais (estatísticas de perfil)", "green")
         
-        self.pausar()
-        
-        print("\n💻 Programa completo usando todos os tipos de dados:")
+        self.print_section("\n💻 Programa completo usando todos os tipos de dados:")
         
         codigo_completo = '''# 📊 CALCULADORA DE ESTATÍSTICAS PESSOAIS
 print("🔢" * 20)
@@ -361,22 +345,22 @@ print("🔢" * 20)'''
         self.exemplo(codigo_completo)
         self.executar_codigo(codigo_completo)
         
-        print("\n🎉 CALCULADORA CRIADA COM SUCESSO!")
-        print("\n🌍 ONDE ISSO É USADO:")
-        print("• 🏥 Sistemas hospitalares: Cálculo de IMC e estatísticas")
-        print("• 💰 Bancos: Análise de renda e perfil financeiro")
-        print("• 📱 Apps fitness: Monitoramento de saúde")
-        print("• 🛒 E-commerce: Análise de comportamento de compra")
-        print("• 📊 Business Intelligence: Relatórios executivos")
+        self.print_success("\n🎉 CALCULADORA CRIADA COM SUCESSO!")
+        self.print_concept("\n🌍 ONDE ISSO É USADO:")
+        self.print_colored("• 🏥 Sistemas hospitalares: Cálculo de IMC e estatísticas", "green")
+        self.print_colored("• 💰 Bancos: Análise de renda e perfil financeiro", "green")
+        self.print_colored("• 📱 Apps fitness: Monitoramento de saúde", "green")
+        self.print_colored("• 🛒 E-commerce: Análise de comportamento de compra", "green")
+        self.print_colored("• 📊 Business Intelligence: Relatórios executivos", "green")
         
-        print("\n💡 TÉCNICAS PROFISSIONAIS USADAS:")
-        print("• Conversão automática entre tipos")
-        print("• Formatação de números com decimais (.2f)")
-        print("• Operações lógicas com boolean")
-        print("• Cálculos matemáticos com diferentes tipos")
-        print("• Análise de dados em tempo real")
+        self.print_concept("\n💡 TÉCNICAS PROFISSIONAIS USADAS:")
+        self.print_colored("• Conversão automática entre tipos", "yellow")
+        self.print_colored("• Formatação de números com decimais (.2f)", "yellow")
+        self.print_colored("• Operações lógicas com boolean", "yellow")
+        self.print_colored("• Cálculos matemáticos com diferentes tipos", "yellow")
+        self.print_colored("• Análise de dados em tempo real", "yellow")
         
-        print("\n🏆 CONQUISTA: Analista de Dados!")
+        self.print_success("\n🏆 CONQUISTA: Analista de Dados!")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Calculadora de Estatísticas Pessoais")

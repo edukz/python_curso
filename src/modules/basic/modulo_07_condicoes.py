@@ -39,7 +39,7 @@ class Modulo07Condicoes(BaseModule):
             print("🤔 MÓDULO 7: TOMANDO DECISÕES (IF/ELSE)")
             print("="*50)
         
-        print("Programas precisam tomar decisões!")
+        self.print_concept("Estruturas Condicionais", "Programas precisam tomar decisões baseadas em condições!", "🤔")
         
         codigo = '''idade = 18
 
@@ -53,21 +53,21 @@ else:
         self.exemplo(codigo)
         self.executar_codigo(codigo)
         
-        print("\n📌 Operadores de comparação:")
-        print("• == (igual)")
-        print("• != (diferente)")
-        print("• > (maior)")
-        print("• < (menor)")
-        print("• >= (maior ou igual)")
-        print("• <= (menor ou igual)")
+        self.print_section("Operadores de Comparação", "🔍")
+        self.print_colored("• == (igual) - Verifica se valores são iguais", "info")
+        self.print_colored("• != (diferente) - Verifica se valores são diferentes", "info")
+        self.print_colored("• > (maior) - Verifica se é maior que", "info")
+        self.print_colored("• < (menor) - Verifica se é menor que", "info")
+        self.print_colored("• >= (maior ou igual) - Maior ou igual", "info")
+        self.print_colored("• <= (menor ou igual) - Menor ou igual", "info")
+        
+        self.print_tip("Use parênteses para clarificar condições complexas: if (idade >= 18) and (tem_carteira):")
         
         # Mini Projeto do Módulo 7
         self._mini_projeto_classificacao()
         
         # Marcar módulo como completo
         self.complete_module()
-        
-        self.pausar()
     
     def _mini_projeto_classificacao(self) -> None:
         """Mini Projeto - Sistema de Classificação Inteligente"""
@@ -79,16 +79,16 @@ else:
             print("🎯 MINI PROJETO: SISTEMA DE CLASSIFICAÇÃO INTELIGENTE")
             print("="*50)
         
-        print("🧠 Vamos criar um sistema que toma decisões baseadas em condições!")
-        print("💼 Tipo de sistema usado em:")
-        print("• Sistema de aprovação de crédito")
-        print("• Classificação de produtos")
-        print("• Sistemas de recomendação")
-        print("• Diagnósticos automatizados")
+        self.print_concept("Sistema de Classificação Inteligente", "Vamos criar um sistema que toma decisões baseadas em condições!", "🧠")
         
-        self.pausar()
+        self.print_section("Aplicações Reais", "💼")
+        self.print_colored("• Sistema de aprovação de crédito", "success")
+        self.print_colored("• Classificação de produtos", "success")
+        self.print_colored("• Sistemas de recomendação", "success")
+        self.print_colored("• Diagnósticos automatizados", "success")
         
-        print("\n📝 PROJETO: Sistema de Avaliação de Candidatos")
+        self.print_section("Projeto Prático", "📝")
+        self.print_colored("Sistema de Avaliação de Candidatos", "accent")
         
         codigo_projeto = '''# 🎯 SISTEMA DE CLASSIFICAÇÃO INTELIGENTE
 # Sistema de Avaliação de Candidatos para Vaga
@@ -193,8 +193,8 @@ print("\\n🎯 SISTEMA FUNCIONANDO PERFEITAMENTE!")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Sistema de Classificação Inteligente criado!")
-        print("🎯 Aplicação real: RH, sistemas de aprovação, classificadores automáticos")
+        self.print_success("PARABÉNS! Sistema de Classificação Inteligente criado!", "🏆")
+        self.print_tip("Aplicação real: RH, sistemas de aprovação, classificadores automáticos")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema de Classificação Inteligente")

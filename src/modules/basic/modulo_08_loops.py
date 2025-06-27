@@ -39,9 +39,10 @@ class Modulo08Loops(BaseModule):
             print("🔄 MÓDULO 8: REPETIÇÕES (LOOPS)")
             print("="*50)
         
-        print("Quando precisamos repetir tarefas, usamos loops!")
+        self.print_concept("Estruturas de Repetição", "Quando precisamos repetir tarefas, usamos loops!", "🔁")
         
-        print("\n🔄 LOOP FOR - Para repetições com número definido:")
+        self.print_section("Loop FOR - Repetições Controladas", "🔄")
+        self.print_tip("Use FOR quando souber quantas vezes repetir")
         codigo_for = '''# Contando de 1 a 5
 for i in range(1, 6):
     print(f"Contagem: {i}")
@@ -54,9 +55,9 @@ for fruta in frutas:
         self.exemplo(codigo_for)
         self.executar_codigo(codigo_for)
         
-        self.pausar()
-        
-        print("\n⏰ LOOP WHILE - Para repetições com condição:")
+        self.print_section("Loop WHILE - Repetições Condicionais", "⏰")
+        self.print_tip("Use WHILE quando não souber quantas vezes repetir")
+        self.print_warning("Cuidado com loops infinitos! Sempre garanta que a condição mude")
         codigo_while = '''# Contagem regressiva
 contador = 5
 while contador > 0:
@@ -83,10 +84,13 @@ print("🚀 DECOLAGEM!")'''
             print("🎯 MINI PROJETO: GERADOR DE PADRÕES")
             print("="*50)
         
-        print("🎨 Vamos criar um gerador de padrões visuais!")
-        print("Usado em: arte digital, designs, jogos, visualizações")
+        self.print_concept("Gerador de Padrões Visuais", "Vamos criar um gerador de padrões visuais!", "🎨")
         
-        self.pausar()
+        self.print_section("Aplicações Criativas", "💼")
+        self.print_colored("• Arte digital e gráficos", "success")
+        self.print_colored("• Designs e interfaces", "success")
+        self.print_colored("• Jogos e animações", "success")
+        self.print_colored("• Visualizações de dados", "success")
         
         codigo_projeto = '''# 🎨 GERADOR DE PADRÕES E SEQUÊNCIAS
 print("🎨 GERADOR DE PADRÕES VISUAIS")
@@ -129,7 +133,8 @@ print("\\n✨ PADRÕES GERADOS COM SUCESSO!")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 CONQUISTA: Artista Digital!")
+        self.print_success("CONQUISTA: Artista Digital!", "🏆")
+        self.print_tip("Loops são a base para criar padrões, gráficos e animações incríveis!")
         self.complete_mini_project("Gerador de Padrões e Sequências")
         self.pausar()
 

@@ -39,7 +39,7 @@ class Modulo10Funcoes(BaseModule):
             print("⚙️ MÓDULO 10: FUNÇÕES REUTILIZÁVEIS")
             print("="*50)
         
-        print("Funções são blocos de código que você pode usar várias vezes!")
+        self.print_concept("Funções são blocos de código que você pode usar várias vezes!")
         
         codigo = '''# Criando e usando funções
 def saudacao(nome):
@@ -68,8 +68,6 @@ print(apresentar("Maria", 30))'''
         self.exemplo(codigo)
         self.executar_codigo(codigo)
         
-        self.pausar()
-        
         # Mini Projeto
         self._mini_projeto_automacao()
         
@@ -86,10 +84,8 @@ print(apresentar("Maria", 30))'''
             print("🎯 MINI PROJETO: AUTOMAÇÃO RESIDENCIAL")
             print("="*50)
         
-        print("🏠 Vamos criar um sistema de automação residencial!")
-        print("Usado em: casas inteligentes, IoT, sistemas domóticos")
-        
-        self.pausar()
+        self.print_section("🏠 Vamos criar um sistema de automação residencial!")
+        self.print_tip("Usado em: casas inteligentes, IoT, sistemas domóticos")
         
         codigo_projeto = '''# 🏠 SISTEMA DE AUTOMAÇÃO RESIDENCIAL
 print("🏠 CENTRAL DE AUTOMAÇÃO RESIDENCIAL")
@@ -188,7 +184,7 @@ print("\\n🎉 SISTEMA DE AUTOMAÇÃO FUNCIONANDO!")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 CONQUISTA: Arquiteto de Automação!")
+        self.print_success("\n🏆 CONQUISTA: Arquiteto de Automação!")
         self.complete_mini_project("Sistema de Automação Residencial")
         self.pausar()
 
