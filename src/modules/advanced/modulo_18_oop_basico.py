@@ -39,22 +39,22 @@ class Modulo18OopBasico(BaseModule):
             print("🏗️ MÓDULO 18: PROGRAMAÇÃO ORIENTADA A OBJETOS")
             print("="*50)
         
-        print("🎯 OOP é o paradigma de programação mais usado no mundo!")
-        print("🏗️ Vamos aprender a criar e organizar código com CLASSES!")
+        self.print_section("🎯 OOP é o paradigma de programação mais usado no mundo!")
+        self.print_concept("🏗️ Vamos aprender a criar e organizar código com CLASSES!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        O QUE É PROGRAMAÇÃO ORIENTADA A OBJETOS?")
-        print("═══════════════════════════════════════════════")
+        self.print_section("\n═══════════════════════════════════════════════")
+        self.print_section("        O QUE É PROGRAMAÇÃO ORIENTADA A OBJETOS?")
+        self.print_section("═══════════════════════════════════════════════")
         
-        print("\n🎭 Conceitos fundamentais:")
-        print("• 🏗️ CLASSE = modelo/molde para criar objetos")
-        print("• 🎯 OBJETO = instância de uma classe")
-        print("• 📦 ATRIBUTOS = características do objeto")
-        print("• ⚡ MÉTODOS = ações que o objeto pode fazer")
+        self.print_concept("\n🎭 Conceitos fundamentais:")
+        self.print_colored("• 🏗️ CLASSE = modelo/molde para criar objetos", "yellow")
+        self.print_colored("• 🎯 OBJETO = instância de uma classe", "yellow")
+        self.print_colored("• 📦 ATRIBUTOS = características do objeto", "yellow")
+        self.print_colored("• ⚡ MÉTODOS = ações que o objeto pode fazer", "yellow")
         
         self.pausar()
         
-        print("\n🏗️ Criando sua primeira classe:")
+        self.print_concept("\n🏗️ Criando sua primeira classe:")
         
         codigo1 = '''# Primeira classe em Python
 class Pessoa:
@@ -116,7 +116,7 @@ print(f"{pessoa2.nome} tem {pessoa2.energia} de energia")'''
         
         self.pausar()
         
-        print("\n💰 Exemplo mais avançado - Conta Bancária:")
+        self.print_section("\n💰 Exemplo mais avançado - Conta Bancária:")
         
         codigo2 = '''# Classe mais sofisticada - Conta Bancária
 class ContaBancaria:
@@ -238,7 +238,7 @@ ContaBancaria.relatorio_banco()'''
         
         self.pausar()
         
-        print("\n🎮 Exemplo de jogo - Personagem RPG:")
+        self.print_section("\n🎮 Exemplo de jogo - Personagem RPG:")
         
         codigo3 = '''# Sistema de personagem de jogo
 class PersonagemRPG:
@@ -396,8 +396,8 @@ print("\\n🎮 Sistema de RPG funcionando!")'''
             print("🎯 MINI PROJETO: SISTEMA DE FUNCIONÁRIOS")
             print("="*50)
         
-        print("🏢 Sistema completo de RH usando Orientação a Objetos!")
-        print("🛠️ Usando: Classes, Herança, Encapsulamento, Properties")
+        self.print_concept("🏢 Sistema completo de RH usando Orientação a Objetos!")
+        self.print_tip("🛠️ Usando: Classes, Herança, Encapsulamento, Properties")
         
         self.pausar()
         
@@ -890,8 +890,8 @@ print("  • Persistência de dados em JSON")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Sistema de RH orientado a objetos criado!")
-        print("🎯 Aplicação real: sistemas corporativos, CRUD, gestão empresarial")
+        self.print_success("\n🏆 PARABÉNS! Sistema de RH orientado a objetos criado!")
+        self.print_tip("🎯 Aplicação real: sistemas corporativos, CRUD, gestão empresarial")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema de Gerenciamento de Funcionários")

@@ -39,19 +39,19 @@ class Modulo17JsonCsv(BaseModule):
             print("📋 MÓDULO 17: JSON E CSV")
             print("="*50)
         
-        print("📊 Vamos aprender a trabalhar com dados estruturados!")
-        print("🔄 JSON e CSV são formatos essenciais para troca de dados!")
+        self.print_section("📊 Vamos aprender a trabalhar com dados estruturados!")
+        self.print_concept("🔄 JSON e CSV são formatos essenciais para troca de dados!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        TRABALHANDO COM JSON")
-        print("═══════════════════════════════════════════════")
+        self.print_section("\n═══════════════════════════════════════════════")
+        self.print_section("        TRABALHANDO COM JSON")
+        self.print_section("═══════════════════════════════════════════════")
         
-        print("\n🎯 JSON = JavaScript Object Notation")
-        print("✅ Vantagens:")
-        print("• 📱 Usado em APIs e web")
-        print("• 🔤 Fácil de ler e escrever")
-        print("• 🐍 Nativo no Python")
-        print("• 🏗️ Suporta estruturas complexas")
+        self.print_concept("\n🎯 JSON = JavaScript Object Notation")
+        self.print_tip("✅ Vantagens:")
+        self.print_colored("• 📱 Usado em APIs e web", "green")
+        self.print_colored("• 🔤 Fácil de ler e escrever", "green")
+        self.print_colored("• 🐍 Nativo no Python", "green")
+        self.print_colored("• 🏗️ Suporta estruturas complexas", "green")
         
         self.pausar()
         
@@ -125,7 +125,7 @@ print(f"Disponível: {'Sim' if produto['disponivel'] else 'Não'}")'''
         
         self.pausar()
         
-        print("\n📊 TRABALHANDO COM CSV:")
+        self.print_section("\n📊 TRABALHANDO COM CSV:")
         
         codigo2 = '''# Trabalhando com CSV
 import csv
@@ -213,7 +213,7 @@ if vendas_lidas:
         
         self.pausar()
         
-        print("\n🔄 CONVERSÃO ENTRE FORMATOS:")
+        self.print_section("\n🔄 CONVERSÃO ENTRE FORMATOS:")
         
         codigo3 = '''# Convertendo entre JSON e CSV
 import json
@@ -382,8 +382,8 @@ except Exception as e:
             print("🎯 MINI PROJETO: SISTEMA DE ANÁLISE DE DADOS")
             print("="*50)
         
-        print("📊 Sistema completo de processamento de dados JSON e CSV!")
-        print("🛠️ Usando: JSON, CSV, Análises Estatísticas, Relatórios")
+        self.print_concept("📊 Sistema completo de processamento de dados JSON e CSV!")
+        self.print_tip("🛠️ Usando: JSON, CSV, Análises Estatísticas, Relatórios")
         
         self.pausar()
         
@@ -854,8 +854,8 @@ print("  • Tratamento de dados faltantes")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Sistema de análise de dados criado!")
-        print("🎯 Aplicação real: business intelligence, ETL, análise de dados")
+        self.print_success("\n🏆 PARABÉNS! Sistema de análise de dados criado!")
+        self.print_tip("🎯 Aplicação real: business intelligence, ETL, análise de dados")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema de Análise de Dados Integrado")

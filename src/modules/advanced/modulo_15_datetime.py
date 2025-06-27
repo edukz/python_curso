@@ -39,18 +39,18 @@ class Modulo15Datetime(BaseModule):
             print("📁 MÓDULO 15: MANIPULAÇÃO DE ARQUIVOS")
             print("="*50)
         
-        print("📁 Agora vamos aprender a SALVAR e CARREGAR dados!")
-        print("💾 Arquivos são fundamentais para guardar informações!")
+        self.print_section("📁 Agora vamos aprender a SALVAR e CARREGAR dados!")
+        self.print_concept("💾 Arquivos são fundamentais para guardar informações!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        LENDO E ESCREVENDO ARQUIVOS")
-        print("═══════════════════════════════════════════════")
+        self.print_section("\n═══════════════════════════════════════════════")
+        self.print_section("        LENDO E ESCREVENDO ARQUIVOS")
+        self.print_section("═══════════════════════════════════════════════")
         
-        print("\n📝 Modos de abertura:")
-        print("• 'r' - Leitura (read)")
-        print("• 'w' - Escrita (write) - APAGA o arquivo!")
-        print("• 'a' - Anexar (append) - adiciona no final")
-        print("• 'r+' - Leitura e escrita")
+        self.print_concept("\n📝 Modos de abertura:")
+        self.print_colored("• 'r' - Leitura (read)", "cyan")
+        self.print_warning("• 'w' - Escrita (write) - APAGA o arquivo!")
+        self.print_colored("• 'a' - Anexar (append) - adiciona no final", "cyan")
+        self.print_colored("• 'r+' - Leitura e escrita", "cyan")
         
         self.pausar()
         
@@ -88,7 +88,7 @@ print("✅ Arquivo com múltiplas linhas criado!")'''
         
         self.pausar()
         
-        print("\n📖 Lendo arquivos:")
+        self.print_concept("\n📖 Lendo arquivos:")
         
         codigo2 = '''# Lendo arquivos
 print("=== LENDO ARQUIVO COMPLETO ===")
@@ -121,7 +121,7 @@ with open("teste.txt", "r", encoding="utf-8") as arquivo:
         
         self.pausar()
         
-        print("\n💼 Exemplo Prático - Sistema de Cadastro:")
+        self.print_section("\n💼 Exemplo Prático - Sistema de Cadastro:")
         
         codigo3 = '''# Sistema de cadastro em arquivo
 import json
@@ -179,7 +179,7 @@ listar_pessoas()'''
         
         self.pausar()
         
-        print("\n🛡️ Tratamento de Erros com Arquivos:")
+        self.print_section("\n🛡️ Tratamento de Erros com Arquivos:")
         
         codigo4 = '''# Tratamento robusto de erros
 def ler_arquivo_seguro(nome_arquivo):
@@ -260,8 +260,8 @@ if log_content:
             print("🎯 MINI PROJETO: SISTEMA DE BACKUP INTELIGENTE")
             print("="*50)
         
-        print("💾 Sistema completo de backup com compressão e versionamento!")
-        print("🛠️ Usando: Manipulação de Arquivos, JSON, CSV, ZIP, Diretórios")
+        self.print_concept("💾 Sistema completo de backup com compressão e versionamento!")
+        self.print_tip("🛠️ Usando: Manipulação de Arquivos, JSON, CSV, ZIP, Diretórios")
         
         self.pausar()
         
@@ -618,8 +618,8 @@ print("  • Configuração flexível")'''
         self.exemplo(codigo_projeto)
         self.executar_codigo(codigo_projeto)
         
-        print("\n🏆 PARABÉNS! Sistema de backup inteligente criado!")
-        print("🎯 Aplicação real: backup de projetos, versionamento, arquivamento")
+        self.print_success("\n🏆 PARABÉNS! Sistema de backup inteligente criado!")
+        self.print_tip("🎯 Aplicação real: backup de projetos, versionamento, arquivamento")
         
         # Registra conclusão do mini projeto
         self.complete_mini_project("Sistema de Backup Inteligente")
