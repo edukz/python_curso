@@ -1,0 +1,33 @@
+{
+  "biblioteca_pessoal": {
+    "project_id": "biblioteca_pessoal",
+    "current_step": 3,
+    "completed_steps": [
+      "bib_001",
+      "bib_002",
+      "bib_003"
+    ],
+    "code_submissions": {},
+    "last_updated": "2025-06-27T03:52:27.594936",
+    "total_time_spent": 0,
+    "is_completed": false
+  },
+  "ecommerce_simples": {
+    "project_id": "ecommerce_simples",
+    "current_step": 0,
+    "completed_steps": [],
+    "code_submissions": {},
+    "last_updated": "2025-06-27T03:50:02.011803",
+    "total_time_spent": 0,
+    "is_completed": false
+  },
+  "api_dashboard": {
+    "project_id": "api_dashboard",
+    "current_step": 0,
+    "completed_steps": [],
+    "code_submissions": {},
+    "last_updated": "2025-06-27T03:50:02.011803",
+    "total_time_spent": 0,
+    "is_completed": false
+  }
+}

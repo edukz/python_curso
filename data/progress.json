@@ -1,109 +1,137 @@
 {
     "user_name": "Eduardo",
     "start_date": "2025-06-24T14:19:46.821690",
-    "last_access": "2025-06-26T19:51:08.423287",
-    "total_score": 200,
+    "last_access": "2025-06-29T01:31:06.582627",
+    "total_score": 3265,
     "modules_completed": [
         "modulo_24",
-        "modulo_26"
+        "modulo_26",
+        "modulo_1",
+        "modulo_2",
+        "modulo_3",
+        "modulo_4",
+        "modulo_5",
+        "modulo_6",
+        "modulo_7",
+        "modulo_9",
+        "modulo_12",
+        "modulo_13",
+        "modulo_17",
+        "modulo_19",
+        "modulo_28",
+        "modulo_29"
     ],
     "modules_progress": {
         "modulo_1": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 10,
+            "last_access": "2025-06-27T23:43:07.541735",
+            "time_spent": 425,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 50
         },
         "modulo_2": {
-            "completed": false,
-            "score": 0,
-            "attempts": 2,
-            "last_access": "2025-06-26T14:24:01.093094",
-            "time_spent": 191
+            "completed": true,
+            "score": 100,
+            "attempts": 9,
+            "last_access": "2025-06-27T18:20:59.128838",
+            "time_spent": 275
         },
         "modulo_3": {
-            "completed": false,
-            "score": 0,
-            "attempts": 1,
-            "last_access": "2025-06-26T02:47:43.125214",
-            "time_spent": 13
+            "completed": true,
+            "score": 100,
+            "attempts": 6,
+            "last_access": "2025-06-27T19:09:26.604021",
+            "time_spent": 101
         },
         "modulo_4": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 5,
+            "last_access": "2025-06-27T22:10:08.431047",
+            "time_spent": 52,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 50
         },
         "modulo_5": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 2,
+            "last_access": "2025-06-27T19:59:39.319901",
+            "time_spent": 19,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 75
         },
         "modulo_6": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 5,
+            "last_access": "2025-06-27T23:33:55.619407",
+            "time_spent": 22,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 65
         },
         "modulo_7": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 10,
+            "last_access": "2025-06-27T23:52:32.010301",
+            "time_spent": 55,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 60
         },
         "modulo_8": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 5,
+            "last_access": "2025-06-28T00:01:19.684794",
+            "time_spent": 10,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 60
         },
         "modulo_9": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "completed": true,
+            "score": 100,
+            "attempts": 2,
+            "last_access": "2025-06-28T00:56:01.236595",
+            "time_spent": 0,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 65
         },
         "modulo_10": {
             "completed": false,
             "score": 0,
-            "attempts": 1,
-            "last_access": "2025-06-26T02:47:26.404353",
-            "time_spent": 51
+            "attempts": 7,
+            "last_access": "2025-06-28T01:09:51.521444",
+            "time_spent": 149
         },
         "modulo_11": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 5,
+            "last_access": "2025-06-28T02:01:51.338769",
+            "time_spent": 488
         },
         "modulo_12": {
-            "completed": false,
-            "score": 0,
-            "attempts": 5,
-            "last_access": "2025-06-26T01:45:40.467578",
-            "time_spent": 80
+            "completed": true,
+            "score": 100,
+            "attempts": 7,
+            "last_access": "2025-06-28T03:55:47.409187",
+            "time_spent": 93
         },
         "modulo_13": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
+            "completed": true,
+            "score": 100,
+            "attempts": 1,
+            "last_access": "2025-06-28T03:42:01.606282",
             "time_spent": 0
         },
         "modulo_14": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
+            "attempts": 1,
+            "last_access": "2025-06-27T23:43:02.440699",
             "time_spent": 0
         },
         "modulo_15": {
@@ -121,52 +149,56 @@
             "time_spent": 0
         },
         "modulo_17": {
-            "completed": false,
-            "score": 0,
+            "completed": true,
+            "score": 100,
             "attempts": 0,
-            "last_access": null,
+            "last_access": "2025-06-28T04:05:41.381666",
             "time_spent": 0
         },
         "modulo_18": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 6,
+            "last_access": "2025-06-28T15:33:00.728817",
+            "time_spent": 77,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 90
         },
         "modulo_19": {
-            "completed": false,
-            "score": 0,
-            "attempts": 0,
-            "last_access": null,
+            "completed": true,
+            "score": 100,
+            "attempts": 4,
+            "last_access": "2025-06-28T15:50:54.854230",
             "time_spent": 0
         },
         "modulo_20": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 1,
+            "last_access": "2025-06-28T16:28:52.085924",
+            "time_spent": 5
         },
         "modulo_21": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 2,
+            "last_access": "2025-06-28T16:39:19.650127",
+            "time_spent": 6
         },
         "modulo_22": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 2,
+            "last_access": "2025-06-28T17:12:17.767402",
+            "time_spent": 9,
+            "mini_projeto_completo": true,
+            "mini_projeto_score": 130
         },
         "modulo_23": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
+            "attempts": 1,
+            "last_access": "2025-06-28T17:12:19.068977",
             "time_spent": 0
         },
         "modulo_24": {
@@ -179,15 +211,15 @@
         "modulo_25": {
             "completed": false,
             "score": 0,
-            "attempts": 0,
-            "last_access": null,
-            "time_spent": 0
+            "attempts": 1,
+            "last_access": "2025-06-28T17:12:31.997211",
+            "time_spent": 3
         },
         "modulo_26": {
             "completed": true,
             "score": 100,
             "attempts": 1,
-            "last_access": "2025-06-25T19:11:51.611318",
+            "last_access": "2025-06-28T20:42:49.854090",
             "time_spent": 8
         }
     },
@@ -197,5 +229,5 @@
             "date": "2025-06-24T14:19:56.892146"
         }
     ],
-    "total_time_spent": 113992
+    "total_time_spent": 257660
 }

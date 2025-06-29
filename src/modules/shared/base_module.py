@@ -158,21 +158,108 @@ class BaseModule(ABC):
             print(f"\n{emoji} {title.upper()}")
             print("─" * 50)
     
-    def exemplo(self, codigo: str) -> None:
-        """Exibe um exemplo de código"""
-        if self.utils:
-            self.utils.exemplo(codigo)
+    def print_concept(self, concept: str, description: str, emoji: str = "💡") -> None:
+        """Imprime um conceito importante com destaque colorido"""
+        if self.ui:
+            concept_color = self.ui.get_color("warning")  # Amarelo para conceitos
+            desc_color = self.ui.get_color("text")
+            reset = self.ui.get_color("reset")
+            print(f"\n{concept_color}{emoji} {concept}:{reset}")
+            print(f"{desc_color}{description}{reset}")
         else:
-            print("\n📝 EXEMPLO:")
-            print("-" * 40)
-            print(codigo)
-            print("-" * 40)
+            print(f"\n{emoji} {concept}:")
+            print(description)
+    
+    def print_tip(self, tip: str, emoji: str = "💫") -> None:
+        """Imprime uma dica com cor especial"""
+        if self.ui:
+            tip_color = self.ui.get_color("info")  # Azul/Ciano para dicas
+            reset = self.ui.get_color("reset")
+            print(f"\n{tip_color}{emoji} DICA: {tip}{reset}")
+        else:
+            print(f"\n{emoji} DICA: {tip}")
+    
+    def print_warning(self, warning: str, emoji: str = "⚠️") -> None:
+        """Imprime um aviso importante"""
+        if self.ui:
+            warning_color = self.ui.get_color("error")  # Vermelho para avisos
+            reset = self.ui.get_color("reset")
+            print(f"\n{warning_color}{emoji} ATENÇÃO: {warning}{reset}")
+        else:
+            print(f"\n{emoji} ATENÇÃO: {warning}")
+    
+    def print_success(self, message: str, emoji: str = "✅") -> None:
+        """Imprime mensagem de sucesso"""
+        if self.ui:
+            success_color = self.ui.get_color("success")  # Verde para sucesso
+            reset = self.ui.get_color("reset")
+            print(f"\n{success_color}{emoji} {message}{reset}")
+        else:
+            print(f"\n{emoji} {message}")
+    
+    def print_code_section(self, title: str, code: str) -> None:
+        """Imprime uma seção de código com cores simples"""
+        if self.ui:
+            title_color = self.ui.get_color("accent")
+            code_color = self.ui.get_color("primary")
+            reset = self.ui.get_color("reset")
+            print(f"\n{title_color}{'═' * 50}{reset}")
+            print(f"{title_color}📝 {title.upper()}{reset}")
+            print(f"{title_color}{'═' * 50}{reset}")
+            print(f"{code_color}{code}{reset}")
+            print(f"{title_color}{'═' * 50}{reset}")
+        else:
+            print(f"\n📝 {title.upper()}")
+            print("═" * 50)
+            print(code)
+            print("═" * 50)
+    
+    def exemplo(self, codigo: str) -> None:
+        """Exibe um exemplo de código com cores"""
+        self.print_code_section("EXEMPLO", codigo)
     
     def executar_codigo(self, codigo: str) -> None:
-        """Executa um código de exemplo"""
-        if self.utils:
-            self.utils.executar_codigo(codigo)
+        """Executa um código de exemplo com output colorido"""
+        if self.ui:
+            exec_color = self.ui.get_color("success")
+            output_color = self.ui.get_color("info")
+            error_color = self.ui.get_color("error")
+            reset = self.ui.get_color("reset")
+            
+            print(f"\n{exec_color}{'▶' * 25}{reset}")
+            print(f"{exec_color}▶️  EXECUTANDO CÓDIGO:{reset}")
+            print(f"{exec_color}{'▶' * 25}{reset}")
+            
+            # Mostra o código com cores simples
+            code_color = self.ui.get_color("primary")
+            print(f"{code_color}{codigo}{reset}")
+            
+            print(f"\n{output_color}{'─' * 25} OUTPUT {'─' * 25}{reset}")
+            
+            try:
+                # Captura o output
+                import io
+                import sys
+                old_stdout = sys.stdout
+                sys.stdout = buffer = io.StringIO()
+                
+                exec(codigo)
+                
+                output = buffer.getvalue()
+                sys.stdout = old_stdout
+                
+                if output:
+                    print(f"{output_color}{output}{reset}", end='')
+                    
+                print(f"{output_color}{'─' * 58}{reset}")
+                
+            except Exception as e:
+                sys.stdout = old_stdout
+                print(f"{error_color}❌ Erro: {e}{reset}")
+                print(f"{error_color}{'─' * 58}{reset}")
+                
         else:
+            # Fallback sem cores
             print("\n▶️  EXECUTANDO:")
             print("-" * 40)
             try:
@@ -182,15 +269,28 @@ class BaseModule(ABC):
             print("-" * 40)
     
     def exercicio(self, descricao: str, resposta_esperada: Union[str, List[str]], dica: str = "") -> bool:
-        """Propõe um exercício ao aluno"""
-        if self.utils:
-            return self.utils.exercicio(descricao, resposta_esperada, dica)
-        else:
-            print(f"\n🎯 EXERCÍCIO: {descricao}")
-            if dica:
-                print(f"💡 Dica: {dica}")
+        """Propõe um exercício ao aluno com feedback colorido"""
+        if self.ui:
+            # Cores para exercícios
+            question_color = self.ui.get_color("accent")
+            hint_color = self.ui.get_color("info")
+            input_color = self.ui.get_color("warning")
+            success_color = self.ui.get_color("success")
+            error_color = self.ui.get_color("error")
+            reset = self.ui.get_color("reset")
             
-            resposta = input("\n👉 Sua resposta: ").strip()
+            # Cabeçalho do exercício
+            print(f"\n{question_color}{'🎯' * 25}{reset}")
+            print(f"{question_color}🎯 EXERCÍCIO:{reset}")
+            print(f"{question_color}{descricao}{reset}")
+            
+            if dica:
+                print(f"\n{hint_color}💡 Dica: {dica}{reset}")
+            
+            print(f"{question_color}{'🎯' * 25}{reset}")
+            
+            # Input colorido
+            resposta = input(f"\n{input_color}👉 Sua resposta: {reset}").strip()
             
             if isinstance(resposta_esperada, str):
                 respostas_validas = [resposta_esperada]
@@ -200,15 +300,33 @@ class BaseModule(ABC):
             correto = any(resposta.lower() == resp.lower() for resp in respostas_validas)
             
             if correto:
-                print("✅ Correto! Muito bem!")
+                print(f"\n{success_color}{'✅' * 25}{reset}")
+                print(f"{success_color}✅ PARABÉNS! Resposta correta!{reset}")
+                print(f"{success_color}🌟 Excelente trabalho!{reset}")
+                print(f"{success_color}{'✅' * 25}{reset}")
+                
+                # Adiciona pontos se utils estiver disponível
+                if self.utils and hasattr(self.utils, 'adicionar_pontos'):
+                    self.utils.adicionar_pontos(10, "Resposta correta no quiz")
+                # Não faz nada se não houver sistema de pontos - é opcional
+                    
                 return True
             else:
-                print("❌ Resposta incorreta!")
+                print(f"\n{error_color}{'❌' * 25}{reset}")
+                print(f"{error_color}❌ Ops! Resposta incorreta.{reset}")
+                
                 if len(respostas_validas) == 1:
-                    print(f"💡 A resposta correta era: {respostas_validas[0]}")
+                    print(f"{hint_color}💡 A resposta correta era: {respostas_validas[0]}{reset}")
                 else:
-                    print(f"💡 Respostas possíveis: {', '.join(respostas_validas)}")
+                    print(f"{hint_color}💡 Respostas possíveis: {', '.join(respostas_validas)}{reset}")
+                    
+                print(f"{error_color}{'❌' * 25}{reset}")
+                print(f"\n{hint_color}💪 Não desista! Tente novamente!{reset}")
+                
                 return False
+        else:
+            # Fallback sem UI
+            return self.utils.exercicio(descricao, resposta_esperada, dica) if self.utils else False
     
     def error_handler(self, func, *args, **kwargs):
         """Executa função com tratamento de erro padrão"""
@@ -234,3 +352,96 @@ class BaseModule(ABC):
     def name(self) -> str:
         """Propriedade para acessar o nome do módulo (compatibilidade)"""
         return self.module_name
+    
+    def interactive_practice_section(self, title: str, exercises: List[Dict[str, Any]]) -> None:
+        """Cria uma seção de prática interativa completa"""
+        if self.ui:
+            practice_color = self.ui.get_color("success")
+            menu_color = self.ui.get_color("accent")
+            reset = self.ui.get_color("reset")
+            
+            print(f"\n{practice_color}{'✨' * 30}{reset}")
+            print(f"{practice_color}🎯 {title.upper()}{reset}")
+            print(f"{practice_color}{'✨' * 30}{reset}")
+            print(f"\n{menu_color}Escolha um exercício para praticar:{reset}")
+            
+            # Mostrar menu de exercícios
+            for i, exercise in enumerate(exercises, 1):
+                status = "✅" if exercise.get('completed', False) else "⏳"
+                print(f"{status} {i}. {exercise['title']}")
+            
+            print(f"\n{menu_color}0. Voltar ao conteúdo{reset}")
+            print(f"{menu_color}{'─' * 40}{reset}")
+            
+            while True:
+                choice = input(f"\n{menu_color}👉 Escolha (1-{len(exercises)} ou 0): {reset}").strip()
+                
+                if choice == "0":
+                    break
+                elif choice.isdigit() and 1 <= int(choice) <= len(exercises):
+                    idx = int(choice) - 1
+                    self._run_practice_exercise(exercises[idx])
+                    exercises[idx]['completed'] = True
+                else:
+                    print(f"{self.ui.get_color('error')}❌ Opção inválida!{reset}")
+        else:
+            # Fallback sem cores
+            print(f"\n{'✨' * 30}")
+            print(f"🎯 {title.upper()}")
+            print(f"{'✨' * 30}")
+            self._run_practice_exercises_simple(exercises)
+    
+    def _run_practice_exercise(self, exercise: Dict[str, Any]) -> None:
+        """Executa um exercício prático individual"""
+        if self.ui:
+            self.ui.clear_screen()
+            title_color = self.ui.get_color("warning")
+            code_color = self.ui.get_color("primary")
+            reset = self.ui.get_color("reset")
+            
+            print(f"{title_color}🏋️ EXERCÍCIO: {exercise['title']}{reset}")
+            print(f"{title_color}{'═' * 50}{reset}")
+            print(f"\n{exercise['description']}")
+            
+            if 'starter_code' in exercise:
+                print(f"\n{code_color}💻 CÓDIGO INICIAL:{reset}")
+                print(f"{code_color}{exercise['starter_code']}{reset}")
+            
+            print(f"\n{title_color}📝 SUA TAREFA:{reset}")
+            print(exercise['task'])
+            
+            if 'hints' in exercise:
+                show_hint = input("\n💡 Deseja ver uma dica? (s/n): ").lower()
+                if show_hint == 's':
+                    print(f"\n{self.ui.get_color('info')}💡 DICA: {exercise['hints']}{reset}")
+            
+            # Área para o aluno escrever código
+            print(f"\n{title_color}✍️ ESCREVA SEU CÓDIGO:{reset}")
+            print("(Digite 'fim' em uma linha vazia para terminar)")
+            
+            user_code = []
+            while True:
+                line = input()
+                if line.lower() == 'fim':
+                    break
+                user_code.append(line)
+            
+            # Executar código do aluno
+            code_to_run = '\n'.join(user_code)
+            if code_to_run.strip():
+                print(f"\n{title_color}🚀 EXECUTANDO SEU CÓDIGO:{reset}")
+                try:
+                    exec(code_to_run)
+                    self.print_success("\n✅ Código executado com sucesso!")
+                except Exception as e:
+                    self.print_warning(f"\n❌ Erro: {e}")
+            
+            # Mostrar solução
+            show_solution = input("\n🔍 Deseja ver a solução? (s/n): ").lower()
+            if show_solution == 's':
+                print(f"\n{code_color}💡 SOLUÇÃO:{reset}")
+                print(f"{code_color}{exercise['solution']}{reset}")
+                print(f"\n{self.ui.get_color('info')}📖 EXPLICAÇÃO:{reset}")
+                print(exercise['explanation'])
+            
+            input("\n🔸 Pressione ENTER para continuar...")

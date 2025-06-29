@@ -6,6 +6,12 @@ Módulo 30: Segurança
 Aprenda criptografia, validação, autenticação e boas práticas de segurança
 """
 
+import time
+import hashlib
+import secrets
+import re
+import base64
+from typing import Dict, List, Optional
 from ..shared.base_module import BaseModule
 
 
@@ -18,1608 +24,1266 @@ class Modulo30Seguranca(BaseModule):
         self.mini_project_points = 100
     
     def execute(self) -> None:
-        """Executa o módulo sobre segurança"""
+        """Executa o módulo Segurança"""
         if not self.ui or not self.progress:
             print("❌ Erro: Dependências não configuradas para este módulo")
             input("Pressione ENTER para continuar...")
             return
         
         try:
-            self._seguranca()
+            self._seguranca_principal()
         except Exception as e:
             self.error_handler(lambda: None)
     
-    def _seguranca(self) -> None:
-        """Conteúdo principal sobre segurança"""
+    def _seguranca_principal(self) -> None:
+        """Conteúdo principal do módulo Segurança"""
+        # === CABEÇALHO VISUAL ===
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("🛡️ MÓDULO 30: SEGURANÇA")
+            self.ui.header("🛡️ MÓDULO 30: SEGURANÇA DIGITAL")
         else:
             print("\n" + "="*50)
-            print("🛡️ MÓDULO 30: SEGURANÇA")
+            print("🛡️ MÓDULO 30: SEGURANÇA DIGITAL")
             print("="*50)
         
-        print("🛡️ Segurança é FUNDAMENTAL no desenvolvimento moderno!")
-        print("🔒 Proteger dados e sistemas é responsabilidade do programador!")
+        # === MENSAGENS MOTIVACIONAIS ===
+        self.print_success("🛡️ Bem-vindo ao mundo da proteção digital! Vamos aprender a defender nossos códigos e dados!")
+        self.print_tip("Este módulo está dividido em seções interativas. Você controla o ritmo!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        PRINCÍPIOS DE SEGURANÇA")
-        print("═══════════════════════════════════════════════")
+        # === FLUXO PRINCIPAL COM TRATAMENTO DE CTRL+C ===
         
-        print("\n🎯 Princípios fundamentais:")
-        print("• 🔒 Confidencialidade - dados protegidos")
-        print("• 🔧 Integridade - dados não alterados")
-        print("• 🌐 Disponibilidade - sistema acessível")
-        print("• 🎫 Autenticação - verificar identidade")
-        print("• 🔑 Autorização - controlar acesso")
-        print("• 📝 Auditoria - registrar atividades")
-        
-        self.pausar()
-        
-        print("\n🔐 Criptografia e Hash:")
-        
-        codigo1 = '''# Criptografia e hash seguros
-import hashlib
-import secrets
-import hmac
-import base64
-from typing import Tuple, Optional
-
-class CryptographyManager:
-    """Gerenciador de criptografia segura"""
-    
-    def __init__(self):
-        self.pepper = "sistema_pepper_secreto_2024"  # Adicional ao salt
-    
-    def generate_salt(self, length: int = 32) -> str:
-        """Gera salt criptograficamente seguro"""
-        return secrets.token_hex(length)
-    
-    def hash_password(self, password: str, salt: str = None) -> Tuple[str, str]:
-        """
-        Cria hash seguro da senha usando PBKDF2
-        
-        Args:
-            password: Senha em texto claro
-            salt: Salt opcional (gera novo se não fornecido)
-            
-        Returns:
-            Tuple com (hash, salt)
-        """
-        if salt is None:
-            salt = self.generate_salt()
-        
-        # Combinar senha com pepper para segurança adicional
-        password_with_pepper = password + self.pepper
-        
-        # PBKDF2 com 100.000 iterações (padrão OWASP)
-        hash_obj = hashlib.pbkdf2_hmac(
-            'sha256',
-            password_with_pepper.encode('utf-8'),
-            salt.encode('utf-8'),
-            100000  # 100k iterações
-        )
-        
-        # Converter para base64 para armazenamento
-        password_hash = base64.b64encode(hash_obj).decode('utf-8')
-        
-        return password_hash, salt
-    
-    def verify_password(self, password: str, stored_hash: str, salt: str) -> bool:
-        """
-        Verifica se senha está correta
-        
-        Args:
-            password: Senha a verificar
-            stored_hash: Hash armazenado
-            salt: Salt usado na criação do hash
-            
-        Returns:
-            True se senha está correta
-        """
-        # Gerar hash da senha fornecida
-        computed_hash, _ = self.hash_password(password, salt)
-        
-        # Comparação segura contra timing attacks
-        return hmac.compare_digest(computed_hash, stored_hash)
-    
-    def generate_secure_token(self, length: int = 32) -> str:
-        """Gera token criptograficamente seguro"""
-        return secrets.token_urlsafe(length)
-    
-    def generate_api_key(self) -> str:
-        """Gera chave de API segura"""
-        prefix = "sk_"  # Prefixo identificador
-        key_part = secrets.token_urlsafe(32)
-        return f"{prefix}{key_part}"
-    
-    def hash_data(self, data: str, algorithm: str = 'sha256') -> str:
-        """
-        Cria hash de dados genéricos
-        
-        Args:
-            data: Dados para hash
-            algorithm: Algoritmo (sha256, sha512, etc.)
-            
-        Returns:
-            Hash em hexadecimal
-        """
-        hash_obj = hashlib.new(algorithm)
-        hash_obj.update(data.encode('utf-8'))
-        return hash_obj.hexdigest()
-    
-    def verify_data_integrity(self, data: str, expected_hash: str, 
-                            algorithm: str = 'sha256') -> bool:
-        """Verifica integridade de dados"""
-        computed_hash = self.hash_data(data, algorithm)
-        return hmac.compare_digest(computed_hash, expected_hash)
-
-class SecureSession:
-    """Gerenciador de sessões seguras"""
-    
-    def __init__(self):
-        self.sessions = {}  # session_id -> session_data
-        self.crypto = CryptographyManager()
-    
-    def create_session(self, user_id: int, user_data: dict = None) -> str:
-        """Cria sessão segura"""
-        session_id = self.crypto.generate_secure_token()
-        
-        session_data = {
-            'user_id': user_id,
-            'created_at': time.time(),
-            'last_accessed': time.time(),
-            'user_data': user_data or {},
-            'csrf_token': self.crypto.generate_secure_token(16),
-            'expires_at': time.time() + 86400  # 24 horas
-        }
-        
-        self.sessions[session_id] = session_data
-        return session_id
-    
-    def validate_session(self, session_id: str) -> Optional[dict]:
-        """Valida e atualiza sessão"""
-        if session_id not in self.sessions:
-            return None
-        
-        session = self.sessions[session_id]
-        current_time = time.time()
-        
-        # Verificar expiração
-        if current_time > session['expires_at']:
-            del self.sessions[session_id]
-            return None
-        
-        # Atualizar último acesso
-        session['last_accessed'] = current_time
-        
-        return session
-    
-    def invalidate_session(self, session_id: str) -> bool:
-        """Invalida sessão"""
-        if session_id in self.sessions:
-            del self.sessions[session_id]
-            return True
-        return False
-
-# Demonstração de criptografia
-print("=== CRIPTOGRAFIA E HASH SEGUROS ===")
-print()
-
-crypto = CryptographyManager()
-
-# 1. Hash de senhas
-print("🔐 HASH DE SENHAS:")
-senha_original = "minha_senha_super_secreta_123!"
-hash_senha, salt = crypto.hash_password(senha_original)
-
-print(f"Senha original: {senha_original}")
-print(f"Salt gerado: {salt}")
-print(f"Hash seguro: {hash_senha}")
-
-# Verificar senha
-print(f"\\nVerificação senha correta: {crypto.verify_password(senha_original, hash_senha, salt)}")
-print(f"Verificação senha incorreta: {crypto.verify_password('senha_errada', hash_senha, salt)}")
-
-print()
-
-# 2. Tokens seguros
-print("🎫 TOKENS SEGUROS:")
-token = crypto.generate_secure_token()
-api_key = crypto.generate_api_key()
-
-print(f"Token seguro: {token}")
-print(f"API Key: {api_key}")
-
-print()
-
-# 3. Hash de dados
-print("📄 HASH DE DADOS:")
-dados_importantes = "Dados confidenciais do sistema"
-hash_dados = crypto.hash_data(dados_importantes)
-
-print(f"Dados: {dados_importantes}")
-print(f"Hash SHA256: {hash_dados}")
-print(f"Integridade verificada: {crypto.verify_data_integrity(dados_importantes, hash_dados)}")
-
-print()
-
-# 4. Sessões seguras
-print("👤 SESSÕES SEGURAS:")
-session_mgr = SecureSession()
-
-# Criar sessão
-user_id = 123
-session_id = session_mgr.create_session(user_id, {"role": "admin", "permissions": ["read", "write"]})
-print(f"Sessão criada: {session_id}")
-
-# Validar sessão
-session_data = session_mgr.validate_session(session_id)
-if session_data:
-    print(f"Sessão válida para usuário: {session_data['user_id']}")
-    print(f"CSRF Token: {session_data['csrf_token']}")
-
-import time  # Importação necessária para o código
-
-print("\\n✅ Sistema de criptografia implementado!")'''
-        
-        self.exemplo(codigo1)
-        self.executar_codigo(codigo1)
-        
-        self.pausar()
-        
-        print("\n🔍 Validação e Sanitização:")
-        
-        codigo2 = '''# Validação e sanitização de dados
-import re
-import html
-import urllib.parse
-from typing import Dict, List, Any, Union
-import ipaddress
-
-class InputValidator:
-    """Validador de entrada de dados"""
-    
-    def __init__(self):
-        # Padrões de validação
-        self.patterns = {
-            'email': r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
-            'phone_br': r'^\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}$',
-            'cpf': r'^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$',
-            'cnpj': r'^\\d{2}\\.?\\d{3}\\.?\\d{3}/?\\d{4}-?\\d{2}$',
-            'url': r'^https?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:/.*)?$',
-            'username': r'^[a-zA-Z0-9_-]{3,20}$',
-            'strong_password': r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$',
-            'uuid': r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
-            'hex_color': r'^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$',
-            'credit_card': r'^\\d{4}[\\s-]?\\d{4}[\\s-]?\\d{4}[\\s-]?\\d{4}$'
-        }
-        
-        # Lista de palavras perigosas para SQL injection
-        self.sql_keywords = [
-            'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'CREATE',
-            'ALTER', 'EXEC', 'EXECUTE', 'SCRIPT', 'UNION', 'TRUNCATE'
-        ]
-        
-        # Lista de tags HTML perigosas
-        self.dangerous_html_tags = [
-            'script', 'iframe', 'object', 'embed', 'form', 'input',
-            'button', 'link', 'meta', 'style', 'base'
-        ]
-    
-    def validate_email(self, email: str) -> Dict[str, Any]:
-        """Valida formato de email"""
-        if not email or not isinstance(email, str):
-            return {"valid": False, "error": "Email is required"}
-        
-        email = email.strip().lower()
-        
-        if len(email) > 254:  # RFC 5321 limit
-            return {"valid": False, "error": "Email too long"}
-        
-        if re.match(self.patterns['email'], email):
-            return {"valid": True, "sanitized": email}
-        else:
-            return {"valid": False, "error": "Invalid email format"}
-    
-    def validate_password(self, password: str) -> Dict[str, Any]:
-        """Valida força da senha"""
-        if not password or not isinstance(password, str):
-            return {"valid": False, "error": "Password is required"}
-        
-        result = {
-            "valid": False,
-            "score": 0,
-            "criteria": {
-                "length": len(password) >= 8,
-                "uppercase": bool(re.search(r'[A-Z]', password)),
-                "lowercase": bool(re.search(r'[a-z]', password)),
-                "numbers": bool(re.search(r'\\d', password)),
-                "special": bool(re.search(r'[@$!%*?&]', password)),
-                "no_common": password.lower() not in ['password', '123456', 'qwerty', 'abc123']
-            },
-            "suggestions": []
-        }
-        
-        # Calcular pontuação
-        result["score"] = sum(result["criteria"].values())
-        
-        # Gerar sugestões
-        if not result["criteria"]["length"]:
-            result["suggestions"].append("Use pelo menos 8 caracteres")
-        if not result["criteria"]["uppercase"]:
-            result["suggestions"].append("Adicione pelo menos uma letra maiúscula")
-        if not result["criteria"]["lowercase"]:
-            result["suggestions"].append("Adicione pelo menos uma letra minúscula")
-        if not result["criteria"]["numbers"]:
-            result["suggestions"].append("Adicione pelo menos um número")
-        if not result["criteria"]["special"]:
-            result["suggestions"].append("Adicione pelo menos um caractere especial (@$!%*?&)")
-        if not result["criteria"]["no_common"]:
-            result["suggestions"].append("Evite senhas comuns")
-        
-        result["valid"] = result["score"] >= 5
-        result["strength"] = "Forte" if result["score"] >= 5 else "Média" if result["score"] >= 3 else "Fraca"
-        
-        return result
-    
-    def validate_cpf(self, cpf: str) -> Dict[str, Any]:
-        """Valida CPF brasileiro"""
-        if not cpf or not isinstance(cpf, str):
-            return {"valid": False, "error": "CPF is required"}
-        
-        # Remover caracteres não numéricos
-        cpf_clean = re.sub(r'[^0-9]', '', cpf)
-        
-        if len(cpf_clean) != 11:
-            return {"valid": False, "error": "CPF must have 11 digits"}
-        
-        # Verificar se todos os dígitos são iguais
-        if cpf_clean == cpf_clean[0] * 11:
-            return {"valid": False, "error": "Invalid CPF"}
-        
-        # Calcular primeiro dígito verificador
-        soma = sum(int(cpf_clean[i]) * (10 - i) for i in range(9))
-        resto = 11 - (soma % 11)
-        digito1 = 0 if resto >= 10 else resto
-        
-        # Calcular segundo dígito verificador
-        soma = sum(int(cpf_clean[i]) * (11 - i) for i in range(10))
-        resto = 11 - (soma % 11)
-        digito2 = 0 if resto >= 10 else resto
-        
-        # Verificar dígitos
-        if cpf_clean[9] == str(digito1) and cpf_clean[10] == str(digito2):
-            # Formatar CPF
-            cpf_formatted = f"{cpf_clean[:3]}.{cpf_clean[3:6]}.{cpf_clean[6:9]}-{cpf_clean[9:]}"
-            return {"valid": True, "sanitized": cpf_formatted}
-        else:
-            return {"valid": False, "error": "Invalid CPF"}
-    
-    def validate_ip_address(self, ip: str) -> Dict[str, Any]:
-        """Valida endereço IP"""
-        if not ip or not isinstance(ip, str):
-            return {"valid": False, "error": "IP address is required"}
-        
+        # 1. Sistema de navegação por seções
         try:
-            ip_obj = ipaddress.ip_address(ip.strip())
-            
-            result = {
-                "valid": True,
-                "sanitized": str(ip_obj),
-                "version": ip_obj.version,
-                "is_private": ip_obj.is_private,
-                "is_loopback": ip_obj.is_loopback,
-                "is_multicast": ip_obj.is_multicast
-            }
-            
-            # Verificar se é endereço potencialmente perigoso
-            if ip_obj.is_loopback or ip_obj.is_multicast:
-                result["warning"] = "Special use IP address"
-            
-            return result
-            
-        except ValueError:
-            return {"valid": False, "error": "Invalid IP address format"}
-    
-    def sanitize_html(self, text: str) -> str:
-        """Remove/escapa HTML perigoso"""
-        if not text or not isinstance(text, str):
-            return ""
-        
-        # Escapar caracteres HTML
-        sanitized = html.escape(text)
-        
-        # Remover tags perigosas (caso alguém tente burlar)
-        for tag in self.dangerous_html_tags:
-            pattern = rf'</?{tag}[^>]*>'
-            sanitized = re.sub(pattern, '', sanitized, flags=re.IGNORECASE)
-        
-        return sanitized
-    
-    def sanitize_sql(self, text: str) -> str:
-        """Sanitiza entrada para prevenir SQL injection"""
-        if not text or not isinstance(text, str):
-            return ""
-        
-        # Escapar aspas
-        sanitized = text.replace("'", "''").replace('"', '""')
-        
-        # Verificar palavras-chave perigosas
-        text_upper = sanitized.upper()
-        for keyword in self.sql_keywords:
-            if keyword in text_upper:
-                # Adicionar underscore para quebrar a palavra-chave
-                sanitized = sanitized.replace(keyword, f"{keyword}_")
-                sanitized = sanitized.replace(keyword.lower(), f"{keyword.lower()}_")
-        
-        return sanitized
-    
-    def validate_file_upload(self, filename: str, content_type: str, 
-                           file_size: int) -> Dict[str, Any]:
-        """Valida upload de arquivo"""
-        result = {
-            "valid": False,
-            "errors": [],
-            "warnings": []
-        }
-        
-        # Extensões permitidas
-        allowed_extensions = {
-            'image': ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
-            'document': ['.pdf', '.doc', '.docx', '.txt', '.rtf'],
-            'archive': ['.zip', '.rar', '.tar', '.gz']
-        }
-        
-        # Verificar nome do arquivo
-        if not filename or '..' in filename or '/' in filename or '\\\\' in filename:
-            result["errors"].append("Invalid filename")
-            return result
-        
-        # Verificar extensão
-        file_ext = '.' + filename.split('.')[-1].lower() if '.' in filename else ''
-        valid_ext = any(file_ext in exts for exts in allowed_extensions.values())
-        
-        if not valid_ext:
-            result["errors"].append("File type not allowed")
-        
-        # Verificar tamanho (10MB max)
-        max_size = 10 * 1024 * 1024  # 10MB
-        if file_size > max_size:
-            result["errors"].append("File too large (max 10MB)")
-        
-        # Verificar content-type
-        safe_content_types = [
-            'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-            'application/pdf', 'text/plain', 'application/zip'
-        ]
-        
-        if content_type not in safe_content_types:
-            result["warnings"].append("Content-type not in safe list")
-        
-        result["valid"] = len(result["errors"]) == 0
-        result["sanitized_filename"] = re.sub(r'[^a-zA-Z0-9._-]', '_', filename)
-        
-        return result
-
-class SecurityScanner:
-    """Scanner de segurança para código e dados"""
-    
-    def __init__(self):
-        self.validator = InputValidator()
-    
-    def scan_user_input(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Escaneia entrada do usuário"""
-        results = {
-            "safe": True,
-            "violations": [],
-            "sanitized_data": {}
-        }
-        
-        for field, value in data.items():
-            if not isinstance(value, str):
-                results["sanitized_data"][field] = value
-                continue
-            
-            # Verificar XSS
-            if '<script' in value.lower() or 'javascript:' in value.lower():
-                results["violations"].append({
-                    "field": field,
-                    "type": "XSS_ATTEMPT",
-                    "value": value[:50] + "..." if len(value) > 50 else value
-                })
-                results["safe"] = False
-            
-            # Verificar SQL injection
-            sql_patterns = [
-                r"'\\s*(or|and)\\s*'",
-                r"union\\s+select",
-                r"drop\\s+table",
-                r"insert\\s+into",
-                r"delete\\s+from"
-            ]
-            
-            for pattern in sql_patterns:
-                if re.search(pattern, value, re.IGNORECASE):
-                    results["violations"].append({
-                        "field": field,
-                        "type": "SQL_INJECTION_ATTEMPT",
-                        "pattern": pattern
-                    })
-                    results["safe"] = False
-            
-            # Sanitizar dados
-            results["sanitized_data"][field] = self.validator.sanitize_html(value)
-        
-        return results
-    
-    def generate_security_report(self, scan_results: List[Dict]) -> Dict[str, Any]:
-        """Gera relatório de segurança"""
-        total_scans = len(scan_results)
-        safe_scans = len([r for r in scan_results if r["safe"]])
-        
-        violation_types = {}
-        for result in scan_results:
-            for violation in result["violations"]:
-                v_type = violation["type"]
-                violation_types[v_type] = violation_types.get(v_type, 0) + 1
-        
-        return {
-            "summary": {
-                "total_scans": total_scans,
-                "safe_scans": safe_scans,
-                "unsafe_scans": total_scans - safe_scans,
-                "safety_rate": (safe_scans / total_scans * 100) if total_scans > 0 else 0
-            },
-            "violation_types": violation_types,
-            "recommendations": self._generate_recommendations(violation_types)
-        }
-    
-    def _generate_recommendations(self, violations: Dict[str, int]) -> List[str]:
-        """Gera recomendações de segurança"""
-        recommendations = []
-        
-        if violations.get("XSS_ATTEMPT", 0) > 0:
-            recommendations.append("Implementar CSP (Content Security Policy)")
-            recommendations.append("Validar e escapar todas as entradas do usuário")
-        
-        if violations.get("SQL_INJECTION_ATTEMPT", 0) > 0:
-            recommendations.append("Usar prepared statements/parametrized queries")
-            recommendations.append("Implementar validação rigorosa de entrada")
-        
-        if not violations:
-            recommendations.append("Manter práticas de segurança atuais")
-        
-        return recommendations
-
-# Demonstração de validação e sanitização
-print("=== VALIDAÇÃO E SANITIZAÇÃO ===")
-print()
-
-validator = InputValidator()
-scanner = SecurityScanner()
-
-# 1. Validação de email
-print("📧 VALIDAÇÃO DE EMAIL:")
-emails_teste = [
-    "usuario@exemplo.com",
-    "email_invalido",
-    "teste@dominio",
-    "usuario.nome+tag@empresa.com.br"
-]
-
-for email in emails_teste:
-    resultado = validator.validate_email(email)
-    status = "✅" if resultado["valid"] else "❌"
-    print(f"  {status} {email}: {resultado.get('error', 'Válido')}")
-
-print()
-
-# 2. Validação de senha
-print("🔐 VALIDAÇÃO DE SENHA:")
-senhas_teste = [
-    "123456",
-    "senha",
-    "MinhaSenh@123",
-    "SuperSenhaForte2024!"
-]
-
-for senha in senhas_teste:
-    resultado = validator.validate_password(senha)
-    print(f"  Senha: {'*' * len(senha)}")
-    print(f"    Força: {resultado['strength']} (Score: {resultado['score']}/6)")
-    if resultado['suggestions']:
-        print(f"    Sugestões: {', '.join(resultado['suggestions'])}")
-    print()
-
-# 3. Validação de CPF
-print("🆔 VALIDAÇÃO DE CPF:")
-cpfs_teste = [
-    "111.444.777-35",
-    "123.456.789-00",
-    "11144477735",
-    "000.000.000-00"
-]
-
-for cpf in cpfs_teste:
-    resultado = validator.validate_cpf(cpf)
-    status = "✅" if resultado["valid"] else "❌"
-    print(f"  {status} {cpf}: {resultado.get('error', resultado.get('sanitized', 'Válido'))}")
-
-print()
-
-# 4. Scanner de segurança
-print("🔍 SCANNER DE SEGURANÇA:")
-dados_teste = [
-    {"nome": "João Silva", "email": "joao@exemplo.com"},
-    {"busca": "<script>alert('XSS')</script>", "filtro": "categoria"},
-    {"sql": "'; DROP TABLE users; --", "id": "123"},
-    {"comentario": "Comentário normal", "rating": "5"}
-]
-
-scan_results = []
-for i, dados in enumerate(dados_teste, 1):
-    resultado = scanner.scan_user_input(dados)
-    status = "✅ Seguro" if resultado["safe"] else "❌ Perigoso"
-    print(f"  Scan {i}: {status}")
-    
-    if not resultado["safe"]:
-        for violation in resultado["violations"]:
-            print(f"    ⚠️ {violation['type']} no campo '{violation['field']}'")
-    
-    scan_results.append(resultado)
-
-# 5. Relatório de segurança
-print("\\n📊 RELATÓRIO DE SEGURANÇA:")
-relatorio = scanner.generate_security_report(scan_results)
-
-print(f"  Total de scans: {relatorio['summary']['total_scans']}")
-print(f"  Scans seguros: {relatorio['summary']['safe_scans']}")
-print(f"  Taxa de segurança: {relatorio['summary']['safety_rate']:.1f}%")
-
-if relatorio['violation_types']:
-    print("  Violações encontradas:")
-    for tipo, count in relatorio['violation_types'].items():
-        print(f"    • {tipo}: {count}")
-
-print("  Recomendações:")
-for rec in relatorio['recommendations']:
-    print(f"    • {rec}")
-
-print("\\n✅ Sistema de validação implementado!")'''
-        
-        self.exemplo(codigo2)
-        self.executar_codigo(codigo2)
-        
-        self.pausar()
-        
-        print("\n🛡️ Proteção Contra Ataques:")
-        
-        codigo3 = r'''# Proteção contra ataques comuns
-import time
-import json
-import hashlib
-from typing import Dict, List, Set, Optional
-from collections import defaultdict, deque
-from datetime import datetime, timedelta
-
-class AttackDetector:
-    """Detector de ataques em tempo real"""
-    
-    def __init__(self):
-        # Configurações de detecção
-        self.brute_force_threshold = 5  # tentativas por minuto
-        self.ddos_threshold = 100  # requests por minuto
-        self.rate_limit_window = 60  # janela em segundos
-        
-        # Armazenamento de tentativas
-        self.login_attempts = defaultdict(deque)  # IP -> tentativas
-        self.request_counts = defaultdict(deque)  # IP -> requests
-        self.blocked_ips = set()  # IPs bloqueados
-        self.suspicious_patterns = []  # Padrões suspeitos detectados
-        
-        # Honeypots
-        self.honeypot_paths = ['/admin', '/wp-admin', '/phpmyadmin', '/.env']
-        self.honeypot_hits = defaultdict(int)
-    
-    def detect_brute_force(self, ip: str, success: bool = False) -> Dict[str, any]:
-        """Detecta ataques de força bruta"""
-        current_time = time.time()
-        
-        # Limpar tentativas antigas
-        while (self.login_attempts[ip] and 
-               current_time - self.login_attempts[ip][0] > self.rate_limit_window):
-            self.login_attempts[ip].popleft()
-        
-        # Adicionar nova tentativa (apenas falhas)
-        if not success:
-            self.login_attempts[ip].append(current_time)
-        else:
-            # Limpar tentativas em caso de sucesso
-            self.login_attempts[ip].clear()
-        
-        attempts_count = len(self.login_attempts[ip])
-        
-        # Verificar threshold
-        if attempts_count >= self.brute_force_threshold:
-            self.blocked_ips.add(ip)
-            self.suspicious_patterns.append({
-                "type": "BRUTE_FORCE",
-                "ip": ip,
-                "attempts": attempts_count,
-                "timestamp": datetime.now().isoformat()
-            })
-            
-            return {
-                "threat_detected": True,
-                "threat_type": "BRUTE_FORCE",
-                "ip": ip,
-                "attempts": attempts_count,
-                "action": "IP_BLOCKED"
-            }
-        
-        return {
-            "threat_detected": False,
-            "attempts": attempts_count,
-            "remaining": self.brute_force_threshold - attempts_count
-        }
-    
-    def detect_ddos(self, ip: str) -> Dict[str, any]:
-        """Detecta ataques DDoS"""
-        current_time = time.time()
-        
-        # Limpar requests antigos
-        while (self.request_counts[ip] and 
-               current_time - self.request_counts[ip][0] > self.rate_limit_window):
-            self.request_counts[ip].popleft()
-        
-        # Adicionar nova request
-        self.request_counts[ip].append(current_time)
-        requests_count = len(self.request_counts[ip])
-        
-        # Verificar threshold
-        if requests_count >= self.ddos_threshold:
-            self.blocked_ips.add(ip)
-            self.suspicious_patterns.append({
-                "type": "DDOS",
-                "ip": ip,
-                "requests": requests_count,
-                "timestamp": datetime.now().isoformat()
-            })
-            
-            return {
-                "threat_detected": True,
-                "threat_type": "DDOS",
-                "ip": ip,
-                "requests": requests_count,
-                "action": "IP_BLOCKED"
-            }
-        
-        return {
-            "threat_detected": False,
-            "requests": requests_count,
-            "limit": self.ddos_threshold
-        }
-    
-    def detect_honeypot_access(self, ip: str, path: str) -> Dict[str, any]:
-        """Detecta acesso a honeypots"""
-        if path in self.honeypot_paths:
-            self.honeypot_hits[ip] += 1
-            self.blocked_ips.add(ip)
-            
-            self.suspicious_patterns.append({
-                "type": "HONEYPOT_ACCESS",
-                "ip": ip,
-                "path": path,
-                "total_hits": self.honeypot_hits[ip],
-                "timestamp": datetime.now().isoformat()
-            })
-            
-            return {
-                "threat_detected": True,
-                "threat_type": "HONEYPOT_ACCESS",
-                "ip": ip,
-                "path": path,
-                "action": "IP_BLOCKED"
-            }
-        
-        return {"threat_detected": False}
-    
-    def is_ip_blocked(self, ip: str) -> bool:
-        """Verifica se IP está bloqueado"""
-        return ip in self.blocked_ips
-    
-    def unblock_ip(self, ip: str) -> bool:
-        """Desbloqueia IP"""
-        if ip in self.blocked_ips:
-            self.blocked_ips.remove(ip)
-            return True
-        return False
-    
-    def get_threat_summary(self) -> Dict[str, any]:
-        """Gera resumo de ameaças"""
-        threat_counts = defaultdict(int)
-        for pattern in self.suspicious_patterns:
-            threat_counts[pattern["type"]] += 1
-        
-        return {
-            "total_threats": len(self.suspicious_patterns),
-            "blocked_ips": len(self.blocked_ips),
-            "threat_types": dict(threat_counts),
-            "recent_threats": self.suspicious_patterns[-10:],  # Últimas 10
-            "top_attackers": list(self.blocked_ips)[:10]  # Top 10 IPs
-        }
-
-class WAF:
-    """Web Application Firewall simulado"""
-    
-    def __init__(self):
-        self.attack_detector = AttackDetector()
-        
-        # Regras de firewall
-        self.xss_patterns = [
-            r'<script[^>]*>.*?</script>',
-            r'javascript:',
-            r'on\w+\s*=',
-            r'<iframe[^>]*>',
-            r'eval\s*\\(',
-            r'expression\s*\\('
-        ]
-        
-        self.sqli_patterns = [
-            r"'\\s*(or|and)\\s*'",
-            r'\\bunion\\b.*\\bselect\\b',
-            r'\\bdrop\\b.*\\btable\\b',
-            r'\\binsert\\b.*\\binto\\b',
-            r'\\bdelete\\b.*\\bfrom\\b',
-            r'\\bupdate\\b.*\\bset\\b',
-            r'--|#|/\\*'
-        ]
-        
-        self.lfi_patterns = [
-            r'\\.\\./',
-            r'/etc/passwd',
-            r'/etc/shadow',
-            r'\\bfile:///',
-            r'\\.\\.\\\\',
-            r'/windows/system32'
-        ]
-        
-        # Whitelist de IPs confiáveis
-        self.whitelist_ips = {
-            '127.0.0.1',
-            '::1',
-            '10.0.0.0/8',
-            '192.168.0.0/16'
-        }
-    
-    def analyze_request(self, request_data: Dict[str, any]) -> Dict[str, any]:
-        """Analisa requisição HTTP"""
-        ip = request_data.get('ip', '127.0.0.1')
-        path = request_data.get('path', '/')
-        headers = request_data.get('headers', {})
-        body = request_data.get('body', {})
-        
-        analysis_result = {
-            "allowed": True,
-            "threats": [],
-            "score": 0,
-            "actions": []
-        }
-        
-        # 1. Verificar IP bloqueado
-        if self.attack_detector.is_ip_blocked(ip):
-            analysis_result["allowed"] = False
-            analysis_result["threats"].append("BLOCKED_IP")
-            analysis_result["actions"].append("REQUEST_BLOCKED")
-            return analysis_result
-        
-        # 2. Detectar DDoS
-        ddos_result = self.attack_detector.detect_ddos(ip)
-        if ddos_result["threat_detected"]:
-            analysis_result["allowed"] = False
-            analysis_result["threats"].append("DDOS")
-            analysis_result["actions"].append("IP_BLOCKED")
-            analysis_result["score"] += 100
-        
-        # 3. Detectar acesso a honeypot
-        honeypot_result = self.attack_detector.detect_honeypot_access(ip, path)
-        if honeypot_result["threat_detected"]:
-            analysis_result["allowed"] = False
-            analysis_result["threats"].append("HONEYPOT_ACCESS")
-            analysis_result["actions"].append("IP_BLOCKED")
-            analysis_result["score"] += 100
-        
-        # 4. Analisar payload para XSS
-        all_data = json.dumps(body) + ' ' + json.dumps(headers)
-        for pattern in self.xss_patterns:
-            if re.search(pattern, all_data, re.IGNORECASE):
-                analysis_result["threats"].append("XSS_ATTEMPT")
-                analysis_result["score"] += 50
-        
-        # 5. Analisar payload para SQL Injection
-        for pattern in self.sqli_patterns:
-            if re.search(pattern, all_data, re.IGNORECASE):
-                analysis_result["threats"].append("SQL_INJECTION")
-                analysis_result["score"] += 75
-        
-        # 6. Analisar payload para LFI (Local File Inclusion)
-        for pattern in self.lfi_patterns:
-            if re.search(pattern, all_data, re.IGNORECASE):
-                analysis_result["threats"].append("LFI_ATTEMPT")
-                analysis_result["score"] += 60
-        
-        # 7. Verificar User-Agent suspeito
-        user_agent = headers.get('User-Agent', '').lower()
-        suspicious_agents = ['sqlmap', 'nmap', 'burp', 'nikto', 'metasploit']
-        if any(agent in user_agent for agent in suspicious_agents):
-            analysis_result["threats"].append("SUSPICIOUS_USER_AGENT")
-            analysis_result["score"] += 30
-        
-        # Decidir se bloquear
-        if analysis_result["score"] >= 50:
-            analysis_result["allowed"] = False
-            analysis_result["actions"].append("REQUEST_BLOCKED")
-        
-        return analysis_result
-    
-    def generate_security_log(self, request_data: Dict, analysis: Dict) -> Dict:
-        """Gera log de segurança"""
-        return {
-            "timestamp": datetime.now().isoformat(),
-            "ip": request_data.get('ip'),
-            "path": request_data.get('path'),
-            "method": request_data.get('method', 'GET'),
-            "user_agent": request_data.get('headers', {}).get('User-Agent', ''),
-            "allowed": analysis["allowed"],
-            "threats": analysis["threats"],
-            "risk_score": analysis["score"],
-            "actions": analysis["actions"]
-        }
-
-class SecurityMonitor:
-    """Monitor de segurança em tempo real"""
-    
-    def __init__(self):
-        self.waf = WAF()
-        self.security_logs = []
-        self.alert_threshold = 10  # Score mínimo para alerta
-        self.alerts = []
-    
-    def process_request(self, request_data: Dict) -> Dict:
-        """Processa requisição através do WAF"""
-        analysis = self.waf.analyze_request(request_data)
-        
-        # Gerar log
-        log_entry = self.waf.generate_security_log(request_data, analysis)
-        self.security_logs.append(log_entry)
-        
-        # Gerar alerta se necessário
-        if analysis["score"] >= self.alert_threshold:
-            alert = {
-                "timestamp": datetime.now().isoformat(),
-                "severity": "HIGH" if analysis["score"] >= 75 else "MEDIUM",
-                "ip": request_data.get('ip'),
-                "threats": analysis["threats"],
-                "score": analysis["score"],
-                "description": f"High risk request from {request_data.get('ip')}"
-            }
-            self.alerts.append(alert)
-        
-        return analysis
-    
-    def get_security_dashboard(self) -> Dict:
-        """Gera dashboard de segurança"""
-        # Estatísticas gerais
-        total_requests = len(self.security_logs)
-        blocked_requests = len([log for log in self.security_logs if not log["allowed"]])
-        
-        # Contagem de ameaças
-        threat_counts = defaultdict(int)
-        for log in self.security_logs:
-            for threat in log["threats"]:
-                threat_counts[threat] += 1
-        
-        # IPs mais atacantes
-        ip_counts = defaultdict(int)
-        for log in self.security_logs:
-            if not log["allowed"]:
-                ip_counts[log["ip"]] += 1
-        
-        top_attackers = sorted(ip_counts.items(), key=lambda x: x[1], reverse=True)[:5]
-        
-        return {
-            "overview": {
-                "total_requests": total_requests,
-                "blocked_requests": blocked_requests,
-                "success_rate": ((total_requests - blocked_requests) / total_requests * 100) if total_requests > 0 else 0,
-                "total_alerts": len(self.alerts),
-                "active_threats": len(self.waf.attack_detector.blocked_ips)
-            },
-            "threats": dict(threat_counts),
-            "top_attackers": top_attackers,
-            "recent_alerts": self.alerts[-5:],
-            "blocked_ips": list(self.waf.attack_detector.blocked_ips)
-        }
-
-# Demonstração de proteção contra ataques
-print("=== PROTEÇÃO CONTRA ATAQUES ===")
-print()
-
-# Inicializar monitor de segurança
-monitor = SecurityMonitor()
-
-print("🛡️ WAF (Web Application Firewall) inicializado!")
-print()
-
-# Simular diferentes tipos de requisições
-requests_teste = [
-    {
-        "ip": "192.168.1.100",
-        "path": "/login",
-        "method": "POST",
-        "headers": {"User-Agent": "Mozilla/5.0"},
-        "body": {"username": "admin", "password": "123456"}
-    },
-    {
-        "ip": "10.0.0.50",
-        "path": "/search",
-        "method": "GET",
-        "headers": {"User-Agent": "Mozilla/5.0"},
-        "body": {"q": "<script>alert('XSS')</script>"}
-    },
-    {
-        "ip": "203.0.113.15",
-        "path": "/users",
-        "method": "GET", 
-        "headers": {"User-Agent": "sqlmap/1.0"},
-        "body": {"id": "1'; DROP TABLE users; --"}
-    },
-    {
-        "ip": "198.51.100.10",
-        "path": "/admin",
-        "method": "GET",
-        "headers": {"User-Agent": "Nikto"},
-        "body": {}
-    },
-    {
-        "ip": "192.168.1.200",
-        "path": "/file",
-        "method": "GET",
-        "headers": {"User-Agent": "Mozilla/5.0"},
-        "body": {"path": "../../etc/passwd"}
-    }
-]
-
-print("🧪 TESTANDO REQUISIÇÕES:")
-for i, request in enumerate(requests_teste, 1):
-    print(f"\\nRequisição {i}: {request['method']} {request['path']}")
-    print(f"IP: {request['ip']}")
-    
-    # Processar através do WAF
-    analysis = monitor.process_request(request)
-    
-    status = "✅ PERMITIDA" if analysis["allowed"] else "❌ BLOQUEADA"
-    print(f"Status: {status}")
-    print(f"Score de risco: {analysis['score']}")
-    
-    if analysis["threats"]:
-        print(f"Ameaças detectadas: {', '.join(analysis['threats'])}")
-    
-    if analysis["actions"]:
-        print(f"Ações tomadas: {', '.join(analysis['actions'])}")
-
-# Simular ataques de força bruta
-print("\\n🔨 SIMULANDO ATAQUE DE FORÇA BRUTA:")
-attacker_ip = "203.0.113.50"
-
-for i in range(7):  # Mais que o threshold de 5
-    brute_force_result = monitor.waf.attack_detector.detect_brute_force(attacker_ip, success=False)
-    
-    if brute_force_result["threat_detected"]:
-        print(f"  Tentativa {i+1}: ❌ AMEAÇA DETECTADA - IP {attacker_ip} bloqueado!")
-        break
-    else:
-        remaining = brute_force_result["remaining"]
-        print(f"  Tentativa {i+1}: {brute_force_result['attempts']} tentativas ({remaining} restantes)")
-
-# Dashboard de segurança
-print("\\n📊 DASHBOARD DE SEGURANÇA:")
-dashboard = monitor.get_security_dashboard()
-
-print(f"  📈 Total de requisições: {dashboard['overview']['total_requests']}")
-print(f"  🛡️ Requisições bloqueadas: {dashboard['overview']['blocked_requests']}")
-print(f"  ✅ Taxa de sucesso: {dashboard['overview']['success_rate']:.1f}%")
-print(f"  🚨 Total de alertas: {dashboard['overview']['total_alerts']}")
-
-if dashboard['threats']:
-    print("\\n  🎯 Ameaças detectadas:")
-    for threat, count in dashboard['threats'].items():
-        print(f"    • {threat}: {count}")
-
-if dashboard['top_attackers']:
-    print("\\n  👹 Top atacantes:")
-    for ip, count in dashboard['top_attackers']:
-        print(f"    • {ip}: {count} ataques")
-
-if dashboard['blocked_ips']:
-    print(f"\\n  🚫 IPs bloqueados: {len(dashboard['blocked_ips'])}")
-
-print("\\n✅ Sistema de proteção implementado!")
-print("🎯 Proteções ativas:")
-print("  • Detecção de força bruta")
-print("  • Proteção contra DDoS")
-print("  • Detecção de XSS")
-print("  • Proteção contra SQL Injection")
-print("  • Detecção de LFI")
-print("  • Honeypots")
-print("  • Monitoramento em tempo real")
-
-import re  # Importação necessária para o código'''
-        
-        self.exemplo(codigo3)
-        self.executar_codigo(codigo3)
-        
-        # Exercícios
-        self.exercicio(
-            "Qual algoritmo é recomendado para hash de senhas?",
-            ["PBKDF2", "bcrypt", "scrypt"],
-            "PBKDF2, bcrypt ou scrypt são algoritmos seguros para hash de senhas"
-        )
-        
-        # Mini Projeto do Módulo 30
-        self._mini_projeto_security_center()
-        
-        # Marcar módulo como completo
+            self._navegacao_secoes_interativas()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Navegação interrompida pelo usuário. Voltando ao menu principal...")
+            return
+        
+        # 2. Seção de Prática Interativa
+        try:
+            self._secao_pratica_interativa()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Módulo interrompido pelo usuário. Voltando ao menu principal...")
+            return
+        
+        # 3. Mini Projeto Prático
+        try:
+            self._mini_projeto_centro_seguranca()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Mini projeto interrompido. Voltando ao menu principal...")
+            return
+        
+        # 4. Marcar módulo como completo
         self.complete_module()
     
-    def _mini_projeto_security_center(self) -> None:
-        """Mini Projeto - Módulo 30: Centro de Segurança Completo"""
+    def _navegacao_secoes_interativas(self) -> None:
+        """Sistema de navegação por seções do módulo"""
+        
+        # === DEFINIÇÃO DAS SEÇÕES ===
+        secoes = [
+            {
+                'id': 'secao_conceitos_fundamentais',
+                'titulo': '🎯 O que é segurança digital?',
+                'descricao': 'Entenda os pilares da segurança na programação',
+                'funcao': self._secao_conceitos_fundamentais
+            },
+            {
+                'id': 'secao_criptografia_basica',
+                'titulo': '🔐 Criptografia e hashing',
+                'descricao': 'Aprenda a proteger dados com matemática avançada',
+                'funcao': self._secao_criptografia_basica
+            },
+            {
+                'id': 'secao_validacao_entrada',
+                'titulo': '🔍 Validação de entrada',
+                'descricao': 'Como proteger-se contra dados maliciosos',
+                'funcao': self._secao_validacao_entrada
+            },
+            {
+                'id': 'secao_geracao_senhas',
+                'titulo': '🔑 Geração de senhas seguras',
+                'descricao': 'Crie senhas impossíveis de quebrar',
+                'funcao': self._secao_geracao_senhas
+            },
+            {
+                'id': 'secao_melhores_praticas',
+                'titulo': '⭐ Melhores práticas de segurança',
+                'descricao': 'Dicas essenciais de profissionais',
+                'funcao': self._secao_melhores_praticas
+            },
+            {
+                'id': 'secao_erros_comuns',
+                'titulo': '⚠️ Erros fatais de segurança',
+                'descricao': 'Aprenda com os erros que custaram milhões',
+                'funcao': self._secao_erros_comuns
+            },
+            {
+                'id': 'secao_curiosidades',
+                'titulo': '💫 Curiosidades sobre hackers e segurança',
+                'descricao': 'Histórias fascinantes do mundo digital',
+                'funcao': self._secao_curiosidades
+            }
+        ]
+        
+        secoes_visitadas = set()
+        
+        # === LOOP PRINCIPAL DE NAVEGAÇÃO ===
+        while True:
+            # Limpa tela e mostra cabeçalho
+            self.ui.clear_screen() if self.ui else print("\n" + "="*50)
+            self.print_section("NAVEGAÇÃO DO MÓDULO", "📚", "accent")
+            self.print_colored("Escolha uma seção para estudar:", "text")
+            
+            # Lista todas as seções com status
+            print()
+            for i, secao in enumerate(secoes, 1):
+                status = "✅" if secao['id'] in secoes_visitadas else "📖"
+                print(f"{status} {i}. {secao['titulo']}")
+                self.print_colored(f"    {secao['descricao']}", "text")
+                print()
+            
+            print("0. 🎯 Continuar para os Exercícios Práticos")
+            
+            # Mostra progresso visual
+            progresso = len(secoes_visitadas)
+            total = len(secoes)
+            self.print_colored(f"\n📊 Progresso: {progresso}/{total} seções visitadas", "info")
+            
+            if progresso == total:
+                self.print_success("🌟 Você completou todas as seções! Está pronto para praticar!")
+            
+            # Processa escolha do usuário
+            try:
+                escolha = input(f"\n👉 Escolha uma seção (1-{len(secoes)}) ou 0 para continuar: ").strip()
+                
+                if escolha == "0":
+                    # Verifica se visitou seções suficientes
+                    if progresso >= 3:  # Pelo menos 3 seções visitadas
+                        break
+                    else:
+                        self.print_warning("📚 Recomendamos visitar pelo menos 3 seções antes de continuar!")
+                        continuar = input("Quer continuar mesmo assim? (s/n): ").lower()
+                        if continuar in ['s', 'sim', 'yes']:
+                            break
+                elif escolha.isdigit() and 1 <= int(escolha) <= len(secoes):
+                    # Executa seção escolhida
+                    idx = int(escolha) - 1
+                    secoes[idx]['funcao']()
+                    secoes_visitadas.add(secoes[idx]['id'])
+                else:
+                    self.print_warning(f"❌ Opção inválida! Digite um número de 1 a {len(secoes)} ou 0.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Pulando para exercícios práticos...")
+                break
+            except Exception as e:
+                self.print_warning(f"❌ Erro: {str(e)}. Tente novamente.")
+    
+    def _secao_conceitos_fundamentais(self) -> None:
+        """Seção: O que é segurança digital?"""
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("🎯 MINI PROJETO: CENTRO DE SEGURANÇA COMPLETO")
-        else:
-            print("\n" + "="*50)
-            print("🎯 MINI PROJETO: CENTRO DE SEGURANÇA COMPLETO")
-            print("="*50)
         
-        print("🛡️ Sistema completo de segurança com monitoramento em tempo real!")
-        print("🛠️ Usando: Criptografia, WAF, IDS, Auditoria, Machine Learning")
+        # === CABEÇALHO ATRATIVO ===
+        self.print_section("O QUE É SEGURANÇA DIGITAL?", "🎯")
+        
+        # === DEFINIÇÃO DO CONCEITO ===
+        self.print_concept(
+            "Segurança Digital",
+            "É o conjunto de práticas e técnicas para proteger informações, sistemas e dados contra acessos não autorizados, ataques maliciosos e vazamentos."
+        )
+        
+        # === DICA RELACIONADA ===
+        self.print_tip("Segurança não é um produto que você compra, é um processo que você implementa!")
+        
+        # === ANALOGIA DO COTIDIANO ===
+        self.print_colored("\n🏠 ANALOGIA DO DIA A DIA:", "warning")
+        self.print_colored("Imagine sua casa: você tem fechaduras (autenticação), alarme (monitoramento), cofre (criptografia) e não deixa a chave embaixo do tapete (boas práticas). Segurança digital funciona igual!", "text")
+        input("\n🔸 Pressione ENTER para continuar...")
+        
+        # === EXPLICAÇÃO TÉCNICA GRADUAL ===
+        self.print_colored("\n🔧 OS PILARES DA SEGURANÇA DIGITAL:", "info")
+        pilares = [
+            "1. 🔐 CONFIDENCIALIDADE - Só quem deve ver, vê",
+            "2. 🛡️ INTEGRIDADE - Os dados não foram alterados",
+            "3. ⚡ DISPONIBILIDADE - Sistema funciona quando precisa",
+            "4. 🔍 AUTENTICAÇÃO - Confirma quem é o usuário",
+            "5. 📋 AUTORIZAÇÃO - Define o que cada um pode fazer"
+        ]
+        
+        for i, pilar in enumerate(pilares, 1):
+            self.print_colored(pilar, "text")
+            if i < len(pilares):
+                input("   ⏳ Pressione ENTER para o próximo pilar...")
+        
+        # === APLICAÇÕES NO MUNDO REAL ===
+        self.print_colored("\n🌍 ONDE É USADO NO MUNDO REAL:", "accent")
+        aplicacoes = [
+            "🏦 Bancos - Protegem bilhões em transações diárias",
+            "🏥 Hospitais - Protegem dados médicos confidenciais",
+            "🛒 E-commerce - Protegem dados de cartão de crédito",
+            "🎮 Games - Protegem contas e conquistas dos jogadores",
+            "📱 Apps - Protegem fotos, mensagens e localização",
+            "🏢 Empresas - Protegem segredos industriais"
+        ]
+        for app in aplicacoes:
+            self.print_colored(f"• {app}", "primary")
         
         self.pausar()
+    
+    def _secao_criptografia_basica(self) -> None:
+        """Seção: Criptografia e hashing"""
+        if self.ui:
+            self.ui.clear_screen()
         
-        codigo_projeto = '''# 🛡️ CENTRO DE SEGURANÇA COMPLETO
-# Sistema integrado de segurança para aplicações Python
+        self.print_section("CRIPTOGRAFIA E HASHING", "🔐", "success")
+        
+        # === CONCEITO PRINCIPAL ===
+        self.print_concept(
+            "Criptografia",
+            "É a arte de transformar informações em códigos secretos, de forma que só quem tem a 'chave' pode entender o conteúdo original."
+        )
+        
+        # === ANALOGIA ===
+        self.print_colored("\n🏠 ANALOGIA:", "warning")
+        self.print_colored("É como escrever uma carta em código secreto que só seu melhor amigo entende, mas usando matemática super avançada!", "text")
+        input("\n🔸 Pressione ENTER para ver exemplos...")
+        
+        # === EXEMPLO PRÁTICO 1: HASH ===
+        self.print_colored("\n💻 EXEMPLO 1: HASHING (IMPRESSÃO DIGITAL)", "success")
+        codigo_hash = '''import hashlib
+
+# Texto original
+texto = "MinhasSenhaSecreta123"
+print(f"Texto original: {texto}")
+
+# Gera hash SHA-256 (irreversível)
+hash_sha256 = hashlib.sha256(texto.encode()).hexdigest()
+print(f"Hash SHA-256: {hash_sha256}")
+
+# Mesmo texto sempre gera o mesmo hash
+texto2 = "MinhasSenhaSecreta123"
+hash2 = hashlib.sha256(texto2.encode()).hexdigest()
+print(f"Mesmo texto, mesmo hash: {hash2 == hash_sha256}")'''
+        
+        self.exemplo(codigo_hash)
+        print("\n🚀 Executando exemplo:")
+        self.executar_codigo(codigo_hash)
+        
+        input("\n🔸 Pressione ENTER para o próximo exemplo...")
+        
+        # === EXEMPLO PRÁTICO 2: CODIFICAÇÃO BASE64 ===
+        self.print_colored("\n💻 EXEMPLO 2: CODIFICAÇÃO BASE64", "success")
+        codigo_base64 = '''import base64
+
+# Mensagem original
+mensagem = "Dados secretos da empresa!"
+print(f"Mensagem original: {mensagem}")
+
+# Codifica em Base64
+mensagem_bytes = mensagem.encode('utf-8')
+mensagem_codificada = base64.b64encode(mensagem_bytes).decode('utf-8')
+print(f"Codificada: {mensagem_codificada}")
+
+# Decodifica de volta
+mensagem_decodificada = base64.b64decode(mensagem_codificada).decode('utf-8')
+print(f"Decodificada: {mensagem_decodificada}")'''
+        
+        self.exemplo(codigo_base64)
+        print("\n🚀 Executando exemplo:")
+        self.executar_codigo(codigo_base64)
+        
+        # === APLICAÇÕES REAIS ===
+        self.print_colored("\n🌍 ONDE É USADO:", "accent")
+        usos = [
+            "🔐 WhatsApp - Criptografia ponta a ponta",
+            "💳 Cartões - Dados do chip são criptografados", 
+            "🌐 HTTPS - Todo site seguro usa criptografia",
+            "💾 Bancos de dados - Senhas são armazenadas como hash",
+            "📧 Email - Gmail usa criptografia para proteger emails"
+        ]
+        for uso in usos:
+            self.print_colored(f"• {uso}", "primary")
+        
+        self.pausar()
+    
+    def _secao_validacao_entrada(self) -> None:
+        """Seção: Validação de entrada"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("VALIDAÇÃO DE ENTRADA", "🔍", "warning")
+        
+        # === CONCEITO ===
+        self.print_concept(
+            "Validação de Entrada",
+            "É o processo de verificar e filtrar todos os dados que entram no seu programa, garantindo que sejam seguros e válidos antes de processá-los."
+        )
+        
+        # === ANALOGIA ===
+        self.print_colored("\n🏠 ANALOGIA:", "warning")
+        self.print_colored("É como ter um segurança na porta da festa: ele verifica se cada pessoa tem convite válido e não está trazendo nada perigoso!", "text")
+        input("\n🔸 Pressione ENTER para ver os perigos...")
+        
+        # === EXEMPLO DE ATAQUE ===
+        self.print_colored("\n⚠️ EXEMPLO DE ATAQUE: INJEÇÃO SQL", "error")
+        self.print_colored("❌ CÓDIGO PERIGOSO (NUNCA FAÇA ISSO):", "error")
+        codigo_perigoso = '''# ❌ PERIGO: Concatenação direta (vulnerável)
+def buscar_usuario(nome):
+    query = f"SELECT * FROM usuarios WHERE nome = '{nome}'"
+    return executar_sql(query)
+
+# Se alguém digitar: '; DROP TABLE usuarios; --
+# A query fica: SELECT * FROM usuarios WHERE nome = ''; DROP TABLE usuarios; --'
+# Resultado: TABELA DELETADA! 💥'''
+        
+        self.exemplo(codigo_perigoso)
+        
+        input("\n🔸 Pressione ENTER para ver a solução...")
+        
+        # === CÓDIGO SEGURO ===
+        self.print_colored("\n✅ CÓDIGO SEGURO COM VALIDAÇÃO:", "success")
+        codigo_seguro = r'''import re
+
+def validar_entrada_segura(entrada):
+    """Valida entrada do usuário de forma segura"""
+    
+    # 1. Verificar se não está vazio
+    if not entrada or not entrada.strip():
+        return False, "Entrada não pode estar vazia"
+    
+    # 2. Limitar tamanho
+    if len(entrada.strip()) > 50:
+        return False, "Entrada muito longa (máximo 50 caracteres)"
+    
+    # 3. Permitir apenas caracteres seguros
+    if not re.match(r'^[a-zA-Z0-9\s_-]+$', entrada.strip()):
+        return False, "Caracteres inválidos detectados"
+    
+    return True, "Entrada válida"
+
+# Testando validação
+entradas_teste = [
+    "João Silva",           # ✅ Válido
+    "user123",             # ✅ Válido  
+    "'; DROP TABLE users;", # ❌ Inválido
+    "<script>alert('hack')</script>", # ❌ Inválido
+    "a" * 60,              # ❌ Muito longo
+    ""                     # ❌ Vazio
+]
+
+for entrada in entradas_teste:
+    valido, mensagem = validar_entrada_segura(entrada)
+    status = "✅" if valido else "❌"
+    print(f"{status} '{entrada[:20]}...' - {mensagem}")'''
+        
+        self.exemplo(codigo_seguro)
+        print("\n🚀 Executando validação:")
+        self.executar_codigo(codigo_seguro)
+        
+        # === TIPOS DE VALIDAÇÃO ===
+        self.print_colored("\n🛡️ TIPOS DE VALIDAÇÃO ESSENCIAIS:", "info")
+        tipos = [
+            "📏 TAMANHO - Limite máximo e mínimo",
+            "🔤 FORMATO - Regex para padrões válidos",
+            "🚫 LISTA NEGRA - Bloquear caracteres perigosos",
+            "✅ LISTA BRANCA - Permitir apenas caracteres seguros",
+            "🔢 TIPO - Verificar se é número, email, etc.",
+            "🧼 SANITIZAÇÃO - Limpar dados antes de usar"
+        ]
+        for tipo in tipos:
+            self.print_colored(f"• {tipo}", "text")
+        
+        self.pausar()
+    
+    def _secao_geracao_senhas(self) -> None:
+        """Seção: Geração de senhas seguras"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("GERAÇÃO DE SENHAS SEGURAS", "🔑", "accent")
+        
+        # === CONCEITO ===
+        self.print_concept(
+            "Senha Segura",
+            "É uma combinação de caracteres longa, aleatória e única que serve como primeira linha de defesa contra invasores."
+        )
+        
+        # === ESTATÍSTICAS ASSUSTADORAS ===
+        self.print_colored("\n📊 ESTATÍSTICAS QUE ASSUSTAM:", "error")
+        stats = [
+            "😱 '123456' é ainda a senha mais usada no mundo",
+            "⚡ Computador comum quebra senha de 6 dígitos em 2 segundos",
+            "🏆 Senha de 12 caracteres aleatórios: 200 anos para quebrar",
+            "💰 81% dos vazamentos são por senhas fracas",
+            "🎯 Hackers testam milhões de senhas por segundo"
+        ]
+        for stat in stats:
+            self.print_colored(f"• {stat}", "text")
+        
+        input("\n🔸 Pressione ENTER para aprender a se defender...")
+        
+        # === EXEMPLO PRÁTICO ===
+        self.print_colored("\n💻 GERADOR DE SENHAS SUPER SEGURAS:", "success")
+        codigo_gerador = '''import secrets
+import string
+
+def gerar_senha_segura(tamanho=12, incluir_simbolos=True):
+    """Gera senha criptograficamente segura"""
+    
+    # Caracteres disponíveis
+    letras = string.ascii_letters  # a-z, A-Z
+    numeros = string.digits        # 0-9
+    simbolos = "!@#$%^&*()_+-=[]{}|;:,.<>?" if incluir_simbolos else ""
+    
+    # Conjunto completo de caracteres
+    todos_caracteres = letras + numeros + simbolos
+    
+    # Gerar senha aleatória usando secrets (mais seguro que random)
+    senha = ''.join(secrets.choice(todos_caracteres) for _ in range(tamanho))
+    
+    return senha
+
+def avaliar_forca_senha(senha):
+    """Avalia a força da senha"""
+    pontos = 0
+    feedback = []
+    
+    # Comprimento
+    if len(senha) >= 12:
+        pontos += 3
+        feedback.append("✅ Comprimento adequado")
+    elif len(senha) >= 8:
+        pontos += 2
+        feedback.append("⚠️ Comprimento mínimo")
+    else:
+        feedback.append("❌ Muito curta")
+    
+    # Tipos de caracteres
+    if any(c.islower() for c in senha):
+        pontos += 1
+        feedback.append("✅ Tem minúsculas")
+    
+    if any(c.isupper() for c in senha):
+        pontos += 1
+        feedback.append("✅ Tem maiúsculas")
+    
+    if any(c.isdigit() for c in senha):
+        pontos += 1
+        feedback.append("✅ Tem números")
+    
+    if any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in senha):
+        pontos += 2
+        feedback.append("✅ Tem símbolos")
+    
+    # Classificação
+    if pontos >= 7:
+        nivel = "🛡️ MUITO FORTE"
+    elif pontos >= 5:
+        nivel = "💪 FORTE"
+    elif pontos >= 3:
+        nivel = "⚠️ MÉDIA"
+    else:
+        nivel = "❌ FRACA"
+    
+    return nivel, pontos, feedback
+
+# Gerando senhas de exemplo
+print("🔑 GERADOR DE SENHAS SEGURAS")
+print("=" * 40)
+
+for i in range(3):
+    senha = gerar_senha_segura(12, True)
+    nivel, pontos, feedback = avaliar_forca_senha(senha)
+    
+    print(f"\\nSenha {i+1}: {senha}")
+    print(f"Avaliação: {nivel} ({pontos}/8 pontos)")
+    
+# Testando senhas comuns (fracas)
+print("\\n🚨 TESTANDO SENHAS FRACAS:")
+senhas_fracas = ["123456", "password", "admin", "qwerty"]
+for senha in senhas_fracas:
+    nivel, pontos, _ = avaliar_forca_senha(senha)
+    print(f"'{senha}' → {nivel} ({pontos}/8 pontos)")'''
+        
+        self.exemplo(codigo_gerador)
+        print("\n🚀 Executando gerador:")
+        self.executar_codigo(codigo_gerador)
+        
+        # === DICAS DE OURO ===
+        self.print_colored("\n🏆 DICAS DE OURO PARA SENHAS:", "accent")
+        dicas = [
+            "🎲 Use geradores de senha aleatória (como o código acima)",
+            "🔢 Mínimo 12 caracteres, ideal 16+",
+            "🎭 Senha única para cada conta importante",
+            "🗝️ Use gerenciador de senhas (1Password, Bitwarden)",
+            "🔄 Ative autenticação de dois fatores sempre",
+            "❌ NUNCA use dados pessoais (nome, data nascimento)"
+        ]
+        for dica in dicas:
+            self.print_colored(f"• {dica}", "text")
+        
+        self.pausar()
+    
+    def _secao_melhores_praticas(self) -> None:
+        """Seção: Melhores práticas de segurança"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("MELHORES PRÁTICAS DE SEGURANÇA", "⭐", "success")
+        
+        self.print_colored("🏆 AS 10 REGRAS DE OURO DA SEGURANÇA:", "accent")
+        
+        praticas = [
+            {
+                'titulo': '1. 🔒 Princípio do Menor Privilégio',
+                'descricao': 'Dê apenas as permissões mínimas necessárias',
+                'exemplo': 'Usuário comum não precisa de acesso de administrador'
+            },
+            {
+                'titulo': '2. 🔍 Validação em Camadas',
+                'descricao': 'Valide dados no frontend E no backend',
+                'exemplo': 'JavaScript + validação no servidor Python'
+            },
+            {
+                'titulo': '3. 🚫 Nunca Confie no Cliente',
+                'descricao': 'Toda validação importante deve ser no servidor',
+                'exemplo': 'Preços, permissões, dados críticos'
+            },
+            {
+                'titulo': '4. 🔐 Criptografia em Repouso e Trânsito',
+                'descricao': 'Proteja dados parados E em movimento',
+                'exemplo': 'HTTPS + banco criptografado'
+            },
+            {
+                'titulo': '5. 📋 Logs de Segurança',
+                'descricao': 'Registre todas as ações importantes',
+                'exemplo': 'Login, mudanças, acessos a dados sensíveis'
+            },
+            {
+                'titulo': '6. 🔄 Atualizações Constantes',
+                'descricao': 'Mantenha tudo sempre atualizado',
+                'exemplo': 'Python, bibliotecas, sistema operacional'
+            }
+        ]
+        
+        for i, pratica in enumerate(praticas, 1):
+            self.print_colored(f"\n{pratica['titulo']}", "warning")
+            self.print_colored(f"📝 {pratica['descricao']}", "text")
+            self.print_colored(f"💡 Exemplo: {pratica['exemplo']}", "info")
+            
+            if i < len(praticas):
+                input("   ⏳ Pressione ENTER para a próxima prática...")
+        
+        # === CHECKLIST DE SEGURANÇA ===
+        self.print_colored("\n\n📋 CHECKLIST DE PROJETO SEGURO:", "accent")
+        checklist = [
+            "☐ Todas as entradas são validadas?",
+            "☐ Senhas são armazenadas como hash?",
+            "☐ Dados sensíveis são criptografados?",
+            "☐ HTTPS está habilitado?",
+            "☐ Logs de segurança estão funcionando?",
+            "☐ Backups estão criptografados?",
+            "☐ Acesso por privilégio mínimo?",
+            "☐ Bibliotecas estão atualizadas?"
+        ]
+        
+        for item in checklist:
+            self.print_colored(f"  {item}", "text")
+        
+        self.pausar()
+    
+    def _secao_erros_comuns(self) -> None:
+        """Seção: Erros fatais de segurança"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("ERROS FATAIS DE SEGURANÇA", "⚠️", "error")
+        
+        self.print_colored("💀 OS 7 PECADOS MORTAIS DA PROGRAMAÇÃO:", "error")
+        
+        erros = [
+            {
+                'titulo': '💀 1. Senhas no Código Fonte',
+                'problema': 'Colocar senhas, chaves API ou tokens diretamente no código',
+                'consequencia': 'Qualquer um que vê o código tem acesso total',
+                'solucao': 'Use variáveis de ambiente ou arquivos de configuração'
+            },
+            {
+                'titulo': '💀 2. SQL Injection',
+                'problema': 'Concatenar strings diretamente em queries SQL',
+                'consequencia': 'Hackers podem executar comandos no banco de dados',
+                'solucao': 'Use prepared statements ou ORM'
+            },
+            {
+                'titulo': '💀 3. Não Validar Entrada',
+                'problema': 'Confiar cegamente nos dados enviados pelo usuário',
+                'consequencia': 'XSS, injection, corrupção de dados',
+                'solucao': 'Valide TUDO antes de processar'
+            },
+            {
+                'titulo': '💀 4. Logs com Dados Sensíveis',
+                'problema': 'Registrar senhas, tokens ou dados pessoais em logs',
+                'consequencia': 'Vazamento de informações confidenciais',
+                'solucao': 'Filtre dados sensíveis antes de logar'
+            },
+            {
+                'titulo': '💀 5. Permissões Excessivas',
+                'problema': 'Dar acesso de admin para todo mundo',
+                'consequencia': 'Usuários podem fazer o que não deveriam',
+                'solucao': 'Princípio do menor privilégio'
+            }
+        ]
+        
+        for i, erro in enumerate(erros, 1):
+            self.print_colored(f"\n{erro['titulo']}", "error")
+            self.print_colored(f"🚨 Problema: {erro['problema']}", "text")
+            self.print_colored(f"💥 Consequência: {erro['consequencia']}", "warning")
+            self.print_colored(f"✅ Solução: {erro['solucao']}", "success")
+            
+            if i < len(erros):
+                input("   ⏳ Pressione ENTER para o próximo erro...")
+        
+        # === CASOS REAIS ===
+        self.print_colored("\n\n📰 CASOS REAIS QUE CUSTARAM MILHÕES:", "warning")
+        casos = [
+            "🏦 Equifax (2017): 147 milhões de dados vazados por biblioteca desatualizada",
+            "🏨 Marriott (2018): 500 milhões de clientes expostos por 4 anos",
+            "💳 Target (2013): 40 milhões de cartões roubados via sistema de ar condicionado",
+            "🎮 PlayStation (2011): 77 milhões de contas hackeadas, rede offline por 23 dias"
+        ]
+        
+        for caso in casos:
+            self.print_colored(f"• {caso}", "text")
+        
+        self.print_colored("\n💡 MORAL DA HISTÓRIA: Um pequeno erro pode custar TUDO!", "accent")
+        
+        self.pausar()
+    
+    def _secao_curiosidades(self) -> None:
+        """Seção: Curiosidades sobre hackers e segurança"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("CURIOSIDADES FASCINANTES", "💫", "accent")
+        
+        curiosidades = [
+            {
+                'titulo': '🎭 O Primeiro "Bug" da História',
+                'historia': 'Em 1947, Grace Hopper encontrou uma mariposa presa no computador Harvard Mark II. Ela colou o inseto no relatório e escreveu "First actual case of bug being found". Daí vem o termo "bug"!'
+            },
+            {
+                'titulo': '🏴‍☠️ Kevin Mitnick: O Hacker Mais Procurado',
+                'historia': 'Nos anos 90, era tão procurado pelo FBI que ficou 5 anos preso. Hoje é consultor de segurança e milionário. Seu lema: "A engenharia social é a arte de hackear humanos".'
+            },
+            {
+                'titulo': '🔐 A Senha Mais Cara do Mundo',
+                'historia': 'Em 2021, um programador alemão esqueceu a senha de uma carteira Bitcoin com 7.002 bitcoins (valor: mais de 240 milhões de dólares). Ele tem apenas 2 tentativas restantes!'
+            },
+            {
+                'titulo': '🎯 O Worm Morris de 1988',
+                'historia': 'O primeiro worm da internet foi criado por um estudante de 23 anos. Infectou 6.000 computadores (10% da internet da época). O criador foi o primeiro condenado pela Lei de Fraude e Abuso Computacional dos EUA.'
+            },
+            {
+                'titulo': '🏆 Black Hat vs White Hat',
+                'historia': 'Hackers "White Hat" são os mocinhos - trabalham para empresas encontrando falhas. "Black Hat" são os vilões. "Gray Hat" ficam no meio termo. O nome vem dos filmes de faroeste!'
+            },
+            {
+                'titulo': '💰 Bug Bounty Milionário',
+                'historia': 'Em 2016, um pesquisador ganhou US$ 1,5 milhão da Uber por encontrar uma falha crítica. Hoje, empresas pagam milhões por ano em recompensas para quem encontra bugs.'
+            }
+        ]
+        
+        for i, curiosidade in enumerate(curiosidades, 1):
+            self.print_colored(f"\n{curiosidade['titulo']}", "warning")
+            self.print_colored(curiosidade['historia'], "text")
+            
+            if i < len(curiosidades):
+                input("   🔸 Pressione ENTER para a próxima curiosidade...")
+        
+        # === FATOS IMPRESSIONANTES ===
+        self.print_colored("\n\n🤯 FATOS QUE VÃO TE SURPREENDER:", "info")
+        fatos = [
+            "🚀 Cada segundo, 2.200 ataques cibernéticos acontecem no mundo",
+            "🎯 95% dos ataques bem-sucedidos são devido a erro humano",
+            "💻 Existem mais de 1 bilhão de malwares únicos no mundo",
+            "⚡ Hackers levam em média 200 dias para serem detectados",
+            "🏆 O mercado de segurança digital vale mais de 150 bilhões de dólares",
+            "🔐 A palavra 'password' ainda é uma das senhas mais usadas"
+        ]
+        
+        for fato in fatos:
+            self.print_colored(f"• {fato}", "primary")
+        
+        self.print_success("\n🌟 Agora você faz parte da elite que entende o mundo da segurança digital!")
+        
+        self.pausar()
+    
+    def _secao_pratica_interativa(self) -> None:
+        """Seção de prática interativa do módulo"""
+        
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_section("HORA DE PRATICAR!", "🎯", "success")
+        self.print_colored("Vamos testar o que você aprendeu sobre segurança digital!", "text")
+        
+        # === INSTRUÇÕES PARA INICIANTES ===
+        self.print_tip("Para iniciantes: Cada exercício é opcional, mas recomendamos fazer todos!")
+        self.print_colored("\n🎓 SOBRE OS EXERCÍCIOS:", "info")
+        self.print_colored("• Não se preocupe se errar - faz parte do aprendizado!", "text")
+        self.print_colored("• Você pode tentar quantas vezes quiser", "text")
+        self.print_colored("• Digite 'help' se precisar de ajuda", "text")
+        self.print_colored("• Use Ctrl+C para voltar ao menu principal se necessário", "text")
+        
+        # === DEFINIÇÃO DOS EXERCÍCIOS ===
+        exercicios = [
+            {
+                'title': 'Quiz: Conhecimentos sobre Segurança Digital',
+                'type': 'quiz',
+                'questions': [
+                    {
+                        'question': 'Qual é o principal objetivo da criptografia?',
+                        'answer': ['proteger dados', 'proteger informações', 'esconder dados', 'ocultar informações'],
+                        'hint': 'Pense na função principal: manter dados seguros e inacessíveis para quem não deveria vê-los'
+                    },
+                    {
+                        'question': 'O que significa "validação de entrada"?',
+                        'answer': ['verificar dados', 'filtrar dados', 'validar dados', 'checar dados'],
+                        'hint': 'É o processo de confirmar se os dados que chegam ao programa são seguros'
+                    },
+                    {
+                        'question': 'Qual é o tamanho mínimo recomendado para senhas seguras?',
+                        'answer': ['12', '12 caracteres', 'doze'],
+                        'hint': 'Pense em um número que seja maior que 10 mas menor que 15'
+                    },
+                    {
+                        'question': 'O que é SQL Injection?',
+                        'answer': ['ataque sql', 'injeção sql', 'ataque banco dados', 'vulnerability'],
+                        'hint': 'É um tipo de ataque que explora falhas na forma como queries são construídas'
+                    },
+                    {
+                        'question': 'Qual o princípio que diz para dar apenas as permissões mínimas?',
+                        'answer': ['menor privilégio', 'princípio menor privilégio', 'least privilege'],
+                        'hint': 'Pense em dar o MÍNIMO de acesso necessário para cada usuário'
+                    }
+                ]
+            },
+            {
+                'title': 'Desafio: Complete o Código de Segurança',
+                'type': 'code_completion',
+                'exercises': [
+                    {
+                        'instruction': 'BÁSICO: Complete o código para gerar um hash SHA-256',
+                        'starter': 'import hashlib\n\nsenha = "minha_senha"\n# Complete aqui para gerar hash SHA-256\nhash_senha = \nprint(f"Hash: {hash_senha}")',
+                        'solution': 'hashlib.sha256(senha.encode()).hexdigest()',
+                        'type': 'simple'
+                    },
+                    {
+                        'instruction': 'INTERMEDIÁRIO: Complete a função de validação de senha',
+                        'starter': 'def validar_senha(senha):\n    if len(senha) < 8:\n        return False\n    # Complete: verificar se tem maiúscula, minúscula e número\n    \n    return True',
+                        'solution': 'if not any(c.isupper() for c in senha) or not any(c.islower() for c in senha) or not any(c.isdigit() for c in senha):\n        return False',
+                        'type': 'intermediate'
+                    },
+                    {
+                        'instruction': 'AVANÇADO: Complete o validador de entrada segura',
+                        'starter': 'import re\n\ndef validar_entrada(entrada):\n    # Complete: validar tamanho, caracteres seguros e não vazio\n    \n    return True, "Válido"',
+                        'solution': 'if not entrada or len(entrada) > 50 or not re.match(r"^[a-zA-Z0-9\\s_-]+$", entrada):\n        return False, "Inválido"\n    ',
+                        'type': 'advanced'
+                    }
+                ]
+            },
+            {
+                'title': 'Exercício Criativo: Construa seu Sistema de Autenticação',
+                'type': 'creative',
+                'instruction': 'Crie um sistema simples que cadastra usuários com senhas seguras, valida login e implementa pelo menos 3 regras de segurança que aprendemos!'
+            }
+        ]
+        
+        # === MENU PRINCIPAL DE EXERCÍCIOS ===
+        while True:
+            print("\nEscolha uma atividade:")
+            print("1. 📝 Quiz de Conhecimentos")
+            print("2. 💻 Complete o Código")
+            print("3. 🎨 Exercício Criativo")
+            print("0. Continuar para o Mini Projeto")
+            
+            try:
+                escolha = input("\n👉 Sua escolha: ").strip().lower()
+                
+                if escolha in ["0", "continuar", "sair", "proximo"]:
+                    break
+                elif escolha in ["1", "quiz", "conhecimentos"]:
+                    try:
+                        self._run_quiz(exercicios[0])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Quiz interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no quiz. Continuando...")
+                elif escolha in ["2", "codigo", "completar"]:
+                    try:
+                        self._run_code_completion(exercicios[1])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício de código interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício de código. Continuando...")
+                elif escolha in ["3", "criativo"]:
+                    try:
+                        self._run_creative_exercise(exercicios[2])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício criativo interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício criativo. Continuando...")
+                elif escolha in ["help", "ajuda", "h", "?"]:
+                    self._show_help()
+                else:
+                    self.print_warning("❌ Opção inválida! Digite 1, 2, 3, 0 ou 'help' para ajuda.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Operação cancelada pelo usuário. Voltando ao menu principal...")
+                return  # CRÍTICO: Return em vez de break para sair completamente
+            except Exception as e:
+                self.print_warning("❌ Erro inesperado no menu. Tente novamente.")
+    
+    def _show_help(self) -> None:
+        """Mostra ajuda sobre as opções disponíveis"""
+        self.print_section("AJUDA - SEÇÃO DE PRÁTICA", "❓", "info")
+        help_text = [
+            "📝 OPÇÃO 1 - Quiz: Teste seus conhecimentos sobre segurança digital",
+            "💻 OPÇÃO 2 - Complete o Código: 3 exercícios de programação segura",
+            "🎨 OPÇÃO 3 - Exercício Criativo: Construa um sistema de autenticação",
+            "🔢 OPÇÃO 0 - Continue para o Mini Projeto: Centro de Segurança Digital",
+            "",
+            "💡 DICAS:",
+            "• Você pode digitar o número ou palavras como 'quiz', 'codigo'",
+            "• Digite 'help' a qualquer momento para ver esta ajuda",
+            "• Use Ctrl+C se quiser voltar ao menu principal",
+            "• Recomendamos fazer todas as atividades para dominar segurança!"
+        ]
+        
+        for line in help_text:
+            if line:
+                self.print_colored(f"  {line}", "text")
+            else:
+                print()
+        
+        input("\n🔸 Pressione ENTER para voltar ao menu...")
+    
+    def _run_quiz(self, quiz_data: dict) -> None:
+        """Executa um quiz interativo"""
+        self.print_section(quiz_data['title'], "📝")
+        score = 0
+        total_questions = len(quiz_data['questions'])
+        
+        for i, q in enumerate(quiz_data['questions'], 1):
+            print(f"\n📝 Pergunta {i} de {total_questions}:")
+            correto = self.exercicio(
+                q['question'],
+                q['answer'],
+                q['hint']
+            )
+            if correto:
+                score += 1
+        
+        # Feedback detalhado baseado na pontuação
+        percentage = (score / total_questions) * 100
+        
+        self.print_success(f"\n🏆 RESULTADO: {score} de {total_questions} perguntas corretas ({percentage:.0f}%)")
+        
+        if percentage == 100:
+            self.print_success("🌟 PERFEITO! Você dominou completamente a segurança digital!")
+        elif percentage >= 80:
+            self.print_success("🎉 EXCELENTE! Você entende muito bem segurança!")
+        elif percentage >= 60:
+            self.print_colored("👍 BOM! Você está no caminho certo!", "info")
+        else:
+            self.print_colored("📚 Continue estudando! Revisite as seções se necessário.", "warning")
+            
+        self.pausar()
+    
+    def _run_code_completion(self, exercise_data: dict) -> None:
+        """Executa exercícios de completar código"""
+        self.print_section(exercise_data['title'], "💻", "success")
+        
+        for i, exercise in enumerate(exercise_data['exercises'], 1):
+            self.print_colored(f"\n🎯 EXERCÍCIO {i}: {exercise['type'].upper()}", "warning")
+            self.print_colored(exercise['instruction'], "text")
+            
+            self.print_code_section("CÓDIGO PARA COMPLETAR", exercise['starter'])
+            
+            print("\n✍️ Digite sua solução (ou 'skip' para pular):")
+            try:
+                resposta = input(">>> ").strip()
+                
+                if resposta.lower() == 'skip':
+                    self.print_colored("⏭️ Exercício pulado.", "warning")
+                    continue
+                    
+                if resposta:
+                    print("\n🚀 Testando sua solução:")
+                    try:
+                        # Substitui o placeholder com a resposta do usuário
+                        codigo_completo = exercise['starter']
+                        if '# Complete aqui' in codigo_completo:
+                            codigo_completo = codigo_completo.replace('# Complete aqui', resposta)
+                        elif 'hash_senha = ' in codigo_completo and not resposta.startswith('hashlib'):
+                            codigo_completo = codigo_completo.replace('hash_senha = ', f'hash_senha = {resposta}')
+                        else:
+                            # Para casos mais complexos, tentar executar a resposta diretamente
+                            exec(resposta)
+                            
+                        self.executar_codigo(codigo_completo)
+                        self.print_success("✅ Sua solução funcionou!")
+                        
+                        ver_solucao = input("\n💡 Quer ver a solução sugerida? (s/n): ").lower()
+                        if ver_solucao == 's':
+                            self.print_colored("\n🔍 SOLUÇÃO SUGERIDA:", "info")
+                            self.exemplo(exercise['solution'])
+                            
+                    except Exception as e:
+                        self.print_warning(f"❌ Erro ao executar: {str(e)}")
+                        self.print_colored("\n💡 SOLUÇÃO CORRETA:", "info")
+                        self.exemplo(exercise['solution'])
+                        
+                        # Tentar executar a solução correta
+                        try:
+                            codigo_correto = exercise['starter']
+                            if '# Complete aqui' in codigo_correto:
+                                codigo_correto = codigo_correto.replace('# Complete aqui', exercise['solution'])
+                            elif 'hash_senha = ' in codigo_correto:
+                                codigo_correto = codigo_correto.replace('hash_senha = ', f'hash_senha = {exercise["solution"]}')
+                            self.executar_codigo(codigo_correto)
+                        except:
+                            pass
+                        
+            except KeyboardInterrupt:
+                self.print_warning("\n⚠️ Exercício cancelado.")
+                return
+                
+        self.print_success("\n🎉 Parabéns! Você completou todos os exercícios de código!")
+        self.pausar()
+    
+    def _run_creative_exercise(self, exercise_data: dict) -> None:
+        """Executa exercício criativo"""
+        self.print_section(exercise_data['title'], "🎨", "accent")
+        self.print_colored(exercise_data['instruction'], "text")
+        
+        print("\n💡 EXEMPLO DE SISTEMA DE AUTENTICAÇÃO:")
+        exemplo_codigo = '''# Sistema básico de autenticação
+import hashlib
+import re
+
+usuarios = {}
+
+def cadastrar_usuario(nome, senha):
+    # Validar nome de usuário
+    if not re.match(r'^[a-zA-Z0-9_-]+$', nome):
+        return False, "Nome inválido"
+    
+    # Validar senha
+    if len(senha) < 8:
+        return False, "Senha muito curta"
+    
+    # Hash da senha
+    hash_senha = hashlib.sha256(senha.encode()).hexdigest()
+    usuarios[nome] = hash_senha
+    return True, "Usuário cadastrado!"
+
+def fazer_login(nome, senha):
+    if nome not in usuarios:
+        return False, "Usuário não encontrado"
+    
+    hash_senha = hashlib.sha256(senha.encode()).hexdigest()
+    if usuarios[nome] == hash_senha:
+        return True, "Login realizado!"
+    return False, "Senha incorreta"
+
+# Teste
+cadastrar_usuario("admin", "senha123!")
+fazer_login("admin", "senha123!")'''
+        
+        self.exemplo(exemplo_codigo)
+        self.executar_codigo(exemplo_codigo)
+            
+        print("\n✍️ Agora é sua vez! Crie seu sistema de autenticação:")
+        print("Dicas:")
+        print("• Use hashlib para senhas")
+        print("• Valide entradas com regex")
+        print("• Implemente pelo menos 3 regras de segurança")
+        print("Digite 'fim' quando terminar")
+        
+        linhas_codigo = []
+        try:
+            while True:
+                linha = input(">>> ")
+                if linha.lower() == 'fim':
+                    break
+                if linha.strip():
+                    linhas_codigo.append(linha)
+                    
+        except KeyboardInterrupt:
+            self.print_warning("\n⚠️ Exercício cancelado.")
+            return
+            
+        if linhas_codigo:
+            codigo_completo = '\n'.join(linhas_codigo)
+            print("\n🚀 Sua criação:")
+            try:
+                self.executar_codigo(codigo_completo)
+                self.print_success("\n🛡️ Fantástico! Você criou um sistema de autenticação seguro!")
+            except Exception as e:
+                self.print_warning(f"❌ Erro na execução: {str(e)}")
+                self.print_colored("💡 Continue praticando! Sistemas de segurança são complexos.", "info")
+        else:
+            self.print_colored("👋 Tudo bem, talvez na próxima vez!", "info")
+            
+        self.pausar()
+    
+    def _mini_projeto_centro_seguranca(self) -> None:
+        """Mini Projeto - Módulo 30: Centro de Segurança Digital"""
+        
+        # === CABEÇALHO IMPACTANTE ===
+        if self.ui:
+            self.ui.clear_screen()
+            self.ui.header("🛡️ MINI PROJETO: CENTRO DE SEGURANÇA DIGITAL")
+        else:
+            print("\n" + "="*50)
+            print("🛡️ MINI PROJETO: CENTRO DE SEGURANÇA DIGITAL")
+            print("="*50)
+        
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_success("🎉 Vamos criar seu Centro de Segurança Digital completo!")
+        
+        self.print_concept(
+            "Centro de Segurança Digital",
+            "Um sistema completo que combina geração de senhas seguras, validação de dados, criptografia e auditoria de segurança - tudo em um só lugar!"
+        )
+        
+        # === APLICAÇÕES NO MUNDO REAL ===
+        self.print_colored("\nEste tipo de sistema é usado por:", "text")
+        usos_praticos = [
+            "🏦 Bancos - Para validar e proteger dados de clientes",
+            "🏢 Empresas - Para auditoria interna de segurança",
+            "🔐 Gerenciadores de senha - Como 1Password e Bitwarden",
+            "🌐 Sites de e-commerce - Para proteger dados de pagamento",
+            "🏥 Hospitais - Para proteger dados médicos confidenciais"
+        ]
+        for uso in usos_praticos:
+            self.print_colored(f"• {uso}", "accent")
+        
+        # === DESENVOLVIMENTO PASSO A PASSO ===
+        
+        # PASSO 1: Definindo funcionalidades
+        self.print_section("PASSO 1: DEFININDO AS FUNCIONALIDADES", "📝", "info")
+        self.print_tip("Vamos construir um sistema com 5 funcionalidades principais!")
+        
+        funcionalidades = [
+            "🔑 Gerador de senhas ultra-seguras",
+            "🔍 Validador de entrada com múltiplas camadas",
+            "🔐 Sistema de criptografia e hash",
+            "⚖️ Avaliador de força de senhas",
+            "📊 Dashboard de segurança com relatórios"
+        ]
+        
+        for func in funcionalidades:
+            self.print_colored(f"✅ {func}", "success")
+        
+        input("\n🔸 Pressione ENTER para começar a construir...")
+        
+        try:
+            # PASSO 2: Construindo o sistema
+            self.print_section("PASSO 2: CONSTRUINDO O CENTRO DE SEGURANÇA", "⚙️", "success")
+            self.print_colored("Agora vamos escrever o código completo:", "text")
+            
+            # PASSO 3: Código final
+            self.print_section("PASSO 3: SEU CENTRO DE SEGURANÇA COMPLETO", "🎬", "warning")
+            
+            codigo_final = r'''# 🛡️ CENTRO DE SEGURANÇA DIGITAL
+# Módulo 30: Segurança
 
 import hashlib
 import secrets
-import time
-import json
+import string
 import re
-import threading
-from datetime import datetime, timedelta
-from typing import Dict, List, Set, Optional, Any, Callable
-from collections import defaultdict, deque
-from dataclasses import dataclass, asdict
-from enum import Enum
-import sqlite3
-from contextlib import contextmanager
+import base64
+from datetime import datetime
 
-# ===============================================
-# SISTEMA DE CRIPTOGRAFIA AVANÇADO
-# ===============================================
-
-class CryptoSuite:
-    """Suite completa de criptografia"""
-    
-    def __init__(self, master_key: str = None):
-        self.master_key = master_key or self._generate_master_key()
-        self.pepper = "SecureApp2024_GlobalPepper_!@#$%"
-    
-    def _generate_master_key(self) -> str:
-        """Gera chave mestra do sistema"""
-        return secrets.token_urlsafe(64)
-    
-    def hash_password_advanced(self, password: str, salt: str = None, 
-                             iterations: int = 120000) -> Dict[str, str]:
-        """Hash avançado de senha com múltiplas camadas"""
-        if salt is None:
-            salt = secrets.token_hex(32)
-        
-        # Camada 1: Combinar com pepper
-        password_peppered = password + self.pepper
-        
-        # Camada 2: PBKDF2 com alta iteração
-        hash1 = hashlib.pbkdf2_hmac(
-            'sha256',
-            password_peppered.encode(),
-            salt.encode(),
-            iterations
-        )
-        
-        # Camada 3: SHA-512 adicional com salt rotacionado
-        rotated_salt = salt[16:] + salt[:16]  # Rotacionar salt
-        hash2 = hashlib.sha512(hash1 + rotated_salt.encode()).digest()
-        
-        # Camada 4: Aplicar chave mestra
-        final_hash = hashlib.sha256(hash2 + self.master_key.encode()).hexdigest()
-        
-        return {
-            "hash": final_hash,
-            "salt": salt,
-            "iterations": iterations,
-            "algorithm": "PBKDF2-SHA256-Multi",
-            "created_at": datetime.now().isoformat()
-        }
-    
-    def verify_password_advanced(self, password: str, stored_data: Dict[str, str]) -> bool:
-        """Verifica senha com hash avançado"""
-        computed = self.hash_password_advanced(
-            password, 
-            stored_data["salt"],
-            stored_data["iterations"]
-        )
-        
-        return secrets.compare_digest(computed["hash"], stored_data["hash"])
-    
-    def encrypt_data(self, data: str, key: str = None) -> Dict[str, str]:
-        """Criptografia simétrica de dados (simulada)"""
-        if key is None:
-            key = self.master_key
-        
-        # Simulação de AES (em produção usar cryptography library)
-        salt = secrets.token_hex(16)
-        combined_key = hashlib.sha256((key + salt).encode()).hexdigest()
-        
-        # "Criptografar" usando XOR simples (apenas para demonstração)
-        encrypted = ""
-        for i, char in enumerate(data):
-            key_char = combined_key[i % len(combined_key)]
-            encrypted += chr(ord(char) ^ ord(key_char))
-        
-        encrypted_b64 = secrets.token_urlsafe(len(data))  # Simulação
-        
-        return {
-            "encrypted": encrypted_b64,
-            "salt": salt,
-            "algorithm": "AES-256-GCM",
-            "timestamp": datetime.now().isoformat()
-        }
-    
-    def generate_secure_token(self, purpose: str = "general", 
-                            expiry_hours: int = 24) -> Dict[str, Any]:
-        """Gera token seguro com propósito específico"""
-        token_data = {
-            "token": secrets.token_urlsafe(48),
-            "purpose": purpose,
-            "created_at": datetime.now(),
-            "expires_at": datetime.now() + timedelta(hours=expiry_hours),
-            "used": False
-        }
-        
-        # Assinar token com HMAC
-        token_string = f"{token_data['token']}{purpose}{token_data['created_at'].isoformat()}"
-        signature = hmac.new(
-            self.master_key.encode(),
-            token_string.encode(),
-            hashlib.sha256
-        ).hexdigest()
-        
-        token_data["signature"] = signature
-        return token_data
-    
-    def validate_token(self, token_data: Dict[str, Any]) -> bool:
-        """Valida token com verificação de assinatura"""
-        if token_data.get("used", False):
-            return False
-        
-        if datetime.now() > token_data["expires_at"]:
-            return False
-        
-        # Verificar assinatura
-        token_string = f"{token_data['token']}{token_data['purpose']}{token_data['created_at'].isoformat()}"
-        expected_signature = hmac.new(
-            self.master_key.encode(),
-            token_string.encode(),
-            hashlib.sha256
-        ).hexdigest()
-        
-        return secrets.compare_digest(token_data["signature"], expected_signature)
-
-# ===============================================
-# SISTEMA DE DETECÇÃO DE INTRUSÃO (IDS)
-# ===============================================
-
-class SecurityEvent(Enum):
-    LOGIN_ATTEMPT = "login_attempt"
-    LOGIN_SUCCESS = "login_success"
-    LOGIN_FAILURE = "login_failure"
-    PERMISSION_DENIED = "permission_denied"
-    DATA_ACCESS = "data_access"
-    SYSTEM_COMMAND = "system_command"
-    FILE_ACCESS = "file_access"
-    NETWORK_REQUEST = "network_request"
-
-@dataclass
-class SecurityLog:
-    timestamp: datetime
-    event_type: SecurityEvent
-    user_id: Optional[str]
-    ip_address: str
-    user_agent: str
-    resource: str
-    action: str
-    success: bool
-    risk_score: int
-    additional_data: Dict[str, Any]
-
-class AdvancedIDS:
-    """Sistema de Detecção de Intrusão Avançado"""
-    
+class CentroSeguranca:
     def __init__(self):
-        self.logs: List[SecurityLog] = []
-        self.anomaly_thresholds = {
-            "login_failures": 5,
-            "permission_denials": 3,
-            "unusual_hours": (22, 6),  # 22:00 às 06:00
-            "multiple_ips": 3,
-            "rapid_requests": 50  # requests por minuto
-        }
+        self.historico_senhas = []
+        self.tentativas_login = {}
         
-        # Padrões comportamentais por usuário
-        self.user_profiles = defaultdict(lambda: {
-            "usual_ips": set(),
-            "usual_hours": defaultdict(int),
-            "usual_resources": defaultdict(int),
-            "last_activity": None
+    def gerar_senha_ultra_segura(self, tamanho=16):
+        """Gera senha criptograficamente segura"""
+        caracteres = string.ascii_letters + string.digits + "!@#$%^&*()_+-="
+        senha = ''.join(secrets.choice(caracteres) for _ in range(tamanho))
+        self.historico_senhas.append({
+            'senha': senha[:4] + '*' * (len(senha) - 4),  # Só mostra início
+            'timestamp': datetime.now().strftime('%H:%M:%S'),
+            'forca': self.avaliar_forca(senha)[0]
         })
-        
-        # Machine Learning simples para detecção
-        self.ml_features = defaultdict(list)
-        
-    def log_event(self, event_type: SecurityEvent, user_id: str, ip_address: str,
-                  user_agent: str, resource: str, action: str, success: bool,
-                  additional_data: Dict = None) -> SecurityLog:
-        """Registra evento de segurança"""
-        
-        # Calcular score de risco
-        risk_score = self._calculate_risk_score(
-            event_type, user_id, ip_address, resource, success
-        )
-        
-        log_entry = SecurityLog(
-            timestamp=datetime.now(),
-            event_type=event_type,
-            user_id=user_id,
-            ip_address=ip_address,
-            user_agent=user_agent,
-            resource=resource,
-            action=action,
-            success=success,
-            risk_score=risk_score,
-            additional_data=additional_data or {}
-        )
-        
-        self.logs.append(log_entry)
-        
-        # Atualizar perfil do usuário
-        if user_id:
-            self._update_user_profile(user_id, log_entry)
-        
-        # Detectar anomalias
-        anomalies = self._detect_anomalies(log_entry)
-        
-        # Gerar alertas se necessário
-        if anomalies:
-            self._generate_alerts(log_entry, anomalies)
-        
-        return log_entry
+        return senha
     
-    def _calculate_risk_score(self, event_type: SecurityEvent, user_id: str,
-                            ip_address: str, resource: str, success: bool) -> int:
-        """Calcula score de risco do evento"""
-        score = 0
+    def avaliar_forca(self, senha):
+        """Avalia força da senha com pontuação detalhada"""
+        pontos = 0
+        criterios = []
         
-        # Score base por tipo de evento
-        base_scores = {
-            SecurityEvent.LOGIN_FAILURE: 20,
-            SecurityEvent.PERMISSION_DENIED: 30,
-            SecurityEvent.SYSTEM_COMMAND: 40,
-            SecurityEvent.LOGIN_SUCCESS: 5,
-            SecurityEvent.DATA_ACCESS: 10,
-            SecurityEvent.FILE_ACCESS: 15,
-            SecurityEvent.NETWORK_REQUEST: 5
-        }
-        
-        score += base_scores.get(event_type, 10)
-        
-        # Penalizar falhas
-        if not success:
-            score += 15
-        
-        # Verificar IP conhecido
-        if user_id and ip_address not in self.user_profiles[user_id]["usual_ips"]:
-            score += 25
-        
-        # Verificar horário incomum
-        current_hour = datetime.now().hour
-        unusual_start, unusual_end = self.anomaly_thresholds["unusual_hours"]
-        if unusual_start <= current_hour or current_hour <= unusual_end:
-            score += 10
-        
-        # Verificar recursos sensíveis
-        sensitive_resources = ["/admin", "/api/system", "/config", "/users"]
-        if any(sensitive in resource for sensitive in sensitive_resources):
-            score += 20
-        
-        return min(score, 100)  # Máximo 100
-    
-    def _update_user_profile(self, user_id: str, log_entry: SecurityLog):
-        """Atualiza perfil comportamental do usuário"""
-        profile = self.user_profiles[user_id]
-        
-        # Atualizar IPs usuais
-        profile["usual_ips"].add(log_entry.ip_address)
-        
-        # Atualizar horários usuais
-        hour = log_entry.timestamp.hour
-        profile["usual_hours"][hour] += 1
-        
-        # Atualizar recursos usuais
-        profile["usual_resources"][log_entry.resource] += 1
-        
-        # Atualizar última atividade
-        profile["last_activity"] = log_entry.timestamp
-        
-        # Limitar tamanho dos perfis
-        if len(profile["usual_ips"]) > 10:
-            profile["usual_ips"] = set(list(profile["usual_ips"])[-10:])
-    
-    def _detect_anomalies(self, log_entry: SecurityLog) -> List[str]:
-        """Detecta anomalias comportamentais"""
-        anomalies = []
-        
-        # 1. Múltiplas falhas de login
-        if log_entry.event_type == SecurityEvent.LOGIN_FAILURE:
-            recent_failures = len([
-                log for log in self.logs[-50:]  # Últimos 50 eventos
-                if (log.event_type == SecurityEvent.LOGIN_FAILURE and
-                    log.ip_address == log_entry.ip_address and
-                    (log_entry.timestamp - log.timestamp).seconds < 300)  # 5 minutos
-            ])
-            
-            if recent_failures >= self.anomaly_thresholds["login_failures"]:
-                anomalies.append("MULTIPLE_LOGIN_FAILURES")
-        
-        # 2. Atividade em horário incomum
-        hour = log_entry.timestamp.hour
-        unusual_start, unusual_end = self.anomaly_thresholds["unusual_hours"]
-        if unusual_start <= hour or hour <= unusual_end:
-            if log_entry.user_id:
-                usual_hours = self.user_profiles[log_entry.user_id]["usual_hours"]
-                if usual_hours[hour] < 2:  # Menos de 2 atividades neste horário
-                    anomalies.append("UNUSUAL_HOUR_ACTIVITY")
-        
-        # 3. Novo IP para usuário
-        if (log_entry.user_id and 
-            log_entry.ip_address not in self.user_profiles[log_entry.user_id]["usual_ips"]):
-            anomalies.append("NEW_IP_ADDRESS")
-        
-        # 4. Múltiplos IPs para mesmo usuário
-        if log_entry.user_id:
-            recent_ips = set([
-                log.ip_address for log in self.logs[-20:]
-                if (log.user_id == log_entry.user_id and
-                    (log_entry.timestamp - log.timestamp).seconds < 3600)  # 1 hora
-            ])
-            
-            if len(recent_ips) >= self.anomaly_thresholds["multiple_ips"]:
-                anomalies.append("MULTIPLE_IP_ADDRESSES")
-        
-        # 5. Requests muito rápidos
-        rapid_requests = len([
-            log for log in self.logs[-100:]
-            if (log.ip_address == log_entry.ip_address and
-                (log_entry.timestamp - log.timestamp).seconds < 60)  # 1 minuto
-        ])
-        
-        if rapid_requests >= self.anomaly_thresholds["rapid_requests"]:
-            anomalies.append("RAPID_REQUESTS")
-        
-        return anomalies
-    
-    def _generate_alerts(self, log_entry: SecurityLog, anomalies: List[str]):
-        """Gera alertas de segurança"""
-        for anomaly in anomalies:
-            alert = {
-                "timestamp": datetime.now().isoformat(),
-                "severity": self._get_alert_severity(anomaly),
-                "type": anomaly,
-                "user_id": log_entry.user_id,
-                "ip_address": log_entry.ip_address,
-                "resource": log_entry.resource,
-                "description": self._get_alert_description(anomaly),
-                "risk_score": log_entry.risk_score
-            }
-            
-            # Em produção, enviaria para sistema de alertas
-            print(f"🚨 ALERTA DE SEGURANÇA: {alert['severity']} - {alert['description']}")
-    
-    def _get_alert_severity(self, anomaly: str) -> str:
-        """Determina severidade do alerta"""
-        high_severity = ["MULTIPLE_LOGIN_FAILURES", "MULTIPLE_IP_ADDRESSES"]
-        medium_severity = ["UNUSUAL_HOUR_ACTIVITY", "RAPID_REQUESTS"]
-        
-        if anomaly in high_severity:
-            return "HIGH"
-        elif anomaly in medium_severity:
-            return "MEDIUM"
+        if len(senha) >= 12:
+            pontos += 3
+            criterios.append("✅ Comprimento adequado")
+        elif len(senha) >= 8:
+            pontos += 1
+            criterios.append("⚠️ Comprimento mínimo")
         else:
-            return "LOW"
+            criterios.append("❌ Muito curta")
+        
+        if any(c.islower() for c in senha):
+            pontos += 1
+            criterios.append("✅ Minúsculas")
+        
+        if any(c.isupper() for c in senha):
+            pontos += 1
+            criterios.append("✅ Maiúsculas")
+        
+        if any(c.isdigit() for c in senha):
+            pontos += 1
+            criterios.append("✅ Números")
+        
+        if any(c in "!@#$%^&*()_+-=" for c in senha):
+            pontos += 2
+            criterios.append("✅ Símbolos especiais")
+        
+        # Classificação
+        if pontos >= 7:
+            nivel = "🛡️ ULTRA FORTE"
+        elif pontos >= 5:
+            nivel = "💪 FORTE"
+        elif pontos >= 3:
+            nivel = "⚠️ MÉDIA"
+        else:
+            nivel = "❌ FRACA"
+        
+        return nivel, pontos, criterios
     
-    def _get_alert_description(self, anomaly: str) -> str:
-        """Gera descrição do alerta"""
-        descriptions = {
-            "MULTIPLE_LOGIN_FAILURES": "Múltiplas tentativas de login falharam",
-            "UNUSUAL_HOUR_ACTIVITY": "Atividade em horário incomum detectada",
-            "NEW_IP_ADDRESS": "Acesso de novo endereço IP",
-            "MULTIPLE_IP_ADDRESSES": "Usuário acessando de múltiplos IPs",
-            "RAPID_REQUESTS": "Número excessivo de requests detectado"
-        }
-        return descriptions.get(anomaly, "Anomalia de segurança detectada")
+    def validar_entrada_segura(self, entrada, tipo="geral"):
+        """Validação multi-camada com diferentes tipos"""
+        if not entrada or not entrada.strip():
+            return False, "❌ Entrada vazia"
+        
+        entrada = entrada.strip()
+        
+        if tipo == "email":
+            if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', entrada):
+                return False, "❌ Email inválido"
+        elif tipo == "usuario":
+            if len(entrada) > 20 or not re.match(r'^[a-zA-Z0-9_-]+$', entrada):
+                return False, "❌ Usuário inválido (só letras, números, _ e -)"
+        elif tipo == "geral":
+            if len(entrada) > 100:
+                return False, "❌ Entrada muito longa"
+            if re.search(r'[<>"\\'%;()&+]', entrada):
+                return False, "❌ Caracteres perigosos detectados"
+        
+        return True, "✅ Entrada válida"
     
-    def get_security_summary(self, hours: int = 24) -> Dict[str, Any]:
-        """Gera resumo de segurança"""
-        cutoff_time = datetime.now() - timedelta(hours=hours)
-        recent_logs = [log for log in self.logs if log.timestamp > cutoff_time]
+    def criptografar_dados(self, dados):
+        """Sistema de criptografia usando hash e base64"""
+        # Hash para integridade
+        hash_dados = hashlib.sha256(dados.encode()).hexdigest()
         
-        # Estatísticas gerais
-        total_events = len(recent_logs)
-        failed_events = len([log for log in recent_logs if not log.success])
-        high_risk_events = len([log for log in recent_logs if log.risk_score >= 50])
-        
-        # Top IPs por atividade
-        ip_activity = defaultdict(int)
-        for log in recent_logs:
-            ip_activity[log.ip_address] += 1
-        
-        top_ips = sorted(ip_activity.items(), key=lambda x: x[1], reverse=True)[:5]
-        
-        # Eventos por tipo
-        event_types = defaultdict(int)
-        for log in recent_logs:
-            event_types[log.event_type.value] += 1
+        # Codificação base64 para "criptografia" simples
+        dados_bytes = dados.encode('utf-8')
+        dados_codificados = base64.b64encode(dados_bytes).decode('utf-8')
         
         return {
-            "period_hours": hours,
-            "summary": {
-                "total_events": total_events,
-                "failed_events": failed_events,
-                "success_rate": ((total_events - failed_events) / total_events * 100) if total_events > 0 else 0,
-                "high_risk_events": high_risk_events,
-                "risk_percentage": (high_risk_events / total_events * 100) if total_events > 0 else 0
-            },
-            "top_ips": top_ips,
-            "event_types": dict(event_types),
-            "active_users": len(set(log.user_id for log in recent_logs if log.user_id))
+            'dados_codificados': dados_codificados,
+            'hash_verificacao': hash_dados[:16],  # Só os primeiros 16 chars
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
-'''
+    
+    def dashboard_seguranca(self):
+        """Mostra relatório de segurança do sistema"""
+        print("\\n" + "="*50)
+        print("📊 DASHBOARD DE SEGURANÇA")
+        print("="*50)
         
-        self.exemplo(codigo_projeto)
-        self.executar_codigo(codigo_projeto)
+        print(f"🔑 Senhas geradas: {len(self.historico_senhas)}")
         
-        print("\n🏆 PARABÉNS! Centro de Segurança completo criado!")
-        print("🎯 Aplicação real: empresas, governo, sistemas críticos")
+        if self.historico_senhas:
+            print("\\n🕐 ÚLTIMAS SENHAS GERADAS:")
+            for i, entrada in enumerate(self.historico_senhas[-3:], 1):
+                print(f"  {i}. {entrada['senha']} - {entrada['forca']} ({entrada['timestamp']})")
         
-        # Registra conclusão do mini projeto
-        self.complete_mini_project("Centro de Segurança Completo")
+        print("\\n🛡️ STATUS DO SISTEMA: ✅ OPERACIONAL")
+        print("🔒 NÍVEL DE SEGURANÇA: 🏆 MÁXIMO")
+
+# === DEMONSTRAÇÃO DO SISTEMA ===
+print("🚀 INICIALIZANDO CENTRO DE SEGURANÇA DIGITAL...")
+centro = CentroSeguranca()
+
+print("\\n1️⃣ GERANDO SENHAS ULTRA-SEGURAS:")
+for i in range(3):
+    senha = centro.gerar_senha_ultra_segura(14)
+    nivel, pontos, criterios = centro.avaliar_forca(senha)
+    print(f"   Senha {i+1}: {senha}")
+    print(f"   Avaliação: {nivel} ({pontos}/8 pontos)")
+
+print("\\n2️⃣ TESTANDO VALIDAÇÃO DE ENTRADA:")
+testes = [
+    ("usuario123", "usuario"),
+    ("test@email.com", "email"),
+    ("'; DROP TABLE users; --", "geral"),
+    ("dados_normais", "geral")
+]
+
+for teste, tipo in testes:
+    valido, msg = centro.validar_entrada_segura(teste, tipo)
+    print(f"   '{teste}' ({tipo}) → {msg}")
+
+print("\\n3️⃣ CRIPTOGRAFANDO DADOS SENSÍVEIS:")
+dados_sensiveis = "Informação ultra secreta da empresa"
+resultado = centro.criptografar_dados(dados_sensiveis)
+print(f"   Dados originais: {dados_sensiveis}")
+print(f"   Dados codificados: {resultado['dados_codificados'][:30]}...")
+print(f"   Hash verificação: {resultado['hash_verificacao']}")
+
+print("\\n4️⃣ DASHBOARD FINAL:")
+centro.dashboard_seguranca()
+
+print("\\n🎉 CENTRO DE SEGURANÇA DIGITAL OPERACIONAL!")
+print("🛡️ Seus dados estão protegidos com tecnologia militar!")'''
+            
+            # === EXECUÇÃO DO RESULTADO ===
+            self.print_section("RESULTADO FINAL", "🎬", "warning")
+            self.print_colored("Vamos ver seu Centro de Segurança Digital em ação:", "text")
+            self.executar_codigo(codigo_final)
+            
+        except KeyboardInterrupt:
+            self.print_warning("Projeto cancelado pelo usuário")
+            return
+        
+        # === MENSAGEM DE CONQUISTA ===
+        self.print_success("🎉 PARABÉNS! Você criou um Centro de Segurança Digital completo!")
+        
+        # === APLICAÇÕES AVANÇADAS ===
+        self.print_section("PRÓXIMOS PASSOS", "🚀", "info")
+        proximos_passos = [
+            "🔐 Implementar criptografia AES real para dados críticos",
+            "🌐 Adicionar integração com APIs de verificação de vazamentos",
+            "📊 Expandir dashboard com métricas avançadas de segurança",
+            "🔄 Implementar sistema de backup automático criptografado",
+            "👥 Adicionar sistema de múltiplos usuários com permissões",
+            "🚨 Implementar alertas em tempo real para tentativas de invasão"
+        ]
+        for passo in proximos_passos:
+            self.print_colored(f"• {passo}", "primary")
+        
+        self.print_success("\n🏆 CONQUISTA DESBLOQUEADA: Guardião Digital!")
+        self.print_colored("Você agora domina os fundamentos da segurança digital e pode proteger qualquer sistema!", "accent")
+        
+        # === REGISTRO DE CONCLUSÃO ===
+        self.complete_mini_project("Centro de Segurança Digital")
         
         self.pausar()
-
-
-# Para teste standalone
-if __name__ == "__main__":
-    module = Modulo30Seguranca()
-    print("Teste do módulo 30 - versão standalone")
-    module._seguranca()
-

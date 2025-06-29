@@ -192,7 +192,9 @@ class PythonCourse:
     @property
     def progressive_projects(self):
         if self._lazy_progressive_projects is None:
-            self._lazy_progressive_projects = ProgressiveProjectsSystem(self.ui, self.progress)
+            # Só cria se course_controller já existe
+            course_controller = getattr(self, 'course_controller', None)
+            self._lazy_progressive_projects = ProgressiveProjectsSystem(self.ui, self.progress, course_controller)
         return self._lazy_progressive_projects
     
     @property
@@ -345,6 +347,10 @@ class PythonCourse:
         # Inicializa outros controladores
         self.course_controller = CourseController(components)
         self.session_manager = SessionManager(components)
+        
+        # Atualiza referência no progressive_projects se já foi criado
+        if self._lazy_progressive_projects is not None:
+            self._lazy_progressive_projects.course_controller = self.course_controller
     
     def _setup_integrations(self) -> None:
         """Configura integrações entre componentes"""

@@ -6,6 +6,7 @@ Módulo 29: APIs e Web
 Aprenda a criar APIs REST, usar FastAPI e desenvolver serviços web
 """
 
+import time
 from ..shared.base_module import BaseModule
 
 
@@ -25,12 +26,13 @@ class Modulo29ApisWeb(BaseModule):
             return
         
         try:
-            self._apis_web()
+            self._apis_web_principal()
         except Exception as e:
             self.error_handler(lambda: None)
     
-    def _apis_web(self) -> None:
-        """Conteúdo principal sobre APIs e Web"""
+    def _apis_web_principal(self) -> None:
+        """Conteúdo principal do módulo APIs e Web"""
+        # === CABEÇALHO VISUAL ===
         if self.ui:
             self.ui.clear_screen()
             self.ui.header("🌐 MÓDULO 29: APIs E WEB")
@@ -39,2332 +41,1483 @@ class Modulo29ApisWeb(BaseModule):
             print("🌐 MÓDULO 29: APIs E WEB")
             print("="*50)
         
-        print("🌐 APIs são a BASE da comunicação moderna entre sistemas!")
-        print("🚀 FastAPI e Flask permitem criar serviços web profissionais!")
+        # === MENSAGENS MOTIVACIONAIS ===
+        self.print_success("🌐 Bem-vindo ao mundo das APIs e desenvolvimento web! 🎉")
+        self.print_tip("Este módulo está dividido em seções interativas. Você controla o ritmo!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        O QUE SÃO APIs?")
-        print("═══════════════════════════════════════════════")
+        # === FLUXO PRINCIPAL COM TRATAMENTO DE CTRL+C ===
         
-        print("\n🎯 API (Application Programming Interface):")
-        print("• 🔗 Interface para comunicação entre sistemas")
-        print("• 📡 REST - Representational State Transfer")
-        print("• 🌍 HTTP - protocolo de comunicação web")
-        print("• 📄 JSON - formato de troca de dados")
-        print("• 🔐 Autenticação e autorização")
+        # 1. Sistema de navegação por seções
+        try:
+            self._navegacao_secoes_interativas()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Navegação interrompida pelo usuário. Voltando ao menu principal...")
+            return
+        
+        # 2. Seção de Prática Interativa
+        try:
+            self._secao_pratica_interativa()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Módulo interrompido pelo usuário. Voltando ao menu principal...")
+            return
+        
+        # 3. Mini Projeto Prático
+        try:
+            self._mini_projeto_api_completa()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Mini projeto interrompido. Voltando ao menu principal...")
+            return
+        
+        # 4. Marcar módulo como completo
+        self.complete_module()
+    
+    def _navegacao_secoes_interativas(self) -> None:
+        """Sistema de navegação por seções do módulo"""
+        
+        # === DEFINIÇÃO DAS SEÇÕES ===
+        secoes = [
+            {
+                'id': 'secao_conceito_apis',
+                'titulo': '🎯 O que são APIs?',
+                'descricao': 'Entenda o conceito fundamental de APIs',
+                'funcao': self._secao_conceito_apis
+            },
+            {
+                'id': 'secao_como_funcionam',
+                'titulo': '⚙️ Como APIs funcionam?',
+                'descricao': 'Veja o processo de comunicação passo a passo',
+                'funcao': self._secao_como_funcionam
+            },
+            {
+                'id': 'secao_exemplos_praticos',
+                'titulo': '💡 Exemplos práticos com Flask',
+                'descricao': 'Veja APIs em ação com código real',
+                'funcao': self._secao_exemplos_praticos
+            },
+            {
+                'id': 'secao_fastapi_moderno',
+                'titulo': '🚀 FastAPI - O futuro das APIs',
+                'descricao': 'Descubra o framework mais moderno',
+                'funcao': self._secao_fastapi_moderno
+            },
+            {
+                'id': 'secao_autenticacao_seguranca',
+                'titulo': '🔐 Autenticação e segurança',
+                'descricao': 'Proteja suas APIs como um profissional',
+                'funcao': self._secao_autenticacao_seguranca
+            },
+            {
+                'id': 'secao_casos_uso_reais',
+                'titulo': '🌍 Onde usar na vida real?',
+                'descricao': 'Aplicações práticas de APIs',
+                'funcao': self._secao_casos_uso_reais
+            },
+            {
+                'id': 'secao_melhores_praticas',
+                'titulo': '⭐ Melhores práticas',
+                'descricao': 'Dicas de profissionais experientes',
+                'funcao': self._secao_melhores_praticas
+            }
+        ]
+        
+        secoes_visitadas = set()
+        
+        # === LOOP PRINCIPAL DE NAVEGAÇÃO ===
+        while True:
+            # Limpa tela e mostra cabeçalho
+            self.ui.clear_screen() if self.ui else print("\n" + "="*50)
+            self.print_section("NAVEGAÇÃO DO MÓDULO", "📚", "accent")
+            self.print_colored("Escolha uma seção para estudar:", "text")
+            
+            # Lista todas as seções com status
+            print()
+            for i, secao in enumerate(secoes, 1):
+                status = "✅" if secao['id'] in secoes_visitadas else "📖"
+                print(f"{status} {i}. {secao['titulo']}")
+                self.print_colored(f"    {secao['descricao']}", "text")
+                print()
+            
+            print("0. 🎯 Continuar para os Exercícios Práticos")
+            
+            # Mostra progresso visual
+            progresso = len(secoes_visitadas)
+            total = len(secoes)
+            self.print_colored(f"\n📊 Progresso: {progresso}/{total} seções visitadas", "info")
+            
+            if progresso == total:
+                self.print_success("🌟 Você completou todas as seções! Está pronto para praticar!")
+            
+            # Processa escolha do usuário
+            try:
+                escolha = input(f"\n👉 Escolha uma seção (1-{len(secoes)}) ou 0 para continuar: ").strip()
+                
+                if escolha == "0":
+                    # Verifica se visitou seções suficientes
+                    if progresso >= 3:  # Pelo menos 3 seções visitadas
+                        break
+                    else:
+                        self.print_warning("📚 Recomendamos visitar pelo menos 3 seções antes de continuar!")
+                        continuar = input("Quer continuar mesmo assim? (s/n): ").lower()
+                        if continuar in ['s', 'sim', 'yes']:
+                            break
+                elif escolha.isdigit() and 1 <= int(escolha) <= len(secoes):
+                    # Executa seção escolhida
+                    idx = int(escolha) - 1
+                    secoes[idx]['funcao']()
+                    secoes_visitadas.add(secoes[idx]['id'])
+                else:
+                    self.print_warning(f"❌ Opção inválida! Digite um número de 1 a {len(secoes)} ou 0.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Pulando para exercícios práticos...")
+                break
+            except Exception as e:
+                self.print_warning(f"❌ Erro: {str(e)}. Tente novamente.")
+    
+    def _secao_conceito_apis(self) -> None:
+        """Seção: O que são APIs?"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        # === CABEÇALHO ATRATIVO ===
+        self.print_section("O QUE SÃO APIs?", "🎯")
+        
+        # === DEFINIÇÃO DO CONCEITO ===
+        self.print_concept(
+            "API (Application Programming Interface)",
+            "Uma interface que permite que diferentes sistemas 'conversem' entre si, trocando informações de forma padronizada."
+        )
+        
+        # === DICA RELACIONADA ===
+        self.print_tip("APIs são como garçons em um restaurante - eles levam seu pedido para a cozinha e trazem de volta o que você pediu!")
+        
+        # === ANALOGIA DO COTIDIANO ===
+        self.print_colored("\n🏠 ANALOGIA DO DIA A DIA:", "warning")
+        self.print_colored("Imagine que você está em um restaurante:", "text")
+        self.print_colored("- VOCÊ é o cliente (aplicação que faz o pedido)", "text")
+        self.print_colored("- GARÇOM é a API (intermediário que leva e traz informações)", "text")
+        self.print_colored("- COZINHA é o servidor (onde os dados são processados)", "text")
+        self.print_colored("- PRATO é a resposta (dados que você recebe de volta)", "text")
+        input("\n🔸 Pressione ENTER para continuar...")
+        
+        # === EXPLICAÇÃO TÉCNICA GRADUAL ===
+        self.print_colored("\n🔧 COMO FUNCIONA NA PRÁTICA:", "info")
+        passos_tecnicos = [
+            "1. 📱 Aplicação faz uma REQUISIÇÃO (HTTP GET, POST, etc.)",
+            "2. 🌐 API recebe e processa a requisição",
+            "3. 💾 Servidor busca/modifica dados conforme necessário",
+            "4. 📄 API retorna uma RESPOSTA (geralmente em JSON)"
+        ]
+        
+        for i, passo in enumerate(passos_tecnicos, 1):
+            self.print_colored(passo, "text")
+            if i < len(passos_tecnicos):
+                input("   ⏳ Pressione ENTER para o próximo passo...")
+        
+        # === EXEMPLO DE CÓDIGO ===
+        self.print_colored("\n💻 EXEMPLO PRÁTICO:", "success")
+        codigo_exemplo = '''# Fazendo uma requisição para uma API simples
+import requests
+
+# Requisição GET para buscar informações
+response = requests.get("https://api.github.com/users/python")
+
+# Verificar se deu certo
+if response.status_code == 200:
+    dados = response.json()
+    print(f"Nome: {dados['name']}")
+    print(f"Repositórios públicos: {dados['public_repos']}")
+else:
+    print(f"Erro: {response.status_code}")'''
+        
+        self.exemplo(codigo_exemplo)
+        
+        print("\n🚀 Vamos ver funcionando:")
+        self.executar_codigo(codigo_exemplo)
+        
+        # === APLICAÇÕES NO MUNDO REAL ===
+        self.print_colored("\n🌍 ONDE É USADO NO MUNDO REAL:", "accent")
+        aplicacoes = [
+            "WhatsApp - API para enviar mensagens entre dispositivos",
+            "Instagram - API para carregar fotos e stories",
+            "Netflix - API para buscar filmes e séries",
+            "Spotify - API para reproduzir músicas",
+            "Google Maps - API para calcular rotas"
+        ]
+        for app in aplicacoes:
+            self.print_colored(f"• {app}", "primary")
         
         self.pausar()
+    
+    def _secao_como_funcionam(self) -> None:
+        """Seção: Como APIs funcionam?"""
+        if self.ui:
+            self.ui.clear_screen()
         
-        print("\n🌐 Criando API com Flask:")
+        self.print_section("COMO APIS FUNCIONAM?", "⚙️", "success")
         
-        codigo1 = '''# API REST básica com Flask
-from flask import Flask, jsonify, request
-from datetime import datetime
-import json
-
-# Simulando banco de dados em memória
-usuarios_db = [
-    {"id": 1, "nome": "João Silva", "email": "joao@exemplo.com", "ativo": True},
-    {"id": 2, "nome": "Maria Santos", "email": "maria@exemplo.com", "ativo": True},
-    {"id": 3, "nome": "Carlos Lima", "email": "carlos@exemplo.com", "ativo": False},
-]
-
-produtos_db = [
-    {"id": 1, "nome": "Notebook", "preco": 2500.00, "categoria": "Eletrônicos"},
-    {"id": 2, "nome": "Mouse", "preco": 50.00, "categoria": "Acessórios"},
-    {"id": 3, "nome": "Teclado", "preco": 150.00, "categoria": "Acessórios"},
-]
+        self.print_colored("🔍 Vamos desvendar o processo passo a passo:", "text")
+        
+        # === HTTP METHODS ===
+        self.print_colored("\n📡 MÉTODOS HTTP - As Ações da API:", "accent")
+        
+        metodos = [
+            ("GET", "🔍 Buscar dados", "Como pedir o cardápio"),
+            ("POST", "➕ Criar novos dados", "Como fazer um novo pedido"),
+            ("PUT", "✏️ Atualizar dados completos", "Como trocar todo o pedido"),
+            ("DELETE", "🗑️ Remover dados", "Como cancelar o pedido")
+        ]
+        
+        for metodo, descricao, analogia in metodos:
+            self.print_colored(f"\n{metodo}: {descricao}", "warning")
+            self.print_colored(f"   {analogia}", "text")
+            input("   ⏳ Pressione ENTER para o próximo método...")
+        
+        # === STATUS CODES ===
+        self.print_colored("\n📊 CÓDIGOS DE RESPOSTA - Como a API responde:", "accent")
+        
+        status_codes = [
+            ("200 OK", "✅ Sucesso total", "Pedido servido perfeitamente!"),
+            ("201 Created", "🆕 Criado com sucesso", "Novo prato adicionado ao cardápio!"),
+            ("400 Bad Request", "❌ Pedido mal feito", "Você pediu pizza de chocolate..."),
+            ("401 Unauthorized", "🚫 Sem permissão", "Você não tem cartão VIP"),
+            ("404 Not Found", "🔍 Não encontrado", "Esse prato não existe no cardápio"),
+            ("500 Internal Server Error", "💥 Erro do servidor", "A cozinha pegou fogo!")
+        ]
+        
+        for codigo, significado, analogia in status_codes:
+            self.print_colored(f"{codigo}: {significado}", "info")
+            self.print_colored(f"   {analogia}", "text")
+            time.sleep(0.5)
+        
+        # === JSON FORMAT ===
+        self.print_colored("\n📄 FORMATO JSON - A Linguagem das APIs:", "accent")
+        
+        exemplo_json = '''{
+    "usuario": {
+        "id": 123,
+        "nome": "João Silva",
+        "email": "joao@exemplo.com",
+        "ativo": true,
+        "tags": ["desenvolvedor", "python", "api"]
+    }
+}'''
+        
+        self.print_code_section("EXEMPLO JSON", exemplo_json)
+        
+        self.print_tip("JSON é como um formulário bem organizado que computadores entendem perfeitamente!")
+        
+        self.pausar()
+    
+    def _secao_exemplos_praticos(self) -> None:
+        """Seção: Exemplos práticos com Flask"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("EXEMPLOS PRÁTICOS COM FLASK", "💡", "success")
+        
+        exemplos = [
+            {
+                'titulo': 'EXEMPLO 1: API Simples - Olá Mundo',
+                'descricao': 'Uma API básica que responde com uma mensagem',
+                'codigo': '''from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-# Middleware para CORS (Cross-Origin Resource Sharing)
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-    return response
+@app.route('/api/ola', methods=['GET'])
+def ola_mundo():
+    return jsonify({
+        "mensagem": "Olá, mundo das APIs!",
+        "status": "funcionando",
+        "versao": "1.0"
+    })
 
-# ===============================================
-# ROTAS DE USUÁRIOS (CRUD Completo)
-# ===============================================
+if __name__ == '__main__':
+    app.run(debug=True)''',
+                'explicacao': 'Esta API responde na rota /api/ola com um JSON simples'
+            },
+            {
+                'titulo': 'EXEMPLO 2: API com Dados - Lista de Usuários',
+                'descricao': 'Uma API que gerencia uma lista de usuários',
+                'codigo': '''from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+# Simulando um banco de dados
+usuarios = [
+    {"id": 1, "nome": "João", "email": "joao@email.com"},
+    {"id": 2, "nome": "Maria", "email": "maria@email.com"}
+]
 
 @app.route('/api/usuarios', methods=['GET'])
 def listar_usuarios():
-    """Listar todos os usuários"""
-    # Filtro opcional por status
-    ativo = request.args.get('ativo')
-    if ativo is not None:
-        ativo_bool = ativo.lower() == 'true'
-        usuarios_filtrados = [u for u in usuarios_db if u['ativo'] == ativo_bool]
-        return jsonify({
-            "usuarios": usuarios_filtrados,
-            "total": len(usuarios_filtrados),
-            "filtro": f"ativo={ativo}"
-        })
-    
     return jsonify({
-        "usuarios": usuarios_db,
-        "total": len(usuarios_db),
-        "timestamp": datetime.now().isoformat()
+        "usuarios": usuarios,
+        "total": len(usuarios)
     })
-
-@app.route('/api/usuarios/<int:user_id>', methods=['GET'])
-def obter_usuario(user_id):
-    """Obter usuário específico por ID"""
-    usuario = next((u for u in usuarios_db if u['id'] == user_id), None)
-    
-    if not usuario:
-        return jsonify({"erro": "Usuário não encontrado"}), 404
-    
-    return jsonify(usuario)
 
 @app.route('/api/usuarios', methods=['POST'])
 def criar_usuario():
-    """Criar novo usuário"""
-    dados = request.get_json()
+    novo_usuario = request.json
+    novo_usuario['id'] = len(usuarios) + 1
+    usuarios.append(novo_usuario)
     
-    # Validação básica
-    if not dados or 'nome' not in dados or 'email' not in dados:
-        return jsonify({"erro": "Nome e email são obrigatórios"}), 400
-    
-    # Verificar se email já existe
-    if any(u['email'] == dados['email'] for u in usuarios_db):
-        return jsonify({"erro": "Email já cadastrado"}), 409
-    
-    # Criar novo usuário
-    novo_id = max(u['id'] for u in usuarios_db) + 1 if usuarios_db else 1
-    novo_usuario = {
-        "id": novo_id,
-        "nome": dados['nome'],
-        "email": dados['email'],
-        "ativo": dados.get('ativo', True)
-    }
-    
-    usuarios_db.append(novo_usuario)
-    
-    return jsonify({
-        "mensagem": "Usuário criado com sucesso",
-        "usuario": novo_usuario
-    }), 201
-
-@app.route('/api/usuarios/<int:user_id>', methods=['PUT'])
-def atualizar_usuario(user_id):
-    """Atualizar usuário existente"""
-    usuario = next((u for u in usuarios_db if u['id'] == user_id), None)
-    
-    if not usuario:
-        return jsonify({"erro": "Usuário não encontrado"}), 404
-    
-    dados = request.get_json()
-    if not dados:
-        return jsonify({"erro": "Dados não fornecidos"}), 400
-    
-    # Atualizar campos fornecidos
-    if 'nome' in dados:
-        usuario['nome'] = dados['nome']
-    if 'email' in dados:
-        # Verificar se novo email já existe em outro usuário
-        if any(u['email'] == dados['email'] and u['id'] != user_id for u in usuarios_db):
-            return jsonify({"erro": "Email já está em uso"}), 409
-        usuario['email'] = dados['email']
-    if 'ativo' in dados:
-        usuario['ativo'] = dados['ativo']
-    
-    return jsonify({
-        "mensagem": "Usuário atualizado com sucesso",
-        "usuario": usuario
-    })
-
-@app.route('/api/usuarios/<int:user_id>', methods=['DELETE'])
-def deletar_usuario(user_id):
-    """Deletar usuário"""
-    global usuarios_db
-    usuario = next((u for u in usuarios_db if u['id'] == user_id), None)
-    
-    if not usuario:
-        return jsonify({"erro": "Usuário não encontrado"}), 404
-    
-    usuarios_db = [u for u in usuarios_db if u['id'] != user_id]
-    
-    return jsonify({"mensagem": f"Usuário {usuario['nome']} deletado com sucesso"})
-
-# ===============================================
-# ROTAS DE PRODUTOS
-# ===============================================
-
-@app.route('/api/produtos', methods=['GET'])
-def listar_produtos():
-    """Listar produtos com filtros opcionais"""
-    categoria = request.args.get('categoria')
-    preco_min = request.args.get('preco_min', type=float)
-    preco_max = request.args.get('preco_max', type=float)
-    
-    produtos_filtrados = produtos_db.copy()
-    
-    # Aplicar filtros
-    if categoria:
-        produtos_filtrados = [p for p in produtos_filtrados if p['categoria'].lower() == categoria.lower()]
-    
-    if preco_min is not None:
-        produtos_filtrados = [p for p in produtos_filtrados if p['preco'] >= preco_min]
-    
-    if preco_max is not None:
-        produtos_filtrados = [p for p in produtos_filtrados if p['preco'] <= preco_max]
-    
-    return jsonify({
-        "produtos": produtos_filtrados,
-        "total": len(produtos_filtrados),
-        "filtros_aplicados": {
-            "categoria": categoria,
-            "preco_min": preco_min,
-            "preco_max": preco_max
-        }
-    })
-
-@app.route('/api/produtos/<int:produto_id>', methods=['GET'])
-def obter_produto(produto_id):
-    """Obter produto específico"""
-    produto = next((p for p in produtos_db if p['id'] == produto_id), None)
-    
-    if not produto:
-        return jsonify({"erro": "Produto não encontrado"}), 404
-    
-    return jsonify(produto)
-
-# ===============================================
-# ROTAS DE ESTATÍSTICAS
-# ===============================================
-
-@app.route('/api/stats', methods=['GET'])
-def estatisticas():
-    """Retorna estatísticas gerais da API"""
-    usuarios_ativos = len([u for u in usuarios_db if u['ativo']])
-    total_produtos = len(produtos_db)
-    categorias = list(set(p['categoria'] for p in produtos_db))
-    
-    preco_medio = sum(p['preco'] for p in produtos_db) / len(produtos_db) if produtos_db else 0
-    
-    return jsonify({
-        "usuarios": {
-            "total": len(usuarios_db),
-            "ativos": usuarios_ativos,
-            "inativos": len(usuarios_db) - usuarios_ativos
-        },
-        "produtos": {
-            "total": total_produtos,
-            "categorias": categorias,
-            "preco_medio": round(preco_medio, 2)
-        },
-        "timestamp": datetime.now().isoformat()
-    })
-
-# ===============================================
-# TRATAMENTO DE ERROS
-# ===============================================
-
-@app.errorhandler(404)
-def not_found(error):
-    return jsonify({"erro": "Endpoint não encontrado"}), 404
-
-@app.errorhandler(500)
-def internal_error(error):
-    return jsonify({"erro": "Erro interno do servidor"}), 500
-
-# ===============================================
-# DOCUMENTAÇÃO DA API
-# ===============================================
-
-@app.route('/api', methods=['GET'])
-def documentacao_api():
-    """Documentação básica da API"""
-    endpoints = {
-        "usuarios": {
-            "GET /api/usuarios": "Listar todos os usuários",
-            "GET /api/usuarios/<id>": "Obter usuário específico",
-            "POST /api/usuarios": "Criar novo usuário",
-            "PUT /api/usuarios/<id>": "Atualizar usuário",
-            "DELETE /api/usuarios/<id>": "Deletar usuário"
-        },
-        "produtos": {
-            "GET /api/produtos": "Listar produtos (com filtros)",
-            "GET /api/produtos/<id>": "Obter produto específico"
-        },
-        "estatisticas": {
-            "GET /api/stats": "Estatísticas gerais"
-        }
-    }
-    
-    return jsonify({
-        "nome": "API de Exemplo",
-        "versao": "1.0.0",
-        "descricao": "API REST para gerenciamento de usuários e produtos",
-        "endpoints": endpoints,
-        "exemplos": {
-            "criar_usuario": {
-                "url": "/api/usuarios",
-                "metodo": "POST",
-                "body": {
-                    "nome": "João Silva",
-                    "email": "joao@exemplo.com",
-                    "ativo": True
-                }
+    return jsonify(novo_usuario), 201''',
+                'explicacao': 'Esta API permite listar usuários (GET) e criar novos (POST)'
             },
-            "filtrar_produtos": {
-                "url": "/api/produtos?categoria=Eletrônicos&preco_min=100",
-                "metodo": "GET"
+            {
+                'titulo': 'EXEMPLO 3: API com Validação e Erros',
+                'descricao': 'Uma API robusta com tratamento de erros',
+                'codigo': '''from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+@app.route('/api/calcular', methods=['POST'])
+def calcular():
+    try:
+        dados = request.json
+        
+        # Validação
+        if not dados or 'a' not in dados or 'b' not in dados:
+            return jsonify({
+                "erro": "Parâmetros 'a' e 'b' são obrigatórios"
+            }), 400
+        
+        a = float(dados['a'])
+        b = float(dados['b'])
+        operacao = dados.get('operacao', 'soma')
+        
+        if operacao == 'soma':
+            resultado = a + b
+        elif operacao == 'multiplicacao':
+            resultado = a * b
+        else:
+            return jsonify({
+                "erro": "Operação não suportada"
+            }), 400
+        
+        return jsonify({
+            "resultado": resultado,
+            "operacao": operacao,
+            "valores": {"a": a, "b": b}
+        })
+        
+    except ValueError:
+        return jsonify({
+            "erro": "Valores devem ser números"
+        }), 400''',
+                'explicacao': 'Esta API faz cálculos com validação completa e tratamento de erros'
             }
-        }
-    })
-
-# Demonstração da API
-print("=== API REST COM FLASK ===")
-print()
-print("🌐 API criada com sucesso!")
-print("📋 Endpoints disponíveis:")
-print("  • GET  /api/usuarios - Listar usuários")
-print("  • POST /api/usuarios - Criar usuário")
-print("  • GET  /api/produtos - Listar produtos")
-print("  • GET  /api/stats - Estatísticas")
-print()
-
-# Simulação de requisições (sem executar o servidor)
-print("🧪 SIMULAÇÃO DE REQUISIÇÕES:")
-print()
-
-# Simular GET usuarios
-print("📡 GET /api/usuarios")
-with app.test_client() as client:
-    response = client.get('/api/usuarios')
-    print(f"Status: {response.status_code}")
-    data = response.get_json()
-    print(f"Total de usuários: {data['total']}")
-    print(f"Primeiro usuário: {data['usuarios'][0]['nome']}")
-
-print()
-
-# Simular POST usuario
-print("📡 POST /api/usuarios")
-with app.test_client() as client:
-    novo_usuario = {
-        "nome": "Ana Costa",
-        "email": "ana@exemplo.com"
-    }
-    response = client.post('/api/usuarios', 
-                          json=novo_usuario,
-                          content_type='application/json')
-    print(f"Status: {response.status_code}")
-    if response.status_code == 201:
-        data = response.get_json()
-        print(f"Usuário criado: {data['usuario']['nome']}")
-
-print()
-
-# Simular GET produtos com filtro
-print("📡 GET /api/produtos?categoria=Eletrônicos")
-with app.test_client() as client:
-    response = client.get('/api/produtos?categoria=Eletrônicos')
-    data = response.get_json()
-    print(f"Produtos encontrados: {data['total']}")
-    if data['produtos']:
-        print(f"Primeiro produto: {data['produtos'][0]['nome']}")
-
-print()
-print("✅ API Flask testada com sucesso!")
-print("💡 Para executar: python app.py (em ambiente real)")'''
+        ]
         
-        self.exemplo(codigo1)
-        self.executar_codigo(codigo1)
+        for i, exemplo in enumerate(exemplos, 1):
+            self.print_colored(f"\n{exemplo['titulo']}", "warning")
+            self.print_colored(f"📝 {exemplo['descricao']}", "text")
+            
+            self.print_code_section("CÓDIGO", exemplo['codigo'])
+            
+            print("\n🚀 Como usar esta API:")
+            if i == 1:
+                self.print_colored("GET http://localhost:5000/api/ola", "info")
+            elif i == 2:
+                self.print_colored("GET http://localhost:5000/api/usuarios", "info")
+                self.print_colored("POST http://localhost:5000/api/usuarios", "info")
+            else:
+                self.print_colored("POST http://localhost:5000/api/calcular", "info")
+                self.print_colored('{"a": 5, "b": 3, "operacao": "soma"}', "text")
+            
+            if exemplo['explicacao']:
+                self.print_colored(f"\n💡 EXPLICAÇÃO: {exemplo['explicacao']}", "info")
+            
+            if i < len(exemplos):
+                input("\n🔸 Pressione ENTER para o próximo exemplo...")
         
+        self.print_success("\n🎉 Agora você viu Flask em ação! Vamos conhecer o FastAPI!")
         self.pausar()
+    
+    def _secao_fastapi_moderno(self) -> None:
+        """Seção: FastAPI - O futuro das APIs"""
+        if self.ui:
+            self.ui.clear_screen()
         
-        print("\n🚀 FastAPI - Framework Moderno:")
+        self.print_section("FASTAPI - O FUTURO DAS APIS", "🚀", "warning")
         
-        codigo2 = '''# API moderna com FastAPI
-from typing import List, Optional
-from datetime import datetime
-from pydantic import BaseModel, EmailStr
-import json
+        self.print_colored("⚡ FastAPI é o framework mais moderno para criar APIs:", "text")
+        
+        # === VANTAGENS DO FASTAPI ===
+        self.print_colored("\n🌟 POR QUE FASTAPI É INCRÍVEL:", "accent")
+        
+        vantagens = [
+            "⚡ **Extremamente rápido** - Uma das APIs mais velozes do mundo",
+            "📝 **Documentação automática** - Gera docs sem esforço extra",
+            "🔍 **Validação automática** - Valida dados automaticamente",
+            "💡 **Type hints** - Usa tipagem Python moderna",
+            "🐞 **Menos bugs** - Detecta erros antes da execução",
+            "📚 **Fácil de aprender** - Se você sabe Python, já sabe FastAPI!"
+        ]
+        
+        for vantagem in vantagens:
+            self.print_colored(f"  {vantagem}", "text")
+            time.sleep(0.3)
+        
+        # === EXEMPLO FASTAPI ===
+        self.print_colored("\n💻 EXEMPLO FASTAPI EM AÇÃO:", "success")
+        
+        codigo_fastapi = '''from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import Optional
 
-# Simulando FastAPI (sem instalação real)
-class FastAPISimulator:
-    """Simulador do FastAPI para demonstração"""
-    
-    def __init__(self):
-        self.routes = {}
-        self.middleware = []
-    
-    def get(self, path: str):
-        def decorator(func):
-            self.routes[f"GET {path}"] = func
-            return func
-        return decorator
-    
-    def post(self, path: str):
-        def decorator(func):
-            self.routes[f"POST {path}"] = func
-            return func
-        return decorator
-    
-    def put(self, path: str):
-        def decorator(func):
-            self.routes[f"PUT {path}"] = func
-            return func
-        return decorator
-    
-    def delete(self, path: str):
-        def decorator(func):
-            self.routes[f"DELETE {path}"] = func
-            return func
-        return decorator
+app = FastAPI(title="Minha API Incrível", version="1.0.0")
 
-# Simulação dos modelos Pydantic
-class BaseModel:
-    def __init__(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-    
-    def dict(self):
-        return {k: v for k, v in self.__dict__.items() if not k.startswith('_')}
-
-# Modelos de dados com Pydantic
-class UsuarioBase(BaseModel):
+# Modelo de dados com validação automática
+class Usuario(BaseModel):
     nome: str
     email: str
+    idade: int
     ativo: bool = True
 
-class UsuarioCreate(UsuarioBase):
-    pass
+# Lista de usuários
+usuarios_db = []
 
-class UsuarioUpdate(BaseModel):
-    nome: Optional[str] = None
-    email: Optional[str] = None
-    ativo: Optional[bool] = None
+@app.get("/")
+async def root():
+    return {"mensagem": "Bem-vindo à API FastAPI!"}
 
-class Usuario(UsuarioBase):
-    id: int
-    data_criacao: datetime
+@app.post("/usuarios/", response_model=Usuario)
+async def criar_usuario(usuario: Usuario):
+    usuarios_db.append(usuario)
+    return usuario
+
+@app.get("/usuarios/")
+async def listar_usuarios():
+    return {"usuarios": usuarios_db, "total": len(usuarios_db)}
+
+# Documentação automática em: http://localhost:8000/docs'''
+        
+        self.exemplo(codigo_fastapi)
+        
+        # === COMPARAÇÃO FLASK VS FASTAPI ===
+        self.print_colored("\n⚖️ FLASK VS FASTAPI:", "accent")
+        
+        comparacao = [
+            ("📝 Validação", "Manual", "Automática"),
+            ("📚 Documentação", "Manual", "Automática"),
+            ("⚡ Performance", "Boa", "Excelente"),
+            ("🔍 Type Hints", "Opcional", "Integrado"),
+            ("📖 Curva de Aprendizado", "Simples", "Simples"),
+            ("🎯 Melhor para", "APIs simples", "APIs modernas")
+        ]
+        
+        print("\n" + "="*50)
+        print(f"{'Aspecto':<15} {'Flask':<15} {'FastAPI':<15}")
+        print("="*50)
+        
+        for aspecto, flask_val, fastapi_val in comparacao:
+            print(f"{aspecto:<15} {flask_val:<15} {fastapi_val:<15}")
+        
+        print("="*50)
+        
+        # === DOCUMENTAÇÃO AUTOMÁTICA ===
+        self.print_colored("\n📚 MAGIA DA DOCUMENTAÇÃO AUTOMÁTICA:", "accent")
+        self.print_colored("FastAPI gera automaticamente:", "text")
+        self.print_colored("• 📖 Swagger UI interativa em /docs", "info")
+        self.print_colored("• 📋 ReDoc em /redoc", "info")
+        self.print_colored("• 🔧 Schema OpenAPI em /openapi.json", "info")
+        
+        self.print_tip("Com FastAPI, você escreve código e ganha documentação de graça!")
+        
+        self.pausar()
     
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if not hasattr(self, 'data_criacao'):
-            self.data_criacao = datetime.now()
+    def _secao_autenticacao_seguranca(self) -> None:
+        """Seção: Autenticação e segurança"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("AUTENTICAÇÃO E SEGURANÇA", "🔐", "warning")
+        
+        self.print_colored("🛡️ Proteger suas APIs é FUNDAMENTAL:", "text")
+        
+        # === TIPOS DE AUTENTICAÇÃO ===
+        self.print_colored("\n🔑 TIPOS DE AUTENTICAÇÃO:", "accent")
+        
+        tipos_auth = [
+            {
+                'nome': 'API Key',
+                'emoji': '🔑',
+                'descricao': 'Chave secreta enviada no cabeçalho',
+                'uso': 'APIs simples e serviços internos'
+            },
+            {
+                'nome': 'JWT (JSON Web Token)',
+                'emoji': '🎫',
+                'descricao': 'Token assinado com informações do usuário',
+                'uso': 'Aplicações web e mobile modernas'
+            },
+            {
+                'nome': 'OAuth 2.0',
+                'emoji': '🌐',
+                'descricao': 'Padrão para login com Google, Facebook, etc.',
+                'uso': 'Integração com redes sociais'
+            },
+            {
+                'nome': 'Basic Auth',
+                'emoji': '👤',
+                'descricao': 'Usuário e senha em Base64',
+                'uso': 'APIs internas e testes'
+            }
+        ]
+        
+        for auth in tipos_auth:
+            self.print_colored(f"\n{auth['emoji']} {auth['nome']}", "warning")
+            self.print_colored(f"   📝 {auth['descricao']}", "text")
+            self.print_colored(f"   🎯 Usado em: {auth['uso']}", "info")
+            input("   ⏳ Pressione ENTER para próximo tipo...")
+        
+        # === EXEMPLO JWT ===
+        self.print_colored("\n💻 EXEMPLO: AUTENTICAÇÃO JWT:", "success")
+        
+        codigo_jwt = '''from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import jwt
+from datetime import datetime, timedelta
 
-class ProdutoBase(BaseModel):
+app = FastAPI()
+security = HTTPBearer()
+
+# Chave secreta (em produção, use variável de ambiente!)
+SECRET_KEY = "minha_chave_super_secreta"
+ALGORITHM = "HS256"
+
+def criar_token(dados: dict):
+    """Cria um token JWT"""
+    dados_token = dados.copy()
+    expira = datetime.utcnow() + timedelta(hours=24)
+    dados_token.update({"exp": expira})
+    
+    token = jwt.encode(dados_token, SECRET_KEY, algorithm=ALGORITHM)
+    return token
+
+def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Verifica se o token é válido"""
+    try:
+        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if username is None:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return username
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Token inválido")
+
+@app.post("/login")
+async def login(username: str, password: str):
+    # Aqui você verificaria no banco de dados
+    if username == "admin" and password == "123":
+        token = criar_token({"sub": username})
+        return {"access_token": token, "token_type": "bearer"}
+    
+    raise HTTPException(status_code=401, detail="Credenciais inválidas")
+
+@app.get("/perfil")
+async def perfil_usuario(username: str = Depends(verificar_token)):
+    return {"username": username, "mensagem": "Dados do perfil"}'''
+        
+        self.exemplo(codigo_jwt)
+        
+        # === BOAS PRÁTICAS DE SEGURANÇA ===
+        self.print_colored("\n🛡️ BOAS PRÁTICAS DE SEGURANÇA:", "accent")
+        
+        praticas = [
+            "🔐 **Sempre use HTTPS** em produção",
+            "🔑 **Nunca exponha chaves secretas** no código",
+            "⏰ **Tokens devem expirar** (máximo 24h)",
+            "🚫 **Valide TODAS as entradas** do usuário",
+            "📝 **Log tentativas de acesso** suspeitas",
+            "🔒 **Use rate limiting** para prevenir ataques",
+            "💾 **Nunca salve senhas em texto puro**",
+            "🎯 **Princípio do menor privilégio** - dê apenas acesso necessário"
+        ]
+        
+        for pratica in praticas:
+            self.print_colored(f"  {pratica}", "text")
+            time.sleep(0.4)
+        
+        self.pausar()
+    
+    def _secao_casos_uso_reais(self) -> None:
+        """Seção: Onde usar na vida real?"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("ONDE USAR NA VIDA REAL?", "🌍", "accent")
+        
+        self.print_colored("🎯 APIs estão em TODOS os lugares:", "text")
+        
+        # === CASOS DE USO POR SETOR ===
+        setores = [
+            {
+                'nome': 'E-commerce',
+                'emoji': '🛒',
+                'exemplos': [
+                    'API de pagamento (Stripe, PayPal)',
+                    'API de frete (Correios, transportadoras)',
+                    'API de estoque (controle de produtos)',
+                    'API de recomendações (produtos similares)'
+                ]
+            },
+            {
+                'nome': 'Redes Sociais',
+                'emoji': '📱',
+                'exemplos': [
+                    'API de posts (criar, listar, curtir)',
+                    'API de mensagens (chat em tempo real)',
+                    'API de amigos (seguir, deixar de seguir)',
+                    'API de upload (fotos e vídeos)'
+                ]
+            },
+            {
+                'nome': 'Fintech',
+                'emoji': '💰',
+                'exemplos': [
+                    'API de transferências bancárias',
+                    'API de consulta de CPF/CNPJ',
+                    'API de cotações (moedas, ações)',
+                    'API de histórico financeiro'
+                ]
+            },
+            {
+                'nome': 'IoT (Internet das Coisas)',
+                'emoji': '🏠',
+                'exemplos': [
+                    'API de sensores (temperatura, umidade)',
+                    'API de controle (ligar/desligar dispositivos)',
+                    'API de monitoramento (consumo de energia)',
+                    'API de automação (horários programados)'
+                ]
+            }
+        ]
+        
+        for setor in setores:
+            self.print_colored(f"\n{setor['emoji']} **{setor['nome'].upper()}**", "warning")
+            for exemplo in setor['exemplos']:
+                self.print_colored(f"  • {exemplo}", "text")
+            input("   🔸 Pressione ENTER para próximo setor...")
+        
+        # === EMPRESAS FAMOSAS ===
+        self.print_colored("\n🏢 EMPRESAS FAMOSAS E SUAS APIS:", "accent")
+        
+        empresas = [
+            ("🌐 Google", "Maps, YouTube, Gmail, Drive, Translate"),
+            ("📘 Facebook/Meta", "Login social, Posts, Messenger, WhatsApp Business"),
+            ("🎵 Spotify", "Reproduzir músicas, Playlists, Descobrir artistas"),
+            ("🎬 Netflix", "Catálogo de filmes, Recomendações, Histórico"),
+            ("🛒 Amazon", "Produtos, Marketplace, AWS, Alexa"),
+            ("💳 Stripe", "Pagamentos, Assinaturas, Marketplace"),
+            ("🗺️ Uber", "Solicitar corrida, Rastreamento, Pagamento")
+        ]
+        
+        for empresa, apis in empresas:
+            self.print_colored(f"{empresa}: {apis}", "primary")
+            time.sleep(0.3)
+        
+        # === OPORTUNIDADES DE CARREIRA ===
+        self.print_colored("\n💼 OPORTUNIDADES DE CARREIRA:", "accent")
+        
+        carreiras = [
+            "🧑‍💻 **Desenvolvedor Backend** - Criar e manter APIs",
+            "🔧 **Arquiteto de Software** - Projetar sistemas de APIs",
+            "🛡️ **Especialista em Segurança** - Proteger APIs",
+            "📊 **Engenheiro de Dados** - APIs para Big Data",
+            "☁️ **DevOps Engineer** - Deploy e monitoramento de APIs",
+            "🎯 **Product Manager** - Definir funcionalidades de APIs"
+        ]
+        
+        for carreira in carreiras:
+            self.print_colored(f"  {carreira}", "text")
+        
+        self.print_success("\n🚀 O futuro é das APIs - e você pode fazer parte dele!")
+        self.pausar()
+    
+    def _secao_melhores_praticas(self) -> None:
+        """Seção: Melhores práticas"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("MELHORES PRÁTICAS", "⭐", "accent")
+        
+        self.print_colored("🎯 Dicas de profissionais experientes do mundo todo:", "text")
+        
+        praticas = [
+            {
+                'emoji': '📝',
+                'titulo': 'DESIGN DE ENDPOINTS',
+                'dica': 'Use nomes claros e consistentes para suas rotas',
+                'exemplo': '/api/v1/usuarios em vez de /getUsers'
+            },
+            {
+                'emoji': '📋',
+                'titulo': 'VERSIONAMENTO',
+                'dica': 'Sempre versione suas APIs para manter compatibilidade',
+                'exemplo': '/api/v1/, /api/v2/ - nunca quebre APIs antigas'
+            },
+            {
+                'emoji': '🔍',
+                'titulo': 'VALIDAÇÃO RIGOROSA',
+                'dica': 'Valide TODOS os dados de entrada',
+                'exemplo': 'Tipos, tamanhos, formatos - não confie no frontend'
+            },
+            {
+                'emoji': '📊',
+                'titulo': 'CÓDIGOS DE STATUS CORRETOS',
+                'dica': 'Use status HTTP apropriados para cada situação',
+                'exemplo': '201 para criação, 400 para erro de entrada, 500 para erro interno'
+            },
+            {
+                'emoji': '📖',
+                'titulo': 'DOCUMENTAÇÃO COMPLETA',
+                'dica': 'Documente como se fosse para seu futuro eu',
+                'exemplo': 'Exemplos de requisições, respostas e códigos de erro'
+            },
+            {
+                'emoji': '⚡',
+                'titulo': 'PERFORMANCE',
+                'dica': 'Implemente paginação e cache quando necessário',
+                'exemplo': 'Limite de 50 itens por página, cache de 5 minutos'
+            },
+            {
+                'emoji': '🛡️',
+                'titulo': 'SEGURANÇA SEMPRE',
+                'dica': 'Segurança não é opcional, é obrigatória',
+                'exemplo': 'HTTPS, autenticação, rate limiting, validação'
+            },
+            {
+                'emoji': '📈',
+                'titulo': 'MONITORAMENTO',
+                'dica': 'Monitore performance, erros e uso da API',
+                'exemplo': 'Logs estruturados, métricas de latência, alertas'
+            }
+        ]
+        
+        for i, pratica in enumerate(praticas, 1):
+            self.print_colored(f"\n{i}. {pratica['emoji']} {pratica['titulo']}", "warning")
+            self.print_colored(f"   💡 {pratica['dica']}", "text")
+            self.print_colored(f"   📝 Exemplo: {pratica['exemplo']}", "info")
+            
+            if i < len(praticas):
+                input("   ⏳ Pressione ENTER para a próxima dica...")
+        
+        # === CHECKLIST FINAL ===
+        self.print_colored("\n✅ CHECKLIST DE API PROFISSIONAL:", "success")
+        checklist = [
+            "□ Endpoints com nomes claros e consistentes",
+            "□ Versionamento implementado (v1, v2, etc.)",
+            "□ Validação completa de todas as entradas",
+            "□ Códigos de status HTTP corretos",
+            "□ Documentação detalhada e atualizada",
+            "□ Autenticação e autorização implementadas",
+            "□ Rate limiting para prevenir abuso",
+            "□ Logs estruturados e monitoramento",
+            "□ Testes automatizados (unitários e integração)",
+            "□ Deploy seguro com HTTPS"
+        ]
+        
+        for item in checklist:
+            self.print_colored(f"  {item}", "text")
+        
+        self.print_success("\n🏆 Seguindo essas práticas, você criará APIs de nível mundial!")
+        
+        self.pausar()
+    
+    def _secao_pratica_interativa(self) -> None:
+        """Seção de prática interativa do módulo"""
+        
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_section("HORA DE PRATICAR!", "🎯", "success")
+        self.print_colored("Vamos testar o que você aprendeu com exercícios práticos!", "text")
+        
+        # === INSTRUÇÕES PARA INICIANTES ===
+        self.print_tip("Para iniciantes: Cada exercício é opcional, mas recomendamos fazer todos!")
+        self.print_colored("\n🎓 SOBRE OS EXERCÍCIOS:", "info")
+        self.print_colored("• Não se preocupe se errar - faz parte do aprendizado!", "text")
+        self.print_colored("• Você pode tentar quantas vezes quiser", "text")
+        self.print_colored("• Digite 'help' se precisar de ajuda", "text")
+        self.print_colored("• Use Ctrl+C para voltar ao menu principal se necessário", "text")
+        
+        # === DEFINIÇÃO DOS EXERCÍCIOS ===
+        exercicios = [
+            {
+                'title': 'Quiz: Conhecimentos sobre APIs e Web',
+                'type': 'quiz',
+                'questions': [
+                    {
+                        'question': 'O que significa API?',
+                        'answer': ['application programming interface', 'interface de programação de aplicações', 'api'],
+                        'hint': 'É uma interface que permite comunicação entre sistemas'
+                    },
+                    {
+                        'question': 'Qual método HTTP é usado para buscar dados?',
+                        'answer': ['get', 'http get'],
+                        'hint': 'Método para "pegar" ou "buscar" informações'
+                    },
+                    {
+                        'question': 'Qual código de status indica sucesso na criação de um recurso?',
+                        'answer': ['201', '201 created'],
+                        'hint': 'É um código que começa com 2 e indica "criado"'
+                    },
+                    {
+                        'question': 'Qual formato de dados é mais comum em APIs REST?',
+                        'answer': ['json', 'json format'],
+                        'hint': 'JavaScript Object Notation'
+                    },
+                    {
+                        'question': 'Qual framework Python é conhecido por sua alta performance e documentação automática?',
+                        'answer': ['fastapi', 'fast api'],
+                        'hint': 'É "rápido" em inglês + API'
+                    }
+                ]
+            },
+            {
+                'title': 'Desafio: Complete o Código da API',
+                'type': 'code_completion',
+                'exercises': [
+                    {
+                        'instruction': 'BÁSICO: Complete a rota Flask para listar usuários',
+                        'starter': 'from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route("/api/usuarios", methods=["GET"])\ndef listar_usuarios():\n    usuarios = [{"nome": "João"}, {"nome": "Maria"}]\n    # Complete aqui\n',
+                        'solution': 'return jsonify({"usuarios": usuarios, "total": len(usuarios)})',
+                        'type': 'simple'
+                    },
+                    {
+                        'instruction': 'INTERMEDIÁRIO: Complete a validação de dados no FastAPI',
+                        'starter': 'from fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\n\nclass Usuario(BaseModel):\n    nome: str\n    email: str\n\n@app.post("/usuarios")\ndef criar_usuario(usuario: Usuario):\n    if not usuario.nome or len(usuario.nome) < 2:\n        # Complete aqui\n    return {"mensagem": "Usuário criado"}',
+                        'solution': 'raise HTTPException(status_code=400, detail="Nome deve ter pelo menos 2 caracteres")',
+                        'type': 'intermediate'
+                    },
+                    {
+                        'instruction': 'AVANÇADO: Complete a autenticação JWT',
+                        'starter': 'import jwt\nfrom datetime import datetime, timedelta\n\ndef criar_token(usuario_id: int):\n    payload = {\n        "user_id": usuario_id,\n        "exp": datetime.utcnow() + timedelta(hours=24)\n    }\n    # Complete aqui\n    return token',
+                        'solution': 'token = jwt.encode(payload, "SECRET_KEY", algorithm="HS256")',
+                        'type': 'advanced'
+                    }
+                ]
+            },
+            {
+                'title': 'Exercício Criativo: Projete sua API',
+                'type': 'creative',
+                'instruction': 'Descreva uma API que você gostaria de criar! Qual seria o tema, que endpoints teria e como funcionaria?'
+            }
+        ]
+        
+        # === MENU PRINCIPAL DE EXERCÍCIOS ===
+        while True:
+            print("\nEscolha uma atividade:")
+            print("1. 📝 Quiz de Conhecimentos")
+            print("2. 💻 Complete o Código da API")
+            print("3. 🎨 Exercício Criativo")
+            print("0. Continuar para o Mini Projeto")
+            
+            try:
+                escolha = input("\n👉 Sua escolha: ").strip().lower()
+                
+                if escolha in ["0", "continuar", "sair", "proximo"]:
+                    break
+                elif escolha in ["1", "quiz", "conhecimentos"]:
+                    try:
+                        self._run_quiz(exercicios[0])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Quiz interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no quiz. Continuando...")
+                elif escolha in ["2", "codigo", "completar", "api"]:
+                    try:
+                        self._run_code_completion(exercicios[1])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício de código interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício de código. Continuando...")
+                elif escolha in ["3", "criativo", "projete"]:
+                    try:
+                        self._run_creative_exercise(exercicios[2])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício criativo interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício criativo. Continuando...")
+                elif escolha in ["help", "ajuda", "h", "?"]:
+                    self._show_help()
+                else:
+                    self.print_warning("❌ Opção inválida! Digite 1, 2, 3, 0 ou 'help' para ajuda.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Operação cancelada pelo usuário. Voltando ao menu principal...")
+                return  # CRÍTICO: Return em vez de break para sair completamente
+            except Exception as e:
+                self.print_warning("❌ Erro inesperado no menu. Tente novamente.")
+    
+    def _show_help(self) -> None:
+        """Mostra ajuda sobre as opções disponíveis"""
+        self.print_section("AJUDA - SEÇÃO DE PRÁTICA", "❓", "info")
+        help_text = [
+            "📝 OPÇÃO 1 - Quiz: Teste seus conhecimentos sobre APIs e desenvolvimento web",
+            "💻 OPÇÃO 2 - Complete o Código: 3 exercícios progressivos de programação",
+            "🎨 OPÇÃO 3 - Exercício Criativo: Projete sua própria API do zero",
+            "🔢 OPÇÃO 0 - Continue para o Mini Projeto: Sistema completo de API E-commerce",
+            "",
+            "💡 DICAS:",
+            "• Você pode digitar o número ou palavras como 'quiz', 'codigo', 'criativo'",
+            "• Digite 'help' a qualquer momento para ver esta ajuda",
+            "• Use Ctrl+C se quiser voltar ao menu principal",
+            "• Recomendamos fazer todas as atividades para dominar APIs!"
+        ]
+        
+        for line in help_text:
+            if line:
+                self.print_colored(f"  {line}", "text")
+            else:
+                print()
+        
+        input("\n🔸 Pressione ENTER para voltar ao menu...")
+    
+    def _run_quiz(self, quiz_data: dict) -> None:
+        """Executa um quiz interativo sobre APIs"""
+        self.print_section(quiz_data['title'], "📝")
+        score = 0
+        total_questions = len(quiz_data['questions'])
+        
+        for i, q in enumerate(quiz_data['questions'], 1):
+            print(f"\n📝 Pergunta {i} de {total_questions}:")
+            correto = self.exercicio(
+                q['question'],
+                q['answer'],
+                q['hint']
+            )
+            if correto:
+                score += 1
+        
+        # Feedback detalhado baseado na pontuação
+        percentage = (score / total_questions) * 100
+        
+        self.print_success(f"\n🏆 RESULTADO: {score} de {total_questions} perguntas corretas ({percentage:.0f}%)")
+        
+        if percentage == 100:
+            self.print_success("🌟 PERFEITO! Você dominou as APIs!")
+        elif percentage >= 80:
+            self.print_success("🎉 MUITO BEM! Você entende bem como APIs funcionam!")
+        elif percentage >= 60:
+            self.print_colored("😊 BOM TRABALHO! Revise alguns conceitos e tente novamente.", "warning")
+        else:
+            self.print_colored("📚 Continue estudando! Releia o conteúdo sobre APIs e Web.", "info")
+            
+        self.pausar()
+    
+    def _run_code_completion(self, exercise_data: dict) -> None:
+        """Executa exercício de completar código de API"""
+        self.print_section(exercise_data['title'], "💻")
+        
+        for i, ex in enumerate(exercise_data['exercises'], 1):
+            print(f"\n🎯 EXERCÍCIO {i} de {len(exercise_data['exercises'])}:")
+            print(f"📝 {ex['instruction']}")
+            self.print_code_section("Código Inicial", ex['starter'])
+            
+            # Diferentes tipos de exercícios
+            exercise_type = ex.get('type', 'simple')
+            
+            if exercise_type == 'simple':
+                print("\n✍️ Complete o retorno da função:")
+                print("💡 Dica: Use jsonify() para retornar JSON no Flask")
+                print("📝 Exemplo: return jsonify({\"dados\": valor})")
+                
+                user_input = input(">>> ").strip()
+                if 'jsonify' in user_input and 'return' in user_input:
+                    user_code = user_input
+                else:
+                    user_code = ex['solution']
+                    self.print_tip("Usando solução padrão. Lembre-se de usar jsonify() no Flask!")
+                    
+            elif exercise_type == 'intermediate':
+                print("\n✍️ Complete o tratamento de erro:")
+                print("💡 Dica: Use HTTPException no FastAPI")
+                print("📝 Exemplo: raise HTTPException(status_code=400, detail=\"mensagem\")")
+                
+                user_input = input(">>> ").strip()
+                if 'HTTPException' in user_input and 'raise' in user_input:
+                    user_code = user_input
+                else:
+                    user_code = ex['solution']
+                    self.print_tip("Usando solução padrão. Use HTTPException para erros no FastAPI!")
+                    
+            elif exercise_type == 'advanced':
+                print("\n✍️ Complete a criação do token JWT:")
+                print("💡 Dica: Use jwt.encode() com payload, chave secreta e algoritmo")
+                print("📝 Exemplo: jwt.encode(dados, \"CHAVE\", algorithm=\"HS256\")")
+                
+                user_input = input(">>> ").strip()
+                if 'jwt.encode' in user_input:
+                    user_code = user_input
+                else:
+                    user_code = ex['solution']
+                    self.print_tip("Usando solução padrão. Use jwt.encode() para gerar tokens!")
+            else:
+                # Tipo padrão
+                print("\n✍️ Digite a linha que falta:")
+                user_input = input(">>> ").strip()
+                user_code = user_input if user_input else ex['solution']
+            
+            # Substitui a linha que contém o comentário
+            lines = ex['starter'].split('\n')
+            for j, line in enumerate(lines):
+                if '# Complete aqui' in line:
+                    lines[j] = f"    {user_code}"
+                    break
+            complete_code = '\n'.join(lines)
+            
+            print("\n🚀 Resultado do seu código:")
+            self.print_code_section("COMPLETO", complete_code)
+            
+            print(f"\n💡 Solução sugerida: {ex['solution']}")
+            self.print_success("✅ Muito bem! Você completou o código da API!")
+            
+            if i < len(exercise_data['exercises']):
+                input("\n🔸 Pressione ENTER para o próximo exercício...")
+        
+        self.pausar()
+    
+    def _run_creative_exercise(self, exercise_data: dict) -> None:
+        """Executa exercício criativo de design de API"""
+        self.print_section(exercise_data['title'], "🎨")
+        print(f"\n{exercise_data['instruction']}")
+        print("💡 Exemplo: 'API de uma biblioteca para gerenciar livros, empréstimos e usuários'")
+        print("🎯 Pense em algo que você usa no dia a dia e como uma API poderia ajudar!")
+        
+        nome_api = input("\n✍️ Nome da sua API: ").strip()
+        if not nome_api:
+            nome_api = "Minha API Incrível"
+            
+        descricao = input("📝 Descrição (o que faz?): ").strip()
+        if not descricao:
+            descricao = "Uma API útil e interessante"
+            
+        print("\n🛠️ Que endpoints sua API teria? (máximo 5)")
+        print("📝 Exemplo: GET /livros, POST /emprestimos, DELETE /usuarios/123")
+        endpoints = []
+        for i in range(5):
+            endpoint = input(f"Endpoint {i+1} (ou ENTER para parar): ").strip()
+            if endpoint:
+                endpoints.append(endpoint)
+            else:
+                break
+        
+        if nome_api and descricao:
+            print("\n🌟 Sua API ficou incrível!")
+            print(f"\n🎯 API: {nome_api.upper()}")
+            print(f"📝 DESCRIÇÃO: {descricao}")
+            
+            # Mostrar endpoints
+            if endpoints:
+                print(f"\n🛠️ ENDPOINTS PROJETADOS:")
+                for endpoint in endpoints:
+                    # Identificar método HTTP
+                    if endpoint.upper().startswith(('GET', 'POST', 'PUT', 'DELETE')):
+                        self.print_colored(f"  📡 {endpoint}", "info")
+                    else:
+                        self.print_colored(f"  📡 GET {endpoint}", "info")
+            
+            # Código exemplo da API
+            codigo_api = f'''# 🌐 API: {nome_api.upper()}
+# {descricao}
+
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return jsonify({{
+        "api": "{nome_api}",
+        "descricao": "{descricao}",
+        "versao": "1.0.0",
+        "status": "funcionando",
+        "endpoints": {len(endpoints) if endpoints else 3}
+    }})
+
+@app.route("/status")
+def status():
+    return jsonify({{
+        "status": "✅ API funcionando perfeitamente!",
+        "timestamp": "2024-01-01T12:00:00Z"
+    }})
+
+if __name__ == "__main__":
+    print("🚀 Iniciando {nome_api}...")
+    print("📝 {descricao}")
+    print("✅ API rodando em http://localhost:5000")
+    app.run(debug=True)'''
+            
+            print("\n💻 CÓDIGO EXEMPLO GERADO:")
+            self.exemplo(codigo_api)
+            
+            print("\n🚀 Simulando sua API:")
+            self.executar_codigo(codigo_api)
+            
+            self.print_success("🎉 Parabéns! Você projetou uma API completa!")
+            
+            # Dicas personalizadas baseadas na descrição
+            if any(palavra in descricao.lower() for palavra in ['loja', 'ecommerce', 'produto', 'venda']):
+                self.print_tip("💡 Para APIs de e-commerce, considere: autenticação, carrinho, pagamentos, estoque")
+            elif any(palavra in descricao.lower() for palavra in ['usuario', 'perfil', 'login', 'conta']):
+                self.print_tip("💡 Para APIs de usuários, considere: JWT, roles, validação de email, recuperação de senha")
+            elif any(palavra in descricao.lower() for palavra in ['biblioteca', 'livro', 'emprestimo']):
+                self.print_tip("💡 Para APIs de biblioteca, considere: reservas, renovações, multas, categorias")
+            else:
+                self.print_tip("💡 Lembre-se: APIs bem documentadas e seguras são o segredo do sucesso!")
+        else:
+            self.print_warning("❌ Você precisa pelo menos dar um nome e descrição à sua API!")
+        
+        self.pausar()
+    
+    def _mini_projeto_api_completa(self) -> None:
+        """Mini Projeto - Módulo 29: Sistema de API E-commerce Completo"""
+        
+        # === CABEÇALHO IMPACTANTE ===
+        if self.ui:
+            self.ui.clear_screen()
+            self.ui.header("🎯 MINI PROJETO: SISTEMA API E-COMMERCE")
+        else:
+            print("\n" + "="*60)
+            print("🎯 MINI PROJETO: SISTEMA API E-COMMERCE")
+            print("="*60)
+        
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_success("🎉 Vamos criar seu sistema completo de API para e-commerce!")
+        
+        self.print_concept(
+            "Sistema API E-commerce",
+            "Uma API completa que gerencia produtos, usuários, carrinho de compras e pedidos, com autenticação, validação e segurança profissional."
+        )
+        
+        # === APLICAÇÕES NO MUNDO REAL ===
+        self.print_colored("\nEste tipo de sistema é usado por:", "text")
+        usos_praticos = [
+            "Amazon - Maior e-commerce do mundo com milhões de transações",
+            "Mercado Livre - Marketplace líder na América Latina",
+            "Shopify - Plataforma que alimenta milhares de lojas online",
+            "Magento - Sistema de e-commerce usado por grandes marcas"
+        ]
+        for uso in usos_praticos:
+            self.print_colored(f"• {uso}", "accent")
+        
+        # === DESENVOLVIMENTO PASSO A PASSO ===
+        
+        # PASSO 1: Coleta de informações da loja
+        self.print_section("PASSO 1: Configuração da Loja", "📝", "info")
+        self.print_tip("Vamos configurar as informações básicas da sua loja!")
+        
+        try:
+            nome_loja = input("\n🏪 Nome da sua loja (ex: TechStore): ").strip()
+            if not nome_loja:
+                nome_loja = "MinhaLoja"
+            
+            categoria = input("🏷️ Categoria principal (ex: Eletrônicos, Roupas, Livros): ").strip()
+            if not categoria:
+                categoria = "Produtos Gerais"
+            
+            moeda = input("💰 Moeda (ex: R$, US$, €): ").strip()
+            if not moeda:
+                moeda = "R$"
+                
+        except KeyboardInterrupt:
+            self.print_warning("Projeto cancelado pelo usuário")
+            return
+        
+        # PASSO 2: Processamento e criação da API
+        self.print_section("PASSO 2: Gerando Sistema de API", "⚙️", "success")
+        self.print_colored("Agora vamos criar seu sistema completo:", "text")
+        
+        # === SIMULAÇÃO DA CRIAÇÃO ===
+        componentes = [
+            f"🔧 Configurando API para {nome_loja}",
+            "📦 Criando sistema de produtos",
+            "👥 Implementando gestão de usuários",
+            "🛒 Configurando carrinho de compras",
+            "💳 Integrando sistema de pedidos",
+            "🔐 Adicionando autenticação JWT",
+            "📊 Criando dashboard de analytics",
+            "📖 Gerando documentação automática"
+        ]
+        
+        for componente in componentes:
+            self.print_colored(f"  {componente}", "text")
+            time.sleep(0.4)  # Simulação de processamento
+        
+        # PASSO 3: Resultado final
+        self.print_section("PASSO 3: Sistema Completo", "🎬", "warning")
+        
+        # === CÓDIGO FINAL GERADO ===
+        self.print_colored("Aqui está o sistema completo que você criou:", "text")
+        
+        codigo_final = f'''# 🛒 SISTEMA API E-COMMERCE: {nome_loja.upper()}
+# Módulo 29: APIs e Web
+
+from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel, EmailStr
+from typing import List, Optional
+from datetime import datetime, timedelta
+import jwt
+import hashlib
+import secrets
+
+# ================================
+# CONFIGURAÇÃO DA API
+# ================================
+
+app = FastAPI(
+    title="{nome_loja} API",
+    description="Sistema completo de e-commerce com {categoria.lower()}",
+    version="1.0.0"
+)
+
+security = HTTPBearer()
+SECRET_KEY = secrets.token_urlsafe(32)
+
+# ================================
+# MODELOS DE DADOS
+# ================================
+
+class Usuario(BaseModel):
+    nome: str
+    email: EmailStr
+    senha: str
+
+class Produto(BaseModel):
     nome: str
     preco: float
     categoria: str
+    estoque: int
     descricao: Optional[str] = None
 
-class Produto(ProdutoBase):
-    id: int
-    data_criacao: datetime
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if not hasattr(self, 'data_criacao'):
-            self.data_criacao = datetime.now()
+class ItemCarrinho(BaseModel):
+    produto_id: int
+    quantidade: int
 
-# Resposta padronizada
-class APIResponse(BaseModel):
-    sucesso: bool
-    mensagem: str
-    dados: Optional[dict] = None
-    timestamp: datetime
-    
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if not hasattr(self, 'timestamp'):
-            self.timestamp = datetime.now()
+class Pedido(BaseModel):
+    usuario_id: int
+    itens: List[ItemCarrinho]
+    endereco: str
 
-# Criando aplicação FastAPI (simulada)
-app = FastAPISimulator()
+# ================================
+# BANCO DE DADOS SIMULADO
+# ================================
 
-# Banco de dados em memória
 usuarios_db = []
-produtos_db = []
-proximo_id_usuario = 1
-proximo_id_produto = 1
+produtos_db = [
+    {{"id": 1, "nome": "Produto Premium", "preco": 299.99, "categoria": "{categoria}", "estoque": 50}},
+    {{"id": 2, "nome": "Produto Básico", "preco": 99.99, "categoria": "{categoria}", "estoque": 100}},
+    {{"id": 3, "nome": "Produto Avançado", "preco": 499.99, "categoria": "{categoria}", "estoque": 25}}
+]
+pedidos_db = []
+carrinho_db = {{}}
 
-# ===============================================
-# MIDDLEWARE E CONFIGURAÇÕES
-# ===============================================
+# ================================
+# FUNÇÕES DE AUTENTICAÇÃO
+# ================================
 
-class AuthMiddleware:
-    """Middleware de autenticação simulado"""
-    
-    @staticmethod
-    def verificar_token(token: str) -> bool:
-        # Simulação simples de verificação de token
-        return token == "Bearer token_valido_123"
-    
-    @staticmethod
-    def obter_usuario_do_token(token: str) -> dict:
-        if AuthMiddleware.verificar_token(token):
-            return {"id": 1, "nome": "Admin", "role": "admin"}
-        return None
+def hash_senha(senha: str) -> str:
+    return hashlib.sha256(senha.encode()).hexdigest()
 
-# ===============================================
-# ENDPOINTS DE USUÁRIOS
-# ===============================================
+def criar_token(usuario_id: int) -> str:
+    payload = {{
+        "user_id": usuario_id,
+        "exp": datetime.utcnow() + timedelta(hours=24)
+    }}
+    return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
 
-@app.get("/usuarios")
-def listar_usuarios(ativo: Optional[bool] = None, limite: int = 10, offset: int = 0):
-    """
-    Listar usuários com paginação e filtros
-    
-    - **ativo**: Filtrar por status (True/False)
-    - **limite**: Número máximo de resultados (padrão: 10)
-    - **offset**: Número de registros para pular (padrão: 0)
-    """
-    usuarios_filtrados = usuarios_db.copy()
-    
-    # Aplicar filtro de status
-    if ativo is not None:
-        usuarios_filtrados = [u for u in usuarios_filtrados if u['ativo'] == ativo]
-    
-    # Aplicar paginação
-    total = len(usuarios_filtrados)
-    usuarios_paginados = usuarios_filtrados[offset:offset + limite]
-    
-    return APIResponse(
-        sucesso=True,
-        mensagem="Usuários listados com sucesso",
-        dados={
-            "usuarios": usuarios_paginados,
-            "total": total,
-            "limite": limite,
-            "offset": offset,
-            "tem_proximo": offset + limite < total
-        }
-    ).dict()
+def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=["HS256"])
+        return payload.get("user_id")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail="Token inválido")
 
-@app.get("/usuarios/{user_id}")
-def obter_usuario(user_id: int):
-    """Obter usuário específico por ID"""
-    usuario = next((u for u in usuarios_db if u['id'] == user_id), None)
-    
-    if not usuario:
-        return {
-            "sucesso": False,
-            "mensagem": "Usuário não encontrado",
-            "codigo_erro": "USER_NOT_FOUND"
-        }
-    
-    return APIResponse(
-        sucesso=True,
-        mensagem="Usuário encontrado",
-        dados={"usuario": usuario}
-    ).dict()
+# ================================
+# ENDPOINTS DA API
+# ================================
 
-@app.post("/usuarios")
-def criar_usuario(usuario_data: dict):
-    """Criar novo usuário com validação completa"""
-    global proximo_id_usuario
+@app.get("/")
+async def home():
+    return {{
+        "loja": "{nome_loja}",
+        "categoria": "{categoria}",
+        "status": "🚀 API funcionando!",
+        "endpoints": {{
+            "produtos": "/produtos",
+            "usuarios": "/usuarios",
+            "carrinho": "/carrinho",
+            "pedidos": "/pedidos"
+        }}
+    }}
+
+@app.post("/usuarios/cadastro")
+async def cadastrar_usuario(usuario: Usuario):
+    # Verificar se email já existe
+    if any(u["email"] == usuario.email for u in usuarios_db):
+        raise HTTPException(status_code=400, detail="Email já cadastrado")
     
-    # Validação de dados obrigatórios
-    if 'nome' not in usuario_data or 'email' not in usuario_data:
-        return {
-            "sucesso": False,
-            "mensagem": "Nome e email são obrigatórios",
-            "codigo_erro": "MISSING_REQUIRED_FIELDS"
-        }
-    
-    # Validação de email único
-    if any(u['email'] == usuario_data['email'] for u in usuarios_db):
-        return {
-            "sucesso": False,
-            "mensagem": "Email já está em uso",
-            "codigo_erro": "EMAIL_ALREADY_EXISTS"
-        }
-    
-    # Criar usuário
-    novo_usuario = {
-        "id": proximo_id_usuario,
-        "nome": usuario_data['nome'],
-        "email": usuario_data['email'],
-        "ativo": usuario_data.get('ativo', True),
-        "data_criacao": datetime.now().isoformat(),
-        "ultimo_acesso": None
-    }
-    
+    novo_usuario = {{
+        "id": len(usuarios_db) + 1,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "senha": hash_senha(usuario.senha),
+        "criado_em": datetime.now()
+    }}
     usuarios_db.append(novo_usuario)
-    proximo_id_usuario += 1
     
-    return APIResponse(
-        sucesso=True,
-        mensagem="Usuário criado com sucesso",
-        dados={"usuario": novo_usuario}
-    ).dict()
-
-@app.put("/usuarios/{user_id}")
-def atualizar_usuario(user_id: int, usuario_update: dict):
-    """Atualizar usuário existente"""
-    usuario = next((u for u in usuarios_db if u['id'] == user_id), None)
-    
-    if not usuario:
-        return {
-            "sucesso": False,
-            "mensagem": "Usuário não encontrado",
-            "codigo_erro": "USER_NOT_FOUND"
-        }
-    
-    # Atualizar apenas campos fornecidos
-    campos_atualizados = []
-    
-    if 'nome' in usuario_update:
-        usuario['nome'] = usuario_update['nome']
-        campos_atualizados.append('nome')
-    
-    if 'email' in usuario_update:
-        # Verificar se email não está em uso por outro usuário
-        if any(u['email'] == usuario_update['email'] and u['id'] != user_id for u in usuarios_db):
-            return {
-                "sucesso": False,
-                "mensagem": "Email já está em uso por outro usuário",
-                "codigo_erro": "EMAIL_ALREADY_EXISTS"
-            }
-        usuario['email'] = usuario_update['email']
-        campos_atualizados.append('email')
-    
-    if 'ativo' in usuario_update:
-        usuario['ativo'] = usuario_update['ativo']
-        campos_atualizados.append('ativo')
-    
-    usuario['data_atualizacao'] = datetime.now().isoformat()
-    
-    return APIResponse(
-        sucesso=True,
-        mensagem=f"Usuário atualizado com sucesso. Campos: {', '.join(campos_atualizados)}",
-        dados={"usuario": usuario}
-    ).dict()
-
-@app.delete("/usuarios/{user_id}")
-def deletar_usuario(user_id: int):
-    """Deletar usuário (soft delete)"""
-    global usuarios_db
-    usuario = next((u for u in usuarios_db if u['id'] == user_id), None)
-    
-    if not usuario:
-        return {
-            "sucesso": False,
-            "mensagem": "Usuário não encontrado",
-            "codigo_erro": "USER_NOT_FOUND"
-        }
-    
-    # Soft delete (marcar como inativo) ao invés de deletar fisicamente
-    usuario['ativo'] = False
-    usuario['data_delecao'] = datetime.now().isoformat()
-    
-    return APIResponse(
-        sucesso=True,
-        mensagem=f"Usuário {usuario['nome']} desativado com sucesso",
-        dados={"usuario_id": user_id}
-    ).dict()
-
-# ===============================================
-# ENDPOINTS DE PRODUTOS
-# ===============================================
+    token = criar_token(novo_usuario["id"])
+    return {{"mensagem": "Usuário cadastrado!", "token": token}}
 
 @app.get("/produtos")
-def listar_produtos(categoria: Optional[str] = None, 
-                   preco_min: Optional[float] = None,
-                   preco_max: Optional[float] = None,
-                   busca: Optional[str] = None):
-    """
-    Listar produtos com filtros avançados
-    
-    - **categoria**: Filtrar por categoria
-    - **preco_min**: Preço mínimo
-    - **preco_max**: Preço máximo  
-    - **busca**: Busca no nome ou descrição
-    """
-    produtos_filtrados = produtos_db.copy()
-    
-    # Aplicar filtros
+async def listar_produtos(categoria: Optional[str] = None):
+    produtos = produtos_db
     if categoria:
-        produtos_filtrados = [p for p in produtos_filtrados 
-                            if p['categoria'].lower() == categoria.lower()]
+        produtos = [p for p in produtos if p["categoria"].lower() == categoria.lower()]
     
-    if preco_min is not None:
-        produtos_filtrados = [p for p in produtos_filtrados if p['preco'] >= preco_min]
-    
-    if preco_max is not None:
-        produtos_filtrados = [p for p in produtos_filtrados if p['preco'] <= preco_max]
-    
-    if busca:
-        busca_lower = busca.lower()
-        produtos_filtrados = [p for p in produtos_filtrados 
-                            if busca_lower in p['nome'].lower() or 
-                               (p.get('descricao') and busca_lower in p['descricao'].lower())]
-    
-    return APIResponse(
-        sucesso=True,
-        mensagem="Produtos listados com sucesso",
-        dados={
-            "produtos": produtos_filtrados,
-            "total": len(produtos_filtrados),
-            "filtros_aplicados": {
-                "categoria": categoria,
-                "preco_min": preco_min,
-                "preco_max": preco_max,
-                "busca": busca
-            }
-        }
-    ).dict()
+    return {{
+        "produtos": produtos,
+        "total": len(produtos),
+        "moeda": "{moeda}"
+    }}
 
-@app.post("/produtos")
-def criar_produto(produto_data: dict):
-    """Criar novo produto"""
-    global proximo_id_produto
+@app.post("/carrinho/adicionar")
+async def adicionar_ao_carrinho(item: ItemCarrinho, user_id: int = Depends(verificar_token)):
+    if user_id not in carrinho_db:
+        carrinho_db[user_id] = []
     
-    # Validações obrigatórias
-    campos_obrigatorios = ['nome', 'preco', 'categoria']
-    campos_faltando = [campo for campo in campos_obrigatorios if campo not in produto_data]
+    # Verificar se produto existe
+    produto = next((p for p in produtos_db if p["id"] == item.produto_id), None)
+    if not produto:
+        raise HTTPException(status_code=404, detail="Produto não encontrado")
     
-    if campos_faltando:
-        return {
-            "sucesso": False,
-            "mensagem": f"Campos obrigatórios faltando: {', '.join(campos_faltando)}",
-            "codigo_erro": "MISSING_REQUIRED_FIELDS"
-        }
+    if produto["estoque"] < item.quantidade:
+        raise HTTPException(status_code=400, detail="Estoque insuficiente")
     
-    # Validação de preço
-    if produto_data['preco'] <= 0:
-        return {
-            "sucesso": False,
-            "mensagem": "Preço deve ser maior que zero",
-            "codigo_erro": "INVALID_PRICE"
-        }
-    
-    # Criar produto
-    novo_produto = {
-        "id": proximo_id_produto,
-        "nome": produto_data['nome'],
-        "preco": float(produto_data['preco']),
-        "categoria": produto_data['categoria'],
-        "descricao": produto_data.get('descricao'),
-        "data_criacao": datetime.now().isoformat(),
-        "disponivel": produto_data.get('disponivel', True)
-    }
-    
-    produtos_db.append(novo_produto)
-    proximo_id_produto += 1
-    
-    return APIResponse(
-        sucesso=True,
-        mensagem="Produto criado com sucesso",
-        dados={"produto": novo_produto}
-    ).dict()
+    carrinho_db[user_id].append(item.dict())
+    return {{"mensagem": "Item adicionado ao carrinho!"}}
 
-# ===============================================
-# ENDPOINTS DE ANÁLISE
-# ===============================================
-
-@app.get("/analytics/dashboard")
-def dashboard_analytics():
-    """Endpoint com analytics avançadas"""
-    # Estatísticas de usuários
-    total_usuarios = len(usuarios_db)
-    usuarios_ativos = len([u for u in usuarios_db if u.get('ativo', True)])
+@app.post("/pedidos")
+async def criar_pedido(pedido: Pedido, user_id: int = Depends(verificar_token)):
+    total = 0.0
     
-    # Estatísticas de produtos
+    for item in pedido.itens:
+        produto = next((p for p in produtos_db if p["id"] == item.produto_id), None)
+        if produto and produto["estoque"] >= item.quantidade:
+            total += produto["preco"] * item.quantidade
+            produto["estoque"] -= item.quantidade
+        else:
+            raise HTTPException(status_code=400, detail=f"Produto {{item.produto_id}} indisponível")
+    
+    novo_pedido = {{
+        "id": len(pedidos_db) + 1,
+        "usuario_id": user_id,
+        "itens": pedido.itens,
+        "total": total,
+        "status": "confirmado",
+        "criado_em": datetime.now()
+    }}
+    pedidos_db.append(novo_pedido)
+    
+    # Limpar carrinho
+    carrinho_db[user_id] = []
+    
+    return {{
+        "pedido_id": novo_pedido["id"],
+        "total": f"{moeda} {{total:.2f}}",
+        "status": "confirmado"
+    }}
+
+@app.get("/dashboard")
+async def dashboard(user_id: int = Depends(verificar_token)):
     total_produtos = len(produtos_db)
-    categorias = list(set(p['categoria'] for p in produtos_db)) if produtos_db else []
+    total_usuarios = len(usuarios_db)
+    total_pedidos = len(pedidos_db)
+    receita_total = sum(p.get("total", 0) for p in pedidos_db)
     
-    # Cálculos de preços
-    if produtos_db:
-        precos = [p['preco'] for p in produtos_db]
-        preco_medio = sum(precos) / len(precos)
-        preco_min = min(precos)
-        preco_max = max(precos)
-    else:
-        preco_medio = preco_min = preco_max = 0
+    return {{
+        "loja": "{nome_loja}",
+        "estatisticas": {{
+            "produtos": total_produtos,
+            "usuarios": total_usuarios,
+            "pedidos": total_pedidos,
+            "receita": f"{moeda} {{receita_total:.2f}}"
+        }},
+        "produtos_populares": produtos_db[:3]
+    }}
+
+# ================================
+# EXECUTAR API
+# ================================
+
+if __name__ == "__main__":
+    print("🛒 Iniciando {nome_loja} API...")
+    print("📦 Categoria: {categoria}")
+    print("💰 Moeda: {moeda}")
+    print("✅ API rodando em http://localhost:8000")
+    print("📖 Documentação em http://localhost:8000/docs")
     
-    # Produtos por categoria
-    produtos_por_categoria = {}
-    for produto in produtos_db:
-        categoria = produto['categoria']
-        produtos_por_categoria[categoria] = produtos_por_categoria.get(categoria, 0) + 1
-    
-    return APIResponse(
-        sucesso=True,
-        mensagem="Dashboard analytics gerado",
-        dados={
-            "usuarios": {
-                "total": total_usuarios,
-                "ativos": usuarios_ativos,
-                "inativos": total_usuarios - usuarios_ativos,
-                "taxa_ativacao": (usuarios_ativos / total_usuarios * 100) if total_usuarios > 0 else 0
-            },
-            "produtos": {
-                "total": total_produtos,
-                "categorias_total": len(categorias),
-                "categorias": categorias,
-                "preco_estatisticas": {
-                    "medio": round(preco_medio, 2),
-                    "minimo": preco_min,
-                    "maximo": preco_max
-                },
-                "distribuicao_categorias": produtos_por_categoria
-            },
-            "sistema": {
-                "versao_api": "2.0.0",
-                "uptime": "99.9%",
-                "data_relatorio": datetime.now().isoformat()
-            }
-        }
-    ).dict()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)'''
 
-# ===============================================
-# DEMONSTRAÇÃO DA API FASTAPI
-# ===============================================
-
-print("=== API MODERNA COM FASTAPI ===")
-print()
-
-# Adicionar dados de exemplo
-usuarios_exemplo = [
-    {"nome": "João Silva", "email": "joao@exemplo.com", "ativo": True},
-    {"nome": "Maria Santos", "email": "maria@exemplo.com", "ativo": True},
-    {"nome": "Carlos Lima", "email": "carlos@exemplo.com", "ativo": False},
-]
-
-produtos_exemplo = [
-    {"nome": "Smartphone", "preco": 899.99, "categoria": "Eletrônicos", "descricao": "Smartphone moderno"},
-    {"nome": "Notebook", "preco": 2499.99, "categoria": "Eletrônicos", "descricao": "Notebook para trabalho"},
-    {"nome": "Mesa", "preco": 299.99, "categoria": "Móveis", "descricao": "Mesa de escritório"},
-]
-
-print("📊 Populando banco de dados...")
-for usuario in usuarios_exemplo:
-    resultado = criar_usuario(usuario)
-    if resultado['sucesso']:
-        print(f"  ✅ Usuário criado: {usuario['nome']}")
-
-for produto in produtos_exemplo:
-    resultado = criar_produto(produto)
-    if resultado['sucesso']:
-        print(f"  ✅ Produto criado: {produto['nome']}")
-
-print()
-print("🧪 TESTANDO ENDPOINTS:")
-
-# Teste 1: Listar usuários
-print("\\n📡 GET /usuarios")
-resultado_usuarios = listar_usuarios()
-if resultado_usuarios['sucesso']:
-    total = resultado_usuarios['dados']['total']
-    print(f"  ✅ {total} usuários encontrados")
-
-# Teste 2: Filtrar produtos por categoria
-print("\\n📡 GET /produtos?categoria=Eletrônicos")
-resultado_produtos = listar_produtos(categoria="Eletrônicos")
-if resultado_produtos['sucesso']:
-    total = resultado_produtos['dados']['total']
-    print(f"  ✅ {total} produtos na categoria Eletrônicos")
-
-# Teste 3: Analytics dashboard
-print("\\n📡 GET /analytics/dashboard")
-resultado_analytics = dashboard_analytics()
-if resultado_analytics['sucesso']:
-    dados = resultado_analytics['dados']
-    print(f"  ✅ Dashboard gerado:")
-    print(f"    👥 Usuários: {dados['usuarios']['total']} (ativos: {dados['usuarios']['ativos']})")
-    print(f"    📦 Produtos: {dados['produtos']['total']} em {dados['produtos']['categorias_total']} categorias")
-    print(f"    💰 Preço médio: R$ {dados['produtos']['preco_estatisticas']['medio']}")
-
-print()
-print("✅ API FastAPI simulada com sucesso!")
-print("🎯 Recursos demonstrados:")
-print("  • Modelos Pydantic para validação")
-print("  • Respostas padronizadas")
-print("  • Filtros e paginação")
-print("  • Validações de negócio")
-print("  • Analytics e dashboard")
-print("  • Documentação automática")'''
+        self.exemplo(codigo_final)
         
-        self.exemplo(codigo2)
-        self.executar_codigo(codigo2)
+        # === EXECUÇÃO DO RESULTADO ===
+        self.print_section("DEMONSTRAÇÃO DO SISTEMA", "🎬", "warning")
+        self.print_colored("🚀 Vamos simular o funcionamento da sua API:", "text")
         
-        self.pausar()
+        # Simulação da execução
+        print(f"\n🛒 Iniciando {nome_loja} API...")
+        time.sleep(0.5)
+        print(f"📦 Categoria: {categoria}")
+        time.sleep(0.5)
+        print(f"💰 Moeda: {moeda}")
+        time.sleep(0.5)
+        print("✅ API rodando em http://localhost:8000")
+        time.sleep(0.5)
+        print("📖 Documentação automática gerada em /docs")
+        time.sleep(0.5)
         
-        print("\n🔐 Autenticação e Segurança:")
-        
-        codigo3 = '''# Sistema de autenticação e segurança para APIs
-import hashlib
-import secrets
-import jwt
-import time
-from datetime import datetime, timedelta
-from typing import Optional, Dict, Any
-
-class PasswordManager:
-    """Gerenciador de senhas com hash seguro"""
-    
-    @staticmethod
-    def gerar_salt() -> str:
-        """Gera salt aleatório para hash"""
-        return secrets.token_hex(32)
-    
-    @staticmethod
-    def hash_senha(senha: str, salt: str) -> str:
-        """Cria hash seguro da senha com salt"""
-        return hashlib.pbkdf2_hmac('sha256', 
-                                 senha.encode('utf-8'), 
-                                 salt.encode('utf-8'), 
-                                 100000)  # 100k iterações
-    
-    @staticmethod
-    def verificar_senha(senha: str, hash_armazenado: bytes, salt: str) -> bool:
-        """Verifica se senha está correta"""
-        hash_teste = PasswordManager.hash_senha(senha, salt)
-        return hash_teste == hash_armazenado
-    
-    @staticmethod
-    def criar_senha_segura(senha: str) -> Dict[str, Any]:
-        """Cria hash completo para armazenamento"""
-        salt = PasswordManager.gerar_salt()
-        hash_senha = PasswordManager.hash_senha(senha, salt)
-        
-        return {
-            "hash": hash_senha,
-            "salt": salt,
-            "criado_em": datetime.now().isoformat()
-        }
-
-class JWTManager:
-    """Gerenciador de tokens JWT"""
-    
-    def __init__(self, secret_key: str):
-        self.secret_key = secret_key
-        self.algoritmo = "HS256"
-        self.tempo_expiracao = timedelta(hours=24)
-    
-    def gerar_token(self, user_id: int, dados_extras: Dict = None) -> str:
-        """Gera token JWT para usuário"""
-        payload = {
-            "user_id": user_id,
-            "exp": datetime.utcnow() + self.tempo_expiracao,
-            "iat": datetime.utcnow(),
-            "tipo": "access_token"
-        }
-        
-        if dados_extras:
-            payload.update(dados_extras)
-        
-        # Simulação do JWT (sem biblioteca real)
-        token_simulado = f"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.user_{user_id}_exp_{int(payload['exp'].timestamp())}.signature_hash"
-        return token_simulado
-    
-    def validar_token(self, token: str) -> Optional[Dict]:
-        """Valida e decodifica token JWT"""
-        try:
-            # Simulação de validação
-            if not token.startswith("eyJ"):
-                return None
-            
-            # Extrair user_id do token simulado
-            parts = token.split('.')
-            if len(parts) != 3:
-                return None
-            
-            payload_part = parts[1]
-            if "user_" in payload_part:
-                user_id = int(payload_part.split("user_")[1].split("_")[0])
-                exp_timestamp = int(payload_part.split("exp_")[1])
-                
-                # Verificar expiração
-                if exp_timestamp < time.time():
-                    return None
-                
-                return {
-                    "user_id": user_id,
-                    "exp": exp_timestamp,
-                    "valido": True
-                }
-        except:
-            return None
-        
-        return None
-    
-    def gerar_refresh_token(self, user_id: int) -> str:
-        """Gera token de refresh (validade maior)"""
-        payload = {
-            "user_id": user_id,
-            "exp": datetime.utcnow() + timedelta(days=30),
-            "tipo": "refresh_token"
-        }
-        
-        token_simulado = f"refresh_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.user_{user_id}_refresh.signature"
-        return token_simulado
-
-class RateLimiter:
-    """Limitador de taxa de requisições"""
-    
-    def __init__(self):
-        self.requests = {}  # IP -> [timestamps]
-        self.limite_por_minuto = 60
-        self.limite_por_hora = 1000
-    
-    def verificar_limite(self, ip: str) -> Dict[str, Any]:
-        """Verifica se IP está dentro dos limites"""
-        agora = time.time()
-        
-        if ip not in self.requests:
-            self.requests[ip] = []
-        
-        # Limpar requests antigos (mais de 1 hora)
-        self.requests[ip] = [ts for ts in self.requests[ip] if agora - ts < 3600]
-        
-        # Contar requests no último minuto
-        requests_ultimo_minuto = len([ts for ts in self.requests[ip] if agora - ts < 60])
-        
-        # Contar requests na última hora
-        requests_ultima_hora = len(self.requests[ip])
-        
-        # Verificar limites
-        limite_atingido = (
-            requests_ultimo_minuto >= self.limite_por_minuto or
-            requests_ultima_hora >= self.limite_por_hora
-        )
-        
-        if not limite_atingido:
-            # Registrar nova request
-            self.requests[ip].append(agora)
-        
-        return {
-            "permitido": not limite_atingido,
-            "requests_minuto": requests_ultimo_minuto,
-            "requests_hora": requests_ultima_hora,
-            "limite_minuto": self.limite_por_minuto,
-            "limite_hora": self.limite_por_hora,
-            "reset_em": 60 - (agora % 60)  # segundos até reset
-        }
-
-class APIKeyManager:
-    """Gerenciador de chaves de API"""
-    
-    def __init__(self):
-        self.api_keys = {}  # key -> metadata
-    
-    def gerar_api_key(self, user_id: int, nome: str, permissoes: list = None) -> str:
-        """Gera nova chave de API"""
-        api_key = f"sk_{''.join(secrets.choice('abcdefghijklmnopqrstuvwxyz0123456789') for _ in range(32))}"
-        
-        self.api_keys[api_key] = {
-            "user_id": user_id,
-            "nome": nome,
-            "permissoes": permissoes or ["read"],
-            "criado_em": datetime.now().isoformat(),
-            "ultimo_uso": None,
-            "uso_total": 0,
-            "ativo": True
-        }
-        
-        return api_key
-    
-    def validar_api_key(self, api_key: str) -> Optional[Dict]:
-        """Valida chave de API"""
-        if api_key not in self.api_keys:
-            return None
-        
-        key_data = self.api_keys[api_key]
-        
-        if not key_data["ativo"]:
-            return None
-        
-        # Atualizar estatísticas de uso
-        key_data["ultimo_uso"] = datetime.now().isoformat()
-        key_data["uso_total"] += 1
-        
-        return key_data
-    
-    def revogar_api_key(self, api_key: str) -> bool:
-        """Revoga chave de API"""
-        if api_key in self.api_keys:
-            self.api_keys[api_key]["ativo"] = False
-            return True
-        return False
-
-class SecurityMiddleware:
-    """Middleware de segurança completo"""
-    
-    def __init__(self):
-        self.jwt_manager = JWTManager("secret_key_super_secreta_123")
-        self.rate_limiter = RateLimiter()
-        self.api_key_manager = APIKeyManager()
-        self.blocked_ips = set()
-    
-    def verificar_requisicao(self, request_data: Dict) -> Dict[str, Any]:
-        """Verifica segurança completa da requisição"""
-        ip = request_data.get("ip", "127.0.0.1")
-        headers = request_data.get("headers", {})
-        
-        resultado = {
-            "autorizado": False,
-            "usuario": None,
-            "motivo_bloqueio": None,
-            "rate_limit": None
-        }
-        
-        # 1. Verificar IP bloqueado
-        if ip in self.blocked_ips:
-            resultado["motivo_bloqueio"] = "IP_BLOCKED"
-            return resultado
-        
-        # 2. Verificar rate limiting
-        rate_check = self.rate_limiter.verificar_limite(ip)
-        resultado["rate_limit"] = rate_check
-        
-        if not rate_check["permitido"]:
-            resultado["motivo_bloqueio"] = "RATE_LIMIT_EXCEEDED"
-            return resultado
-        
-        # 3. Verificar autenticação
-        auth_header = headers.get("Authorization", "")
-        api_key_header = headers.get("X-API-Key", "")
-        
-        if auth_header.startswith("Bearer "):
-            # Autenticação JWT
-            token = auth_header[7:]  # Remove "Bearer "
-            token_data = self.jwt_manager.validar_token(token)
-            
-            if token_data:
-                resultado["autorizado"] = True
-                resultado["usuario"] = {"id": token_data["user_id"], "tipo": "jwt"}
-                return resultado
-            else:
-                resultado["motivo_bloqueio"] = "INVALID_JWT_TOKEN"
-                return resultado
-        
-        elif api_key_header:
-            # Autenticação por API Key
-            key_data = self.api_key_manager.validar_api_key(api_key_header)
-            
-            if key_data:
-                resultado["autorizado"] = True
-                resultado["usuario"] = {
-                    "id": key_data["user_id"], 
-                    "tipo": "api_key",
-                    "permissoes": key_data["permissoes"]
-                }
-                return resultado
-            else:
-                resultado["motivo_bloqueio"] = "INVALID_API_KEY"
-                return resultado
-        
-        else:
-            resultado["motivo_bloqueio"] = "NO_AUTHENTICATION"
-            return resultado
-    
-    def bloquear_ip(self, ip: str):
-        """Bloqueia IP específico"""
-        self.blocked_ips.add(ip)
-    
-    def desbloquear_ip(self, ip: str):
-        """Desbloqueia IP"""
-        self.blocked_ips.discard(ip)
-
-# ===============================================
-# DEMONSTRAÇÃO DO SISTEMA DE SEGURANÇA
-# ===============================================
-
-print("=== SISTEMA DE SEGURANÇA PARA APIs ===")
-print()
-
-# 1. Demonstração de password hashing
-print("🔐 GERENCIAMENTO DE SENHAS:")
-password_mgr = PasswordManager()
-
-senha_original = "minha_senha_super_secreta_123"
-dados_senha = password_mgr.criar_senha_segura(senha_original)
-
-print(f"  Senha original: {senha_original}")
-print(f"  Salt gerado: {dados_senha['salt'][:16]}...")
-print(f"  Hash seguro: {str(dados_senha['hash'])[:32]}...")
-
-# Verificar senha
-senha_correta = password_mgr.verificar_senha(senha_original, dados_senha['hash'], dados_senha['salt'])
-senha_incorreta = password_mgr.verificar_senha("senha_errada", dados_senha['hash'], dados_senha['salt'])
-
-print(f"  Verificação senha correta: {'✅' if senha_correta else '❌'}")
-print(f"  Verificação senha incorreta: {'❌' if not senha_incorreta else '✅'}")
-
-print()
-
-# 2. Demonstração de JWT
-print("🎫 GERENCIAMENTO DE TOKENS JWT:")
-jwt_mgr = JWTManager("chave_secreta_jwt_123")
-
-user_id = 123
-token = jwt_mgr.gerar_token(user_id, {"role": "admin", "permissions": ["read", "write"]})
-refresh_token = jwt_mgr.gerar_refresh_token(user_id)
-
-print(f"  Token gerado: {token[:50]}...")
-print(f"  Refresh token: {refresh_token[:40]}...")
-
-# Validar token
-token_data = jwt_mgr.validar_token(token)
-print(f"  Token válido: {'✅' if token_data and token_data['valido'] else '❌'}")
-if token_data:
-    print(f"  User ID: {token_data['user_id']}")
-
-print()
-
-# 3. Demonstração de Rate Limiting
-print("⏱️ LIMITADOR DE TAXA:")
-rate_limiter = RateLimiter()
-
-test_ip = "192.168.1.100"
-print(f"  Testando IP: {test_ip}")
-
-# Simular várias requisições
-for i in range(5):
-    resultado = rate_limiter.verificar_limite(test_ip)
-    print(f"  Requisição {i+1}: {'✅ Permitida' if resultado['permitido'] else '❌ Bloqueada'}")
-    print(f"    Requests no minuto: {resultado['requests_minuto']}/{resultado['limite_minuto']}")
-
-print()
-
-# 4. Demonstração de API Keys
-print("🗝️ GERENCIAMENTO DE API KEYS:")
-api_mgr = APIKeyManager()
-
-# Gerar API keys
-api_key_admin = api_mgr.gerar_api_key(user_id=1, nome="Admin Key", permissoes=["read", "write", "delete"])
-api_key_readonly = api_mgr.gerar_api_key(user_id=2, nome="ReadOnly Key", permissoes=["read"])
-
-print(f"  API Key Admin: {api_key_admin[:20]}...")
-print(f"  API Key ReadOnly: {api_key_readonly[:20]}...")
-
-# Validar API keys
-key_data_admin = api_mgr.validar_api_key(api_key_admin)
-key_data_readonly = api_mgr.validar_api_key(api_key_readonly)
-
-print(f"  Validação Admin Key: {'✅' if key_data_admin else '❌'}")
-if key_data_admin:
-    print(f"    Permissões: {key_data_admin['permissoes']}")
-    print(f"    Uso total: {key_data_admin['uso_total']}")
-
-print()
-
-# 5. Demonstração de Middleware Completo
-print("🛡️ MIDDLEWARE DE SEGURANÇA:")
-security = SecurityMiddleware()
-
-# Testar diferentes cenários
-cenarios_teste = [
-    {
-        "nome": "Request com JWT válido",
-        "request": {
-            "ip": "10.0.0.1",
-            "headers": {"Authorization": f"Bearer {token}"}
-        }
-    },
-    {
-        "nome": "Request com API Key válida",
-        "request": {
-            "ip": "10.0.0.2", 
-            "headers": {"X-API-Key": api_key_readonly}
-        }
-    },
-    {
-        "nome": "Request sem autenticação",
-        "request": {
-            "ip": "10.0.0.3",
-            "headers": {}
-        }
-    },
-    {
-        "nome": "Request com token inválido",
-        "request": {
-            "ip": "10.0.0.4",
-            "headers": {"Authorization": "Bearer token_invalido_123"}
-        }
-    }
-]
-
-for cenario in cenarios_teste:
-    print(f"\\n  📋 {cenario['nome']}:")
-    resultado = security.verificar_requisicao(cenario['request'])
-    
-    if resultado['autorizado']:
-        print(f"    ✅ Autorizado")
-        print(f"    👤 Usuário: ID {resultado['usuario']['id']} ({resultado['usuario']['tipo']})")
-    else:
-        print(f"    ❌ Bloqueado: {resultado['motivo_bloqueio']}")
-    
-    if resultado['rate_limit']:
-        rl = resultado['rate_limit']
-        print(f"    ⏱️ Rate Limit: {rl['requests_minuto']}/{rl['limite_minuto']} por minuto")
-
-print()
-print("✅ Sistema de segurança implementado com sucesso!")
-print("🎯 Recursos de segurança:")
-print("  • Hash seguro de senhas (PBKDF2)")
-print("  • Tokens JWT com expiração")
-print("  • Rate limiting por IP")
-print("  • API Keys com permissões")
-print("  • Middleware de segurança integrado")
-print("  • Bloqueio de IPs maliciosos")
-print("  • Refresh tokens para sessões longas")'''
-        
-        self.exemplo(codigo3)
-        self.executar_codigo(codigo3)
-        
-        # Exercícios
-        self.exercicio(
-            "Qual é o método HTTP usado para criar um novo recurso?",
-            ["POST", "post"],
-            "POST é usado para criar novos recursos em APIs REST"
-        )
-        
-        # Mini Projeto do Módulo 29
-        self._mini_projeto_sistema_api_completo()
-        
-        # Marcar módulo como completo
-        self.complete_module()
-    
-    def _mini_projeto_sistema_api_completo(self) -> None:
-        """Mini Projeto - Módulo 29: Sistema de API Completo"""
-        if self.ui:
-            self.ui.clear_screen()
-            self.ui.header("🎯 MINI PROJETO: SISTEMA DE API COMPLETO")
-        else:
-            print("\n" + "="*50)
-            print("🎯 MINI PROJETO: SISTEMA DE API COMPLETO")
-            print("="*50)
-        
-        print("🌐 API REST completa com autenticação, documentação e monitoramento!")
-        print("🛠️ Usando: FastAPI, JWT, Rate Limiting, OpenAPI, WebSockets")
-        
-        self.pausar()
-        
-        codigo_projeto = '''# 🌐 SISTEMA DE API COMPLETO
-# API REST profissional com todos os recursos modernos
-
-import json
-import time
-import hashlib
-import secrets
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
-from dataclasses import dataclass, asdict
-from enum import Enum
-import asyncio
-import websockets
-
-# ===============================================
-# MODELOS DE DADOS E ENUMS
-# ===============================================
-
-class UserRole(Enum):
-    ADMIN = "admin"
-    USER = "user"
-    MODERATOR = "moderator"
-
-class StatusEnum(Enum):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    PENDING = "pending"
-    SUSPENDED = "suspended"
-
-@dataclass
-class User:
-    id: int
-    username: str
-    email: str
-    password_hash: str
-    salt: str
-    role: UserRole
-    status: StatusEnum
-    created_at: datetime
-    last_login: Optional[datetime] = None
-    api_key: Optional[str] = None
-    
-    def to_dict(self, include_sensitive=False):
-        data = asdict(self)
-        data['role'] = self.role.value
-        data['status'] = self.status.value
-        data['created_at'] = self.created_at.isoformat()
-        data['last_login'] = self.last_login.isoformat() if self.last_login else None
-        
-        if not include_sensitive:
-            del data['password_hash']
-            del data['salt']
-        
-        return data
-
-@dataclass
-class Product:
-    id: int
-    name: str
-    description: str
-    price: float
-    category_id: int
-    stock: int
-    created_at: datetime
-    updated_at: datetime
-    active: bool = True
-    
-    def to_dict(self):
-        data = asdict(self)
-        data['created_at'] = self.created_at.isoformat()
-        data['updated_at'] = self.updated_at.isoformat()
-        return data
-
-@dataclass
-class Category:
-    id: int
-    name: str
-    description: str
-    parent_id: Optional[int] = None
-    
-    def to_dict(self):
-        return asdict(self)
-
-@dataclass
-class Order:
-    id: int
-    user_id: int
-    products: List[Dict]  # [{"product_id": int, "quantity": int, "price": float}]
-    total_amount: float
-    status: str
-    created_at: datetime
-    updated_at: datetime
-    
-    def to_dict(self):
-        data = asdict(self)
-        data['created_at'] = self.created_at.isoformat()
-        data['updated_at'] = self.updated_at.isoformat()
-        return data
-
-# ===============================================
-# SISTEMA DE AUTENTICAÇÃO AVANÇADO
-# ===============================================
-
-class AuthenticationSystem:
-    """Sistema completo de autenticação"""
-    
-    def __init__(self):
-        self.users: Dict[int, User] = {}
-        self.sessions: Dict[str, Dict] = {}  # token -> session_data
-        self.api_keys: Dict[str, int] = {}  # api_key -> user_id
-        self.login_attempts: Dict[str, List[datetime]] = {}  # IP -> attempts
-        self.secret_key = "super_secret_key_for_jwt_2024"
-        self.next_user_id = 1
-    
-    def hash_password(self, password: str, salt: str = None) -> tuple:
-        """Cria hash seguro da senha"""
-        if salt is None:
-            salt = secrets.token_hex(32)
-        
-        password_hash = hashlib.pbkdf2_hmac(
-            'sha256',
-            password.encode('utf-8'),
-            salt.encode('utf-8'),
-            100000  # 100k iterations
-        )
-        
-        return password_hash.hex(), salt
-    
-    def verify_password(self, password: str, stored_hash: str, salt: str) -> bool:
-        """Verifica senha"""
-        hash_to_check, _ = self.hash_password(password, salt)
-        return hash_to_check == stored_hash
-    
-    def generate_api_key(self) -> str:
-        """Gera chave de API única"""
-        return f"sk_{''.join(secrets.choice('abcdefghijklmnopqrstuvwxyz0123456789') for _ in range(48))}"
-    
-    def register_user(self, username: str, email: str, password: str, role: UserRole = UserRole.USER) -> Dict:
-        """Registra novo usuário"""
-        # Verificar se username ou email já existem
-        for user in self.users.values():
-            if user.username == username:
-                return {"success": False, "error": "USERNAME_EXISTS"}
-            if user.email == email:
-                return {"success": False, "error": "EMAIL_EXISTS"}
-        
-        # Criar hash da senha
-        password_hash, salt = self.hash_password(password)
-        
-        # Criar usuário
-        user = User(
-            id=self.next_user_id,
-            username=username,
-            email=email,
-            password_hash=password_hash,
-            salt=salt,
-            role=role,
-            status=StatusEnum.ACTIVE,
-            created_at=datetime.now(),
-            api_key=self.generate_api_key()
-        )
-        
-        self.users[self.next_user_id] = user
-        self.api_keys[user.api_key] = self.next_user_id
-        self.next_user_id += 1
-        
-        return {
-            "success": True,
-            "user": user.to_dict(),
-            "api_key": user.api_key
-        }
-    
-    def authenticate_user(self, username: str, password: str, ip: str) -> Dict:
-        """Autentica usuário"""
-        # Verificar tentativas de login
-        if not self.check_login_attempts(ip):
-            return {"success": False, "error": "TOO_MANY_ATTEMPTS"}
-        
-        # Encontrar usuário
-        user = None
-        for u in self.users.values():
-            if u.username == username or u.email == username:
-                user = u
-                break
-        
-        if not user:
-            self.record_failed_login(ip)
-            return {"success": False, "error": "INVALID_CREDENTIALS"}
-        
-        # Verificar senha
-        if not self.verify_password(password, user.password_hash, user.salt):
-            self.record_failed_login(ip)
-            return {"success": False, "error": "INVALID_CREDENTIALS"}
-        
-        # Verificar status do usuário
-        if user.status != StatusEnum.ACTIVE:
-            return {"success": False, "error": f"USER_{user.status.value.upper()}"}
-        
-        # Gerar token de sessão
-        session_token = self.generate_session_token(user.id)
-        
-        # Atualizar último login
-        user.last_login = datetime.now()
-        
-        return {
-            "success": True,
-            "user": user.to_dict(),
-            "token": session_token,
-            "expires_in": 86400  # 24 horas
-        }
-    
-    def generate_session_token(self, user_id: int) -> str:
-        """Gera token de sessão"""
-        token = secrets.token_urlsafe(32)
-        self.sessions[token] = {
-            "user_id": user_id,
-            "created_at": datetime.now(),
-            "expires_at": datetime.now() + timedelta(hours=24),
-            "last_used": datetime.now()
-        }
-        return token
-    
-    def validate_token(self, token: str) -> Optional[User]:
-        """Valida token de sessão"""
-        if token not in self.sessions:
-            return None
-        
-        session = self.sessions[token]
-        
-        # Verificar expiração
-        if datetime.now() > session["expires_at"]:
-            del self.sessions[token]
-            return None
-        
-        # Atualizar último uso
-        session["last_used"] = datetime.now()
-        
-        return self.users.get(session["user_id"])
-    
-    def validate_api_key(self, api_key: str) -> Optional[User]:
-        """Valida chave de API"""
-        user_id = self.api_keys.get(api_key)
-        if user_id:
-            return self.users.get(user_id)
-        return None
-    
-    def check_login_attempts(self, ip: str) -> bool:
-        """Verifica se IP não excedeu tentativas de login"""
-        now = datetime.now()
-        if ip not in self.login_attempts:
-            return True
-        
-        # Remover tentativas antigas (últimas 15 minutos)
-        self.login_attempts[ip] = [
-            attempt for attempt in self.login_attempts[ip]
-            if now - attempt < timedelta(minutes=15)
+        # Simulação de estatísticas
+        print(f"\n📊 ESTATÍSTICAS DA {nome_loja.upper()}:")
+        estatisticas = [
+            "👥 3 usuários cadastrados",
+            "📦 3 produtos em estoque", 
+            "🛒 2 pedidos realizados",
+            f"💰 Receita total: {moeda} 899,97"
         ]
         
-        # Verificar se excedeu 5 tentativas
-        return len(self.login_attempts[ip]) < 5
-    
-    def record_failed_login(self, ip: str):
-        """Registra tentativa de login falhada"""
-        if ip not in self.login_attempts:
-            self.login_attempts[ip] = []
-        self.login_attempts[ip].append(datetime.now())
-
-# ===============================================
-# SISTEMA DE RATE LIMITING AVANÇADO
-# ===============================================
-
-class AdvancedRateLimiter:
-    """Rate limiter com diferentes tipos de limite"""
-    
-    def __init__(self):
-        self.requests = {}  # endpoint -> ip -> timestamps
-        self.global_requests = {}  # ip -> timestamps
+        for stat in estatisticas:
+            print(f"  {stat}")
+            time.sleep(0.3)
         
-        # Configurações de limite por endpoint
-        self.endpoint_limits = {
-            "/auth/login": {"per_minute": 5, "per_hour": 20},
-            "/auth/register": {"per_minute": 2, "per_hour": 10},
-            "/api/users": {"per_minute": 30, "per_hour": 1000},
-            "/api/products": {"per_minute": 60, "per_hour": 5000},
-            "default": {"per_minute": 100, "per_hour": 10000}
-        }
-    
-    def check_rate_limit(self, endpoint: str, ip: str, user_role: str = "user") -> Dict:
-        """Verifica limite de taxa para endpoint específico"""
-        now = time.time()
+        # === MENSAGEM DE CONQUISTA ===
+        self.print_success("🎉 PARABÉNS! Você criou um sistema completo de API E-commerce!")
         
-        # Obter configuração de limite
-        limits = self.endpoint_limits.get(endpoint, self.endpoint_limits["default"])
-        
-        # Ajustar limites baseado no role do usuário
-        if user_role == "admin":
-            limits = {k: v * 5 for k, v in limits.items()}  # Admins têm 5x mais limite
-        elif user_role == "moderator":
-            limits = {k: v * 2 for k, v in limits.items()}  # Moderadores têm 2x mais
-        
-        # Inicializar estruturas se necessário
-        if endpoint not in self.requests:
-            self.requests[endpoint] = {}
-        if ip not in self.requests[endpoint]:
-            self.requests[endpoint][ip] = []
-        
-        # Limpar requests antigos
-        self.requests[endpoint][ip] = [
-            ts for ts in self.requests[endpoint][ip] if now - ts < 3600
+        # === APLICAÇÕES AVANÇADAS ===
+        self.print_section("PRÓXIMOS PASSOS", "🚀", "info")
+        proximos_passos = [
+            "Integrar com banco de dados real (PostgreSQL, MongoDB)",
+            "Adicionar sistema de pagamento (Stripe, PayPal)",
+            "Implementar notificações em tempo real (WebSockets)",
+            "Criar sistema de avaliações e comentários",
+            "Adicionar busca avançada com filtros",
+            "Implementar sistema de cupons e descontos",
+            "Criar painel administrativo completo"
         ]
+        for passo in proximos_passos:
+            self.print_colored(f"• {passo}", "primary")
         
-        # Contar requests
-        requests_last_minute = len([
-            ts for ts in self.requests[endpoint][ip] if now - ts < 60
-        ])
-        requests_last_hour = len(self.requests[endpoint][ip])
+        self.print_success("\n🏆 CONQUISTA DESBLOQUEADA: Arquiteto de APIs E-commerce!")
         
-        # Verificar limites
-        minute_exceeded = requests_last_minute >= limits["per_minute"]
-        hour_exceeded = requests_last_hour >= limits["per_hour"]
-        
-        if minute_exceeded or hour_exceeded:
-            return {
-                "allowed": False,
-                "reason": "minute_limit" if minute_exceeded else "hour_limit",
-                "requests_minute": requests_last_minute,
-                "requests_hour": requests_last_hour,
-                "limits": limits,
-                "reset_in": 60 - (now % 60) if minute_exceeded else 3600 - (now % 3600)
-            }
-        
-        # Registrar nova request
-        self.requests[endpoint][ip].append(now)
-        
-        return {
-            "allowed": True,
-            "requests_minute": requests_last_minute + 1,
-            "requests_hour": requests_last_hour + 1,
-            "limits": limits
-        }
-
-# ===============================================
-# SISTEMA DE DADOS E CRUD
-# ===============================================
-
-class DatabaseManager:
-    """Gerenciador de dados em memória"""
-    
-    def __init__(self):
-        self.categories: Dict[int, Category] = {}
-        self.products: Dict[int, Product] = {}
-        self.orders: Dict[int, Order] = {}
-        
-        self.next_category_id = 1
-        self.next_product_id = 1
-        self.next_order_id = 1
-        
-        # Dados iniciais
-        self._initialize_sample_data()
-    
-    def _initialize_sample_data(self):
-        """Inicializa dados de exemplo"""
-        # Categorias
-        categories_data = [
-            {"name": "Eletrônicos", "description": "Produtos eletrônicos"},
-            {"name": "Roupas", "description": "Vestuário em geral"},
-            {"name": "Livros", "description": "Livros e publicações"},
-            {"name": "Casa", "description": "Produtos para casa"},
-        ]
-        
-        for cat_data in categories_data:
-            category = Category(
-                id=self.next_category_id,
-                name=cat_data["name"],
-                description=cat_data["description"]
-            )
-            self.categories[self.next_category_id] = category
-            self.next_category_id += 1
-        
-        # Produtos
-        products_data = [
-            {"name": "Smartphone", "description": "Smartphone moderno", "price": 899.99, "category_id": 1, "stock": 50},
-            {"name": "Notebook", "description": "Notebook para trabalho", "price": 2499.99, "category_id": 1, "stock": 20},
-            {"name": "Camiseta", "description": "Camiseta de algodão", "price": 29.99, "category_id": 2, "stock": 100},
-            {"name": "Calça Jeans", "description": "Calça jeans masculina", "price": 79.99, "category_id": 2, "stock": 75},
-            {"name": "Python Cookbook", "description": "Livro sobre Python", "price": 49.99, "category_id": 3, "stock": 30},
-        ]
-        
-        for prod_data in products_data:
-            product = Product(
-                id=self.next_product_id,
-                name=prod_data["name"],
-                description=prod_data["description"],
-                price=prod_data["price"],
-                category_id=prod_data["category_id"],
-                stock=prod_data["stock"],
-                created_at=datetime.now(),
-                updated_at=datetime.now()
-            )
-            self.products[self.next_product_id] = product
-            self.next_product_id += 1
-    
-    def get_products(self, category_id: int = None, search: str = None, 
-                    min_price: float = None, max_price: float = None) -> List[Product]:
-        """Busca produtos com filtros"""
-        products = list(self.products.values())
-        
-        if category_id:
-            products = [p for p in products if p.category_id == category_id]
-        
-        if search:
-            search_lower = search.lower()
-            products = [p for p in products if 
-                       search_lower in p.name.lower() or 
-                       search_lower in p.description.lower()]
-        
-        if min_price is not None:
-            products = [p for p in products if p.price >= min_price]
-        
-        if max_price is not None:
-            products = [p for p in products if p.price <= max_price]
-        
-        return [p for p in products if p.active]
-    
-    def create_product(self, product_data: Dict) -> Product:
-        """Cria novo produto"""
-        product = Product(
-            id=self.next_product_id,
-            name=product_data["name"],
-            description=product_data["description"],
-            price=product_data["price"],
-            category_id=product_data["category_id"],
-            stock=product_data["stock"],
-            created_at=datetime.now(),
-            updated_at=datetime.now()
-        )
-        
-        self.products[self.next_product_id] = product
-        self.next_product_id += 1
-        
-        return product
-    
-    def create_order(self, user_id: int, order_items: List[Dict]) -> Dict:
-        """Cria novo pedido"""
-        total_amount = 0
-        processed_items = []
-        
-        # Validar e processar itens
-        for item in order_items:
-            product_id = item["product_id"]
-            quantity = item["quantity"]
-            
-            if product_id not in self.products:
-                return {"success": False, "error": f"Product {product_id} not found"}
-            
-            product = self.products[product_id]
-            
-            if product.stock < quantity:
-                return {"success": False, "error": f"Insufficient stock for {product.name}"}
-            
-            item_total = product.price * quantity
-            total_amount += item_total
-            
-            processed_items.append({
-                "product_id": product_id,
-                "quantity": quantity,
-                "price": product.price,
-                "total": item_total
-            })
-            
-            # Atualizar estoque
-            product.stock -= quantity
-        
-        # Criar pedido
-        order = Order(
-            id=self.next_order_id,
-            user_id=user_id,
-            products=processed_items,
-            total_amount=total_amount,
-            status="pending",
-            created_at=datetime.now(),
-            updated_at=datetime.now()
-        )
-        
-        self.orders[self.next_order_id] = order
-        self.next_order_id += 1
-        
-        return {"success": True, "order": order}
-
-# ===============================================
-# API REST COMPLETA
-# ===============================================
-
-class ECommerceAPI:
-    """API completa de e-commerce"""
-    
-    def __init__(self):
-        self.auth = AuthenticationSystem()
-        self.rate_limiter = AdvancedRateLimiter()
-        self.db = DatabaseManager()
-        self.websocket_clients = set()
-        
-        # Criar usuário admin padrão
-        self.auth.register_user("admin", "admin@sistema.com", "admin123", UserRole.ADMIN)
-        
-        # Rotas e handlers
-        self.routes = {
-            "GET /api/health": self.health_check,
-            "POST /auth/register": self.register,
-            "POST /auth/login": self.login,
-            "GET /api/profile": self.get_profile,
-            "GET /api/categories": self.get_categories,
-            "GET /api/products": self.get_products,
-            "POST /api/products": self.create_product,
-            "GET /api/products/{id}": self.get_product,
-            "POST /api/orders": self.create_order,
-            "GET /api/orders": self.get_orders,
-            "GET /api/analytics": self.get_analytics,
-            "GET /api/docs": self.get_api_docs,
-        }
-    
-    def process_request(self, method: str, path: str, headers: Dict, 
-                       body: Dict = None, query_params: Dict = None, ip: str = "127.0.0.1") -> Dict:
-        """Processa requisição HTTP"""
-        route_key = f"{method} {path}"
-        
-        # Verificar se rota existe
-        if route_key not in self.routes:
-            return {"status": 404, "body": {"error": "Route not found"}}
-        
-        # Rate limiting
-        user_role = "user"
-        if "Authorization" in headers or "X-API-Key" in headers:
-            user = self.authenticate_request(headers)
-            if user:
-                user_role = user.role.value
-        
-        rate_check = self.rate_limiter.check_rate_limit(path, ip, user_role)
-        if not rate_check["allowed"]:
-            return {
-                "status": 429,
-                "body": {
-                    "error": "Rate limit exceeded",
-                    "reason": rate_check["reason"],
-                    "reset_in": rate_check["reset_in"]
-                },
-                "headers": {
-                    "X-RateLimit-Limit": str(rate_check["limits"]["per_minute"]),
-                    "X-RateLimit-Remaining": str(max(0, rate_check["limits"]["per_minute"] - rate_check["requests_minute"])),
-                    "X-RateLimit-Reset": str(int(time.time() + rate_check.get("reset_in", 60)))
-                }
-            }
-        
-        # Executar handler
-        try:
-            handler = self.routes[route_key]
-            result = handler(headers, body, query_params)
-            
-            # Adicionar headers de rate limit
-            if "headers" not in result:
-                result["headers"] = {}
-            result["headers"].update({
-                "X-RateLimit-Limit": str(rate_check["limits"]["per_minute"]),
-                "X-RateLimit-Remaining": str(rate_check["limits"]["per_minute"] - rate_check["requests_minute"]),
-            })
-            
-            return result
-            
-        except Exception as e:
-            return {"status": 500, "body": {"error": f"Internal server error: {str(e)}"}}
-    
-    def authenticate_request(self, headers: Dict) -> Optional[User]:
-        """Autentica requisição"""
-        # JWT Token
-        auth_header = headers.get("Authorization", "")
-        if auth_header.startswith("Bearer "):
-            token = auth_header[7:]
-            return self.auth.validate_token(token)
-        
-        # API Key
-        api_key = headers.get("X-API-Key", "")
-        if api_key:
-            return self.auth.validate_api_key(api_key)
-        
-        return None
-    
-    def require_auth(self, headers: Dict, required_role: UserRole = None) -> tuple:
-        """Verifica autenticação obrigatória"""
-        user = self.authenticate_request(headers)
-        if not user:
-            return None, {"status": 401, "body": {"error": "Authentication required"}}
-        
-        if required_role and user.role.value != required_role.value and user.role != UserRole.ADMIN:
-            return None, {"status": 403, "body": {"error": "Insufficient permissions"}}
-        
-        return user, None
-    
-    # ===============================================
-    # HANDLERS DE ENDPOINTS
-    # ===============================================
-    
-    def health_check(self, headers, body, query_params):
-        """Endpoint de saúde"""
-        return {
-            "status": 200,
-            "body": {
-                "status": "healthy",
-                "timestamp": datetime.now().isoformat(),
-                "version": "1.0.0",
-                "services": {
-                    "auth": "operational",
-                    "database": "operational",
-                    "rate_limiter": "operational"
-                }
-            }
-        }
-    
-    def register(self, headers, body, query_params):
-        """Registro de usuário"""
-        if not body or not all(k in body for k in ["username", "email", "password"]):
-            return {"status": 400, "body": {"error": "Missing required fields"}}
-        
-        result = self.auth.register_user(
-            body["username"], 
-            body["email"], 
-            body["password"]
-        )
-        
-        if result["success"]:
-            return {"status": 201, "body": result}
-        else:
-            return {"status": 409, "body": {"error": result["error"]}}
-    
-    def login(self, headers, body, query_params):
-        """Login de usuário"""
-        if not body or not all(k in body for k in ["username", "password"]):
-            return {"status": 400, "body": {"error": "Missing username or password"}}
-        
-        ip = "127.0.0.1"  # Simulado
-        result = self.auth.authenticate_user(body["username"], body["password"], ip)
-        
-        if result["success"]:
-            return {"status": 200, "body": result}
-        else:
-            status_code = 429 if result["error"] == "TOO_MANY_ATTEMPTS" else 401
-            return {"status": status_code, "body": {"error": result["error"]}}
-    
-    def get_profile(self, headers, body, query_params):
-        """Perfil do usuário"""
-        user, error = self.require_auth(headers)
-        if error:
-            return error
-        
-        return {"status": 200, "body": {"user": user.to_dict()}}
-    
-    def get_categories(self, headers, body, query_params):
-        """Listar categorias"""
-        categories = [cat.to_dict() for cat in self.db.categories.values()]
-        return {"status": 200, "body": {"categories": categories}}
-    
-    def get_products(self, headers, body, query_params):
-        """Listar produtos com filtros"""
-        filters = query_params or {}
-        
-        products = self.db.get_products(
-            category_id=filters.get("category_id", type=int),
-            search=filters.get("search"),
-            min_price=filters.get("min_price", type=float),
-            max_price=filters.get("max_price", type=float)
-        )
-        
-        return {
-            "status": 200,
-            "body": {
-                "products": [p.to_dict() for p in products],
-                "total": len(products),
-                "filters": filters
-            }
-        }
-    
-    def create_product(self, headers, body, query_params):
-        """Criar produto (admin only)"""
-        user, error = self.require_auth(headers, UserRole.ADMIN)
-        if error:
-            return error
-        
-        if not body or not all(k in body for k in ["name", "price", "category_id"]):
-            return {"status": 400, "body": {"error": "Missing required fields"}}
-        
-        try:
-            product = self.db.create_product(body)
-            
-            # Notificar via WebSocket
-            self.notify_websocket_clients({
-                "type": "product_created",
-                "product": product.to_dict()
-            })
-            
-            return {"status": 201, "body": {"product": product.to_dict()}}
-        except Exception as e:
-            return {"status": 400, "body": {"error": str(e)}}
-    
-    def get_product(self, headers, body, query_params):
-        """Obter produto específico"""
-        # Extrair ID do path (simulado)
-        product_id = 1  # Seria extraído da URL real
-        
-        if product_id not in self.db.products:
-            return {"status": 404, "body": {"error": "Product not found"}}
-        
-        product = self.db.products[product_id]
-        return {"status": 200, "body": {"product": product.to_dict()}}
-    
-    def create_order(self, headers, body, query_params):
-        """Criar pedido"""
-        user, error = self.require_auth(headers)
-        if error:
-            return error
-        
-        if not body or "items" not in body:
-            return {"status": 400, "body": {"error": "Missing order items"}}
-        
-        result = self.db.create_order(user.id, body["items"])
-        
-        if result["success"]:
-            # Notificar via WebSocket
-            self.notify_websocket_clients({
-                "type": "order_created",
-                "order": result["order"].to_dict()
-            })
-            
-            return {"status": 201, "body": result}
-        else:
-            return {"status": 400, "body": {"error": result["error"]}}
-    
-    def get_orders(self, headers, body, query_params):
-        """Listar pedidos do usuário"""
-        user, error = self.require_auth(headers)
-        if error:
-            return error
-        
-        user_orders = [
-            order.to_dict() for order in self.db.orders.values()
-            if order.user_id == user.id
-        ]
-        
-        return {"status": 200, "body": {"orders": user_orders}}
-    
-    def get_analytics(self, headers, body, query_params):
-        """Analytics (admin only)"""
-        user, error = self.require_auth(headers, UserRole.ADMIN)
-        if error:
-            return error
-        
-        # Calcular estatísticas
-        total_users = len(self.auth.users)
-        total_products = len(self.db.products)
-        total_orders = len(self.db.orders)
-        
-        revenue = sum(order.total_amount for order in self.db.orders.values())
-        
-        # Top produtos
-        product_sales = {}
-        for order in self.db.orders.values():
-            for item in order.products:
-                pid = item["product_id"]
-                product_sales[pid] = product_sales.get(pid, 0) + item["quantity"]
-        
-        top_products = sorted(product_sales.items(), key=lambda x: x[1], reverse=True)[:5]
-        
-        return {
-            "status": 200,
-            "body": {
-                "analytics": {
-                    "users": {
-                        "total": total_users,
-                        "active": len([u for u in self.auth.users.values() if u.status == StatusEnum.ACTIVE])
-                    },
-                    "products": {
-                        "total": total_products,
-                        "active": len([p for p in self.db.products.values() if p.active])
-                    },
-                    "orders": {
-                        "total": total_orders,
-                        "revenue": revenue
-                    },
-                    "top_products": [
-                        {
-                            "product_id": pid,
-                            "product_name": self.db.products[pid].name if pid in self.db.products else "Unknown",
-                            "sales": sales
-                        }
-                        for pid, sales in top_products
-                    ]
-                }
-            }
-        }
-    
-    def get_api_docs(self, headers, body, query_params):
-        """Documentação da API"""
-        docs = {
-            "openapi": "3.0.0",
-            "info": {
-                "title": "E-Commerce API",
-                "version": "1.0.0",
-                "description": "API completa para sistema de e-commerce"
-            },
-            "servers": [
-                {"url": "https://api.exemplo.com", "description": "Produção"},
-                {"url": "http://localhost:8000", "description": "Desenvolvimento"}
-            ],
-            "paths": {
-                "/auth/register": {
-                    "post": {
-                        "summary": "Registrar usuário",
-                        "requestBody": {
-                            "required": True,
-                            "content": {
-                                "application/json": {
-                                    "schema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "username": {"type": "string"},
-                                            "email": {"type": "string"},
-                                            "password": {"type": "string"}
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "/api/products": {
-                    "get": {
-                        "summary": "Listar produtos",
-                        "parameters": [
-                            {"name": "category_id", "in": "query", "schema": {"type": "integer"}},
-                            {"name": "search", "in": "query", "schema": {"type": "string"}},
-                            {"name": "min_price", "in": "query", "schema": {"type": "number"}},
-                            {"name": "max_price", "in": "query", "schema": {"type": "number"}}
-                        ]
-                    },
-                    "post": {
-                        "summary": "Criar produto (admin)",
-                        "security": [{"Bearer": []}],
-                        "requestBody": {
-                            "required": True,
-                            "content": {
-                                "application/json": {
-                                    "schema": {
-                                        "type": "object",
-                                        "properties": {
-                                            "name": {"type": "string"},
-                                            "description": {"type": "string"},
-                                            "price": {"type": "number"},
-                                            "category_id": {"type": "integer"},
-                                            "stock": {"type": "integer"}
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "components": {
-                "securitySchemes": {
-                    "Bearer": {
-                        "type": "http",
-                        "scheme": "bearer"
-                    },
-                    "ApiKey": {
-                        "type": "apiKey",
-                        "in": "header",
-                        "name": "X-API-Key"
-                    }
-                }
-            }
-        }
-        
-        return {"status": 200, "body": docs}
-    
-    def notify_websocket_clients(self, message: Dict):
-        """Notifica clientes WebSocket"""
-        if self.websocket_clients:
-            print(f"📡 WebSocket broadcast: {message['type']}")
-            # Em implementação real, enviaria para todos os clientes conectados
-
-# ===============================================
-# DEMONSTRAÇÃO COMPLETA
-# ===============================================
-
-def demonstrar_api_completa():
-    """Demonstração da API completa"""
-    print("=== SISTEMA DE API COMPLETO ===")
-    print()
-    
-    # Inicializar API
-    api = ECommerceAPI()
-    
-    print("🏗️ API inicializada com:")
-    print(f"  👥 {len(api.auth.users)} usuários")
-    print(f"  📂 {len(api.db.categories)} categorias")
-    print(f"  📦 {len(api.db.products)} produtos")
-    print()
-    
-    # Teste 1: Health Check
-    print("🧪 TESTE 1: Health Check")
-    response = api.process_request("GET", "/api/health", {})
-    print(f"  Status: {response['status']}")
-    print(f"  Health: {response['body']['status']}")
-    
-    # Teste 2: Registro de usuário
-    print("\\n🧪 TESTE 2: Registro de usuário")
-    register_data = {
-        "username": "joao_cliente",
-        "email": "joao@cliente.com",
-        "password": "senha123"
-    }
-    response = api.process_request("POST", "/auth/register", {}, register_data)
-    print(f"  Status: {response['status']}")
-    if response['status'] == 201:
-        print(f"  Usuário criado: {response['body']['user']['username']}")
-        api_key = response['body']['api_key']
-        print(f"  API Key: {api_key[:20]}...")
-    
-    # Teste 3: Login
-    print("\\n🧪 TESTE 3: Login de usuário")
-    login_data = {"username": "joao_cliente", "password": "senha123"}
-    response = api.process_request("POST", "/auth/login", {}, login_data)
-    print(f"  Status: {response['status']}")
-    if response['status'] == 200:
-        token = response['body']['token']
-        print(f"  Token: {token[:20]}...")
-        
-        # Teste 4: Perfil autenticado
-        print("\\n🧪 TESTE 4: Obter perfil")
-        headers = {"Authorization": f"Bearer {token}"}
-        response = api.process_request("GET", "/api/profile", headers)
-        print(f"  Status: {response['status']}")
-        if response['status'] == 200:
-            user = response['body']['user']
-            print(f"  Usuário: {user['username']} ({user['email']})")
-    
-    # Teste 5: Listar produtos
-    print("\\n🧪 TESTE 5: Listar produtos")
-    response = api.process_request("GET", "/api/products", {})
-    print(f"  Status: {response['status']}")
-    if response['status'] == 200:
-        products = response['body']['products']
-        print(f"  Total de produtos: {len(products)}")
-        if products:
-            print(f"  Primeiro produto: {products[0]['name']} - R$ {products[0]['price']}")
-    
-    # Teste 6: Criar produto (como admin)
-    print("\\n🧪 TESTE 6: Criar produto (admin)")
-    admin_headers = {"Authorization": f"Bearer {api.auth.generate_session_token(1)}"}  # Admin é ID 1
-    product_data = {
-        "name": "Produto Teste",
-        "description": "Produto criado via API",
-        "price": 99.99,
-        "category_id": 1,
-        "stock": 10
-    }
-    response = api.process_request("POST", "/api/products", admin_headers, product_data)
-    print(f"  Status: {response['status']}")
-    if response['status'] == 201:
-        product = response['body']['product']
-        print(f"  Produto criado: {product['name']}")
-    
-    # Teste 7: Analytics (admin)
-    print("\\n🧪 TESTE 7: Analytics")
-    response = api.process_request("GET", "/api/analytics", admin_headers)
-    print(f"  Status: {response['status']}")
-    if response['status'] == 200:
-        analytics = response['body']['analytics']
-        print(f"  Total usuários: {analytics['users']['total']}")
-        print(f"  Total produtos: {analytics['products']['total']}")
-        print(f"  Total pedidos: {analytics['orders']['total']}")
-    
-    # Teste 8: Rate limiting
-    print("\\n🧪 TESTE 8: Rate limiting")
-    test_ip = "192.168.1.100"
-    
-    for i in range(3):
-        response = api.process_request("GET", "/api/products", {}, ip=test_ip)
-        rate_headers = response.get('headers', {})
-        print(f"  Request {i+1}: Status {response['status']}")
-        if 'X-RateLimit-Remaining' in rate_headers:
-            print(f"    Rate limit remaining: {rate_headers['X-RateLimit-Remaining']}")
-    
-    # Teste 9: Documentação OpenAPI
-    print("\\n🧪 TESTE 9: Documentação da API")
-    response = api.process_request("GET", "/api/docs", {})
-    print(f"  Status: {response['status']}")
-    if response['status'] == 200:
-        docs = response['body']
-        print(f"  API: {docs['info']['title']} v{docs['info']['version']}")
-        print(f"  Endpoints documentados: {len(docs['paths'])}")
-    
-    print("\\n✅ Demonstração completa da API!")
-    print("🎯 Recursos implementados:")
-    print("  • Autenticação JWT e API Keys")
-    print("  • Rate limiting avançado")
-    print("  • CRUD completo de produtos")
-    print("  • Sistema de pedidos")
-    print("  • Analytics e relatórios")
-    print("  • Documentação OpenAPI")
-    print("  • Middleware de segurança")
-    print("  • WebSocket notifications")
-    print("  • Health checks")
-    print("  • Controle de acesso por roles")
-
-# Executar demonstração
-demonstrar_api_completa()'''
-        
-        self.exemplo(codigo_projeto)
-        self.executar_codigo(codigo_projeto)
-        
-        print("\n🏆 PARABÉNS! Sistema de API completo criado!")
-        print("🎯 Aplicação real: e-commerce, SaaS, sistemas empresariais")
-        
-        # Registra conclusão do mini projeto
-        self.complete_mini_project("Sistema de API Completo")
+        # === REGISTRO DE CONCLUSÃO ===
+        self.complete_mini_project("Sistema API E-commerce Completo")
         
         self.pausar()
 
@@ -2373,4 +1526,4 @@ demonstrar_api_completa()'''
 if __name__ == "__main__":
     module = Modulo29ApisWeb()
     print("Teste do módulo 29 - versão standalone")
-    module._apis_web()
+    module._apis_web_principal()

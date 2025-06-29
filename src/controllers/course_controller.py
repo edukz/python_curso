@@ -95,11 +95,24 @@ class CourseController:
         funcao, _ = self.menu_options[module_key]
         funcao()
         
-        # Mostrar projeto graduais se disponível
+        # Mostrar projeto graduais se disponível (só se não estiver em uma seção de prática)
         if self.progressive_projects and module_key.isdigit():
             module_number = int(module_key)
             if 1 <= module_number <= 30:
-                self._show_progressive_project(module_number)
+                # Só mostra projeto se o módulo foi completado NESTA SESSÃO
+                # Verifica se acabou de ser marcado como completo
+                module_progress = self.progress.get_module_status(f"modulo_{module_number}")
+                
+                # Adiciona verificação para não interferir em exercícios/seções
+                current_time = time.time()
+                execution_time = current_time - start_time
+                
+                # Se levou muito pouco tempo (< 5 segundos), provavelmente saiu dos exercícios
+                # Se levou tempo normal (> 5 segundos), provavelmente completou o módulo
+                if (module_progress and 
+                    module_progress.get('completed', False) and 
+                    execution_time > 5):
+                    self._show_progressive_project(module_number)
         
         # Remove da navegação ao terminar
         if self.navigation:
@@ -152,15 +165,45 @@ class CourseController:
     def _show_progressive_project(self, module_number: int) -> None:
         """Mostra o passo do projeto gradual correspondente ao módulo"""
         try:
-            print("\n" + "="*60)
-            print("🚀 PROJETO PRÁTICO DO MÓDULO")
-            print("="*60)
-            
-            choice = input("\nDeseja ver o projeto prático deste módulo? (s/N): ").strip().lower()
-            if choice in ['s', 'sim', 'y', 'yes']:
-                self.progressive_projects.show_project_step(module_number)
+            # Exibe o projeto com cores melhoradas
+            if self.ui:
+                section_color = self.ui.get_color("accent")
+                prompt_color = self.ui.get_color("warning")
+                reset = self.ui.get_color("reset")
+                
+                print(f"\n{section_color}{'═'*60}{reset}")
+                print(f"{section_color}🚀 PROJETO PRÁTICO DO MÓDULO{reset}")
+                print(f"{section_color}{'═'*60}{reset}")
+                
+                choice = input(f"\n{prompt_color}Deseja ver o projeto prático deste módulo? (s/N): {reset}").strip().lower()
             else:
-                print("Você pode acessar os projetos a qualquer momento no menu principal!")
+                print("\n" + "="*60)
+                print("🚀 PROJETO PRÁTICO DO MÓDULO")
+                print("="*60)
+                choice = input("\nDeseja ver o projeto prático deste módulo? (s/N): ").strip().lower()
+            
+            if choice in ['s', 'sim', 'y', 'yes']:
+                # Captura o retorno da interação do projeto
+                result = self.progressive_projects.show_project_step(module_number)
+                
+                # Se o usuário escolheu "Continuar com o módulo"
+                if result and result.startswith("execute_module_"):
+                    module_to_execute = result.split("_")[-1]
+                    if self.ui:
+                        success_color = self.ui.get_color("success")
+                        print(f"\n{success_color}🚀 Direcionando para o Módulo {module_to_execute}...{reset}")
+                    else:
+                        print(f"\n🚀 Direcionando para o Módulo {module_to_execute}...")
+                    
+                    # Executa o módulo solicitado
+                    input("Pressione ENTER para continuar...")
+                    self.execute_module(module_to_execute)
+            else:
+                if self.ui:
+                    info_color = self.ui.get_color("info")
+                    print(f"{info_color}Você pode acessar os projetos a qualquer momento no menu principal!{reset}")
+                else:
+                    print("Você pode acessar os projetos a qualquer momento no menu principal!")
                 input("Pressione ENTER para continuar...")
                 
         except Exception as e:
@@ -177,17 +220,36 @@ class CourseController:
             self.ui.clear_screen()
             self.ui.header("🚀 PROJETOS GRADUAIS", "Projetos Reais do Curso")
             
-            print("📚 PROJETOS DISPONÍVEIS:")
-            print("=" * 50)
-            print("1. 📖 Sistema de Biblioteca Pessoal (Módulos 1-10)")
-            print("2. 🛒 E-commerce Simples (Módulos 11-20)")
-            print("3. 📊 API e Dashboard Analytics (Módulos 21-30)")
-            print()
-            print("4. 📈 Ver progresso geral dos projetos")
-            print("5. 🎯 Ir para módulo específico")
-            print("0. 🔙 Voltar ao menu principal")
+            # Menu reformulado com cores
+            menu_color = self.ui.get_color("accent")
+            project_color = self.ui.get_color("primary")
+            option_color = self.ui.get_color("warning")
+            input_color = self.ui.get_color("info")
+            reset = self.ui.get_color("reset")
             
-            choice = input("\nEscolha uma opção: ").strip()
+            print(f"{menu_color}{'═' * 60}{reset}")
+            print(f"{menu_color}📚 ESCOLHA SEU PROJETO{reset}")
+            print(f"{menu_color}{'═' * 60}{reset}")
+            
+            projects = [
+                ("1", "📖", "Sistema de Biblioteca Pessoal", "Módulos 1-10", "primary"),
+                ("2", "🛒", "E-commerce Simples", "Módulos 11-20", "success"),
+                ("3", "📊", "API e Dashboard Analytics", "Módulos 21-30", "info")
+            ]
+            
+            for num, emoji, name, modules, color in projects:
+                color_code = self.ui.get_color(color)
+                print(f"{color_code}{num}. {emoji} {name}{reset}")
+                print(f"   {self.ui.get_color('text')}{modules}{reset}")
+                print()
+            
+            print(f"{menu_color}{'─' * 60}{reset}")
+            print(f"{option_color}4.{reset} 📈 Ver progresso geral dos projetos")
+            print(f"{option_color}5.{reset} 🎯 Ir para módulo específico")
+            print(f"{option_color}0.{reset} 🔙 Voltar ao menu principal")
+            print(f"{menu_color}{'═' * 60}{reset}")
+            
+            choice = input(f"\n{input_color}👉 Sua escolha: {reset}").strip()
             
             if choice == "0":
                 break
@@ -210,34 +272,59 @@ class CourseController:
         self.ui.clear_screen()
         self.ui.header(f"📋 {project_name.upper()}", f"Módulos {start_module}-{end_module}")
         
+        # Recarrega progresso para garantir dados atualizados
+        self.progressive_projects.reload_progress()
         progress = self.progressive_projects.user_progress[project_id]
         total_steps = len(self.progressive_projects.projects[project_id])
         completed = len(progress.completed_steps)
         completion_percentage = (completed / total_steps) * 100 if total_steps > 0 else 0
         
-        print(f"📊 Progresso: {completed}/{total_steps} passos ({completion_percentage:.1f}%)")
-        print(f"⏱️ Tempo gasto: {progress.total_time_spent} minutos")
-        print(f"✅ Status: {'Completo' if progress.is_completed else 'Em andamento'}")
+        # Estatísticas com cores
+        stats_color = self.ui.get_color("info")
+        progress_color = self.ui.get_color("success" if progress.is_completed else "warning")
+        text_color = self.ui.get_color("text")
+        reset = self.ui.get_color("reset")
+        
+        print(f"{stats_color}📊 Progresso:{reset} {progress_color}{completed}/{total_steps} passos ({completion_percentage:.1f}%){reset}")
+        print(f"{stats_color}⏱️ Tempo gasto:{reset} {text_color}{progress.total_time_spent} minutos{reset}")
+        print(f"{stats_color}✅ Status:{reset} {progress_color}{'Completo' if progress.is_completed else 'Em andamento'}{reset}")
         print()
         
-        print("📋 PASSOS DO PROJETO:")
-        print("=" * 40)
+        # Lista de passos melhorada
+        steps_color = self.ui.get_color("accent")
+        print(f"{steps_color}{'═' * 50}{reset}")
+        print(f"{steps_color}📋 PASSOS DO PROJETO{reset}")
+        print(f"{steps_color}{'═' * 50}{reset}")
         
         for i, step in enumerate(self.progressive_projects.projects[project_id]):
             status = "✅" if step.step_id in progress.completed_steps else "⏳"
             module_num = start_module + i
-            print(f"{status} Módulo {module_num}: {step.title}")
+            step_color = self.ui.get_color("success") if step.step_id in progress.completed_steps else self.ui.get_color("text")
+            print(f"{status} {step_color}Módulo {module_num}: {step.title}{reset}")
         
-        print("\n🎮 OPÇÕES:")
-        print("1. Ver próximo passo")
-        print("2. Ir para módulo específico")
-        print("0. Voltar")
+        # Menu de opções melhorado
+        menu_color = self.ui.get_color("accent")
+        option_color = self.ui.get_color("primary")
+        input_color = self.ui.get_color("warning")
         
-        choice = input("\nEscolha: ").strip()
+        print(f"\n{menu_color}{'─' * 40}{reset}")
+        print(f"{menu_color}🎯 PRÓXIMAS AÇÕES{reset}")
+        print(f"{menu_color}{'─' * 40}{reset}")
+        print(f"{option_color}1.{reset} 🚀 Ver próximo passo")
+        print(f"{option_color}2.{reset} 🎯 Ir para módulo específico")
+        print(f"{option_color}0.{reset} 🔙 Voltar")
+        print(f"{menu_color}{'─' * 40}{reset}")
+        
+        choice = input(f"\n{input_color}👉 Sua escolha: {reset}").strip()
         if choice == "1":
             next_module = start_module + progress.current_step
             if next_module <= end_module:
-                self.progressive_projects.show_project_step(next_module)
+                result = self.progressive_projects.show_project_step(next_module)
+                if result and result.startswith("execute_module_"):
+                    module_to_execute = result.split("_")[-1]
+                    print(f"\n{input_color}🚀 Direcionando para o Módulo {module_to_execute}...{reset}")
+                    input("Pressione ENTER para continuar...")
+                    self.execute_module(module_to_execute)
             else:
                 print("🎉 Projeto já foi completado!")
                 input("Pressione ENTER...")
@@ -245,7 +332,12 @@ class CourseController:
             try:
                 module = int(input(f"Qual módulo ({start_module}-{end_module})? "))
                 if start_module <= module <= end_module:
-                    self.progressive_projects.show_project_step(module)
+                    result = self.progressive_projects.show_project_step(module)
+                    if result and result.startswith("execute_module_"):
+                        module_to_execute = result.split("_")[-1]
+                        print(f"\n{input_color}🚀 Direcionando para o Módulo {module_to_execute}...{reset}")
+                        input("Pressione ENTER para continuar...")
+                        self.execute_module(module_to_execute)
                 else:
                     print("❌ Módulo fora do range!")
                     input("Pressione ENTER...")

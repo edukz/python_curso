@@ -23,7 +23,7 @@ class Modulo26AmbientesVirtuais(BaseModule):
         self.mini_project_points = 85
     
     def execute(self) -> None:
-        """Executa o módulo sobre Ambientes Virtuais"""
+        """Executa o módulo Ambientes Virtuais e Dependências"""
         if not self.ui or not self.progress:
             print("❌ Erro: Dependências não configuradas para este módulo")
             input("Pressione ENTER para continuar...")
@@ -35,931 +35,950 @@ class Modulo26AmbientesVirtuais(BaseModule):
             self.error_handler(lambda: None)
     
     def _ambientes_virtuais_module(self) -> None:
-        """Conteúdo principal sobre ambientes virtuais"""
+        """Conteúdo principal do módulo Ambientes Virtuais"""
+        # === CABEÇALHO VISUAL ===
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("📦 MÓDULO 26: AMBIENTES VIRTUAIS E DEPENDÊNCIAS")
+            self.ui.header("🎯 MÓDULO 26: AMBIENTES VIRTUAIS E DEPENDÊNCIAS")
         else:
-            print("\n" + "="*60)
-            print("📦 MÓDULO 26: AMBIENTES VIRTUAIS E DEPENDÊNCIAS")
-            print("="*60)
+            print("\n" + "="*50)
+            print("🎯 MÓDULO 26: AMBIENTES VIRTUAIS E DEPENDÊNCIAS")
+            print("="*50)
         
-        print("🔒 Isole seus projetos e gerencie dependências como um profissional!")
-        print("🎯 Tópicos abordados:")
-        print("• Por que usar ambientes virtuais")
-        print("• venv, virtualenv e conda")
-        print("• pip e gerenciamento de pacotes")
-        print("• requirements.txt e lock files")
-        print("• Poetry e ferramentas modernas")
-        print("• Docker para isolamento completo")
+        # === MENSAGENS MOTIVACIONAIS ===
+        self.print_success("🎉 Bem-vindo ao mundo profissional do Python!")
+        self.print_tip("Este módulo está dividido em seções interativas. Você controla o ritmo!")
         
-        input("\n🔸 Pressione ENTER para continuar...")
+        # === FLUXO PRINCIPAL COM TRATAMENTO DE CTRL+C ===
         
-        self._por_que_ambientes_virtuais()
-        self._venv_basico()
-        self._pip_gerenciamento_pacotes()
-        self._requirements_reproducibilidade()
-        self._ferramentas_modernas()
-        self._mini_projeto_ambiente()
+        # 1. Sistema de navegação por seções
+        try:
+            self._navegacao_secoes_interativas()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Navegação interrompida pelo usuário. Voltando ao menu principal...")
+            return
         
-        # Marcar módulo como completo
-        if self.progress:
-            self.progress.complete_module(self.module_id)
-            print(f"\n🎉 Módulo {self.module_id} concluído!")
+        # 2. Seção de Prática Interativa
+        try:
+            self._secao_pratica_interativa()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Módulo interrompido pelo usuário. Voltando ao menu principal...")
+            return
+        
+        # 3. Mini Projeto Prático
+        try:
+            self._mini_projeto_setup_profissional()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Mini projeto interrompido. Voltando ao menu principal...")
+            return
+        
+        # 4. Marcar módulo como completo
+        self.complete_module()
     
-    def _por_que_ambientes_virtuais(self):
-        """Por que usar ambientes virtuais"""
+    def _navegacao_secoes_interativas(self) -> None:
+        """Sistema de navegação por seções do módulo"""
+        
+        # === DEFINIÇÃO DAS SEÇÕES ===
+        secoes = [
+            {
+                'id': 'secao_por_que_ambientes',
+                'titulo': '🎯 Por que usar Ambientes Virtuais?',
+                'descricao': 'Entenda os problemas que eles resolvem',
+                'funcao': self._secao_por_que_ambientes
+            },
+            {
+                'id': 'secao_como_funciona',
+                'titulo': '⚙️ Como funcionam os ambientes virtuais?',
+                'descricao': 'Veja a mágica por trás do isolamento',
+                'funcao': self._secao_como_funciona
+            },
+            {
+                'id': 'secao_venv_pratica',
+                'titulo': '💡 venv na prática',
+                'descricao': 'Aprenda a criar e usar ambientes virtuais',
+                'funcao': self._secao_venv_pratica
+            },
+            {
+                'id': 'secao_pip_maestro',
+                'titulo': '📦 pip - O maestro dos pacotes',
+                'descricao': 'Domine o gerenciador de pacotes do Python',
+                'funcao': self._secao_pip_maestro
+            },
+            {
+                'id': 'secao_requirements',
+                'titulo': '📋 requirements.txt - A receita do projeto',
+                'descricao': 'Garanta que todos usem as mesmas versões',
+                'funcao': self._secao_requirements
+            },
+            {
+                'id': 'secao_ferramentas_modernas',
+                'titulo': '🚀 Ferramentas modernas',
+                'descricao': 'Poetry, Pipenv e outras maravilhas',
+                'funcao': self._secao_ferramentas_modernas
+            },
+            {
+                'id': 'secao_dicas_pro',
+                'titulo': '⭐ Dicas profissionais',
+                'descricao': 'Segredos dos desenvolvedores experientes',
+                'funcao': self._secao_dicas_pro
+            }
+        ]
+        
+        secoes_visitadas = set()
+        
+        # === LOOP PRINCIPAL DE NAVEGAÇÃO ===
+        while True:
+            # Limpa tela e mostra cabeçalho
+            self.ui.clear_screen() if self.ui else print("\n" + "="*50)
+            self.print_section("NAVEGAÇÃO DO MÓDULO", "📚", "accent")
+            self.print_colored("Escolha uma seção para estudar:", "text")
+            
+            # Lista todas as seções com status
+            print()
+            for i, secao in enumerate(secoes, 1):
+                status = "✅" if secao['id'] in secoes_visitadas else "📖"
+                print(f"{status} {i}. {secao['titulo']}")
+                self.print_colored(f"    {secao['descricao']}", "text")
+                print()
+            
+            print("0. 🎯 Continuar para os Exercícios Práticos")
+            
+            # Mostra progresso visual
+            progresso = len(secoes_visitadas)
+            total = len(secoes)
+            self.print_colored(f"\n📊 Progresso: {progresso}/{total} seções visitadas", "info")
+            
+            if progresso == total:
+                self.print_success("🌟 Você completou todas as seções! Está pronto para praticar!")
+            
+            # Processa escolha do usuário
+            try:
+                escolha = input(f"\n👉 Escolha uma seção (1-{len(secoes)}) ou 0 para continuar: ").strip()
+                
+                if escolha == "0":
+                    # Verifica se visitou seções suficientes
+                    if progresso >= 3:  # Pelo menos 3 seções visitadas
+                        break
+                    else:
+                        self.print_warning("📚 Recomendamos visitar pelo menos 3 seções antes de continuar!")
+                        continuar = input("Quer continuar mesmo assim? (s/n): ").lower()
+                        if continuar in ['s', 'sim', 'yes']:
+                            break
+                elif escolha.isdigit() and 1 <= int(escolha) <= len(secoes):
+                    # Executa seção escolhida
+                    idx = int(escolha) - 1
+                    secoes[idx]['funcao']()
+                    secoes_visitadas.add(secoes[idx]['id'])
+                else:
+                    self.print_warning(f"❌ Opção inválida! Digite um número de 1 a {len(secoes)} ou 0.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Pulando para exercícios práticos...")
+                break
+            except Exception as e:
+                self.print_warning(f"❌ Erro: {str(e)}. Tente novamente.")
+    
+    def _secao_por_que_ambientes(self) -> None:
+        """Seção: Por que usar Ambientes Virtuais?"""
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("🤔 POR QUE USAR AMBIENTES VIRTUAIS?")
         
-        print("🎯 Problemas que ambientes virtuais resolvem:")
+        # === CABEÇALHO ATRATIVO ===
+        self.print_section("POR QUE USAR AMBIENTES VIRTUAIS?", "🎯")
         
-        print("\n❌ Sem ambientes virtuais:")
-        problemas = '''🔴 PROBLEMAS COMUNS:
-
-1. 💥 Conflito de Dependências
-   • Projeto A precisa Django 3.0
-   • Projeto B precisa Django 4.0
-   • Impossível ter ambos no mesmo sistema!
-
-2. 🗑️ Poluição do Sistema
-   • Pacotes instalados globalmente
-   • Difícil de rastrear o que cada projeto usa
-   • Sistema fica bagunçado com o tempo
-
-3. 🚫 Problemas de Reprodução
-   • "Funciona na minha máquina"
-   • Diferentes versões em dev/prod
-   • Dificuldade para onboarding de equipe
-
-4. 🔒 Permissões e Segurança
-   • Precisa de sudo/admin para instalar pacotes
-   • Risco de quebrar ferramentas do sistema
-   • Packages não confiáveis afetam todo sistema'''
-        print(problemas)
+        # === DEFINIÇÃO DO CONCEITO ===
+        self.print_concept(
+            "Ambiente Virtual",
+            "Um espaço isolado onde cada projeto Python tem suas próprias dependências, sem conflitos com outros projetos"
+        )
         
-        print("\n✅ Com ambientes virtuais:")
-        solucoes = '''🟢 SOLUÇÕES:
-
-1. 🔐 Isolamento Completo
-   • Cada projeto tem suas próprias dependências
-   • Versões específicas para cada projeto
-   • Zero conflitos entre projetos
-
-2. 🧹 Sistema Limpo
-   • Pacotes ficam isolados por projeto
-   • Fácil remoção - só deletar a pasta
-   • Sistema base permanece intocado
-
-3. 📋 Reprodutibilidade
-   • requirements.txt documenta dependências
-   • Mesmo ambiente em dev/teste/produção
-   • Onboarding rápido da equipe
-
-4. 🛡️ Segurança
-   • Sem necessidade de sudo/admin
-   • Pacotes duvidosos ficam isolados
-   • Rollback fácil se algo der errado'''
-        print(solucoes)
+        # === DICA RELACIONADA ===
+        self.print_tip("Pense em ambientes virtuais como apartamentos: cada projeto tem seu próprio espaço!")
         
-        print("\n🏗️ Casos de uso profissionais:")
-        casos = '''📊 CENÁRIOS REAIS:
-
-• 🚀 Startup: Múltiplos MVPs com tech stacks diferentes
-• 🏢 Empresa: Times trabalhando em versões diferentes do mesmo framework
-• 🧪 Pesquisa: Experimentos com bibliotecas experimentais
-• 📚 Aprendizado: Estudar diferentes versões sem quebrar nada
-• 🔧 Manutenção: Suporte a sistemas legados e modernos
-• 🌍 Open Source: Contribuir para projetos com dependências específicas'''
-        print(casos)
-        
-        print("\n💡 Analogia: Apartamentos vs Casa Compartilhada")
-        print("🏠 Sistema global = Casa compartilhada")
-        print("   • Todos dividem os mesmos recursos")
-        print("   • Conflitos inevitáveis")
-        print("   • Difícil manter organizado")
-        print("")
-        print("🏢 Ambiente virtual = Apartamento próprio")
-        print("   • Cada projeto tem seu espaço")
-        print("   • Independência total")
-        print("   • Fácil organização e limpeza")
-        
+        # === ANALOGIA DO COTIDIANO ===
+        self.print_colored("\n🏠 ANALOGIA DO DIA A DIA:", "warning")
+        self.print_colored("Imagine que você mora em uma república com amigos:", "text")
+        self.print_colored("• SEM ambientes virtuais = Todos compartilham a mesma geladeira", "text")
+        self.print_colored("  - João gosta de leite integral, Maria de desnatado", "text")
+        self.print_colored("  - Conflitos inevitáveis! Quem compra qual?", "text")
+        self.print_colored("• COM ambientes virtuais = Cada um tem sua mini-geladeira", "text")
+        self.print_colored("  - João tem seu leite integral, Maria seu desnatado", "text")
+        self.print_colored("  - Paz e harmonia no lar! 🎉", "text")
         input("\n🔸 Pressione ENTER para continuar...")
+        
+        # === PROBLEMAS REAIS ===
+        self.print_colored("\n💥 PROBLEMAS SEM AMBIENTES VIRTUAIS:", "error")
+        problemas = [
+            "1. Projeto A precisa Django 3.0, Projeto B precisa Django 4.0",
+            "2. Instalar pacotes globalmente pode quebrar ferramentas do sistema",
+            "3. 'Funciona na minha máquina' vira pesadelo da equipe",
+            "4. Difícil saber quais pacotes cada projeto usa"
+        ]
+        
+        for i, problema in enumerate(problemas, 1):
+            self.print_colored(problema, "text")
+            if i < len(problemas):
+                input("   ⏳ Pressione ENTER para o próximo problema...")
+        
+        # === SOLUÇÕES COM AMBIENTES ===
+        self.print_colored("\n✅ SOLUÇÕES COM AMBIENTES VIRTUAIS:", "success")
+        solucoes = [
+            "• Cada projeto tem suas versões específicas",
+            "• Sistema operacional fica protegido e limpo",
+            "• Mesmas versões em desenvolvimento e produção",
+            "• Fácil deletar e recriar se algo der errado"
+        ]
+        
+        for solucao in solucoes:
+            self.print_colored(solucao, "primary")
+        
+        # === APLICAÇÕES NO MUNDO REAL ===
+        self.print_colored("\n🌍 ONDE É USADO NO MUNDO REAL:", "accent")
+        aplicacoes = [
+            "Netflix - Diferentes microsserviços com versões específicas",
+            "Instagram - Times trabalhando em features com dependências diferentes",
+            "Spotify - Experimentos com bibliotecas de machine learning",
+            "Startups - Múltiplos MVPs com tecnologias variadas"
+        ]
+        for app in aplicacoes:
+            self.print_colored(f"• {app}", "primary")
+        
+        self.pausar()
     
-    def _venv_basico(self):
-        """venv - ferramenta padrão do Python"""
+    def _secao_como_funciona(self) -> None:
+        """Seção: Como funcionam os ambientes virtuais?"""
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("🐍 VENV - FERRAMENTA PADRÃO DO PYTHON")
         
-        print("📦 venv - incluído no Python 3.3+:")
-        print("• Ferramenta oficial e padrão")
-        print("• Sem instalação adicional necessária")
-        print("• Leve e rápido")
-        print("• Suporte em todas as plataformas")
+        self.print_section("COMO FUNCIONAM OS AMBIENTES VIRTUAIS?", "⚙️", "info")
         
-        print("\n🛠️ Comandos essenciais:")
+        # === EXPLICAÇÃO TÉCNICA GRADUAL ===
+        self.print_colored("\n🔧 A MÁGICA POR TRÁS:", "warning")
+        passos = [
+            "1. 📁 Cria uma pasta especial para o projeto",
+            "2. 🐍 Copia o Python para dentro dessa pasta",
+            "3. 📦 Instala pacotes APENAS nessa pasta",
+            "4. 🔀 Redireciona comandos para usar essa pasta"
+        ]
+        
+        for i, passo in enumerate(passos, 1):
+            self.print_colored(passo, "text")
+            if i < len(passos):
+                input("   ⏳ Pressione ENTER para o próximo passo...")
+        
+        # === ESTRUTURA VISUAL ===
+        self.print_colored("\n📁 ESTRUTURA DE UM AMBIENTE VIRTUAL:", "success")
+        estrutura = '''meu_projeto/
+├── venv/                    # Pasta do ambiente virtual
+│   ├── bin/                # Executáveis (Linux/Mac)
+│   │   ├── python         # Python isolado
+│   │   ├── pip           # pip isolado
+│   │   └── activate      # Script de ativação
+│   ├── Scripts/           # Executáveis (Windows)
+│   │   ├── python.exe    # Python isolado
+│   │   ├── pip.exe      # pip isolado
+│   │   └── activate.bat # Script de ativação
+│   └── lib/              # Bibliotecas instaladas
+│       └── site-packages/ # Seus pacotes aqui!
+└── seu_codigo.py         # Seu projeto'''
+        
+        self.print_colored(estrutura, "text")
+        
+        # === DEMONSTRAÇÃO PRÁTICA ===
+        self.print_colored("\n💻 VEJA FUNCIONANDO:", "accent")
         
         # Detectar sistema operacional
         sistema = "Windows" if os.name == 'nt' else "Unix/Linux/macOS"
         
         if sistema == "Windows":
-            comandos_criar = '''# Windows
-# Criar ambiente virtual
-python -m venv meu_projeto
-python -m venv C:\\caminho\\para\\projeto
+            comandos = '''# Windows
+# Antes de ativar:
+where python  # C:\\Python39\\python.exe
 
-# Ativar ambiente
-meu_projeto\\Scripts\\activate
-
-# Desativar
-deactivate'''
+# Depois de ativar:
+venv\\Scripts\\activate
+where python  # C:\\projeto\\venv\\Scripts\\python.exe'''
         else:
-            comandos_criar = '''# Unix/Linux/macOS
-# Criar ambiente virtual
-python3 -m venv meu_projeto
-python3 -m venv /caminho/para/projeto
+            comandos = '''# Unix/Linux/macOS
+# Antes de ativar:
+which python  # /usr/bin/python3
 
-# Ativar ambiente
-source meu_projeto/bin/activate
-
-# Desativar
-deactivate'''
+# Depois de ativar:
+source venv/bin/activate
+which python  # /home/user/projeto/venv/bin/python'''
         
-        print(f"\n📋 Sistema detectado: {sistema}")
-        print(comandos_criar)
+        self.exemplo(comandos)
         
-        print("\n🔍 Verificando o ambiente:")
-        verificacao = '''# Depois de ativar, verificar:
-which python     # Unix/Linux/macOS
-where python     # Windows
+        self.print_success("\n🎉 Agora você entende a mágica! É simples e poderoso!")
+        self.pausar()
+    
+    def _secao_venv_pratica(self) -> None:
+        """Seção: venv na prática"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("VENV NA PRÁTICA", "💡", "success")
+        
+        self.print_concept(
+            "venv",
+            "Ferramenta oficial do Python para criar ambientes virtuais. Incluída desde Python 3.3!"
+        )
+        
+        # === COMANDOS ESSENCIAIS ===
+        self.print_colored("\n⚡ COMANDOS MÁGICOS:", "warning")
+        
+        # Detectar sistema
+        sistema = "Windows" if os.name == 'nt' else "Unix/Linux/macOS"
+        self.print_colored(f"📋 Sistema detectado: {sistema}", "info")
+        
+        # === PASSO A PASSO INTERATIVO ===
+        self.print_colored("\n🚀 VAMOS CRIAR SEU PRIMEIRO AMBIENTE:", "accent")
+        
+        passos = [
+            {
+                'titulo': 'PASSO 1: Criar o ambiente',
+                'comando_win': 'python -m venv meu_ambiente',
+                'comando_unix': 'python3 -m venv meu_ambiente',
+                'explicacao': 'Cria uma pasta "meu_ambiente" com Python isolado'
+            },
+            {
+                'titulo': 'PASSO 2: Ativar o ambiente',
+                'comando_win': 'meu_ambiente\\Scripts\\activate',
+                'comando_unix': 'source meu_ambiente/bin/activate',
+                'explicacao': 'Agora você está "dentro" do ambiente!'
+            },
+            {
+                'titulo': 'PASSO 3: Instalar pacotes',
+                'comando_win': 'pip install requests pandas',
+                'comando_unix': 'pip install requests pandas',
+                'explicacao': 'Pacotes instalados APENAS neste ambiente'
+            },
+            {
+                'titulo': 'PASSO 4: Ver o que foi instalado',
+                'comando_win': 'pip list',
+                'comando_unix': 'pip list',
+                'explicacao': 'Lista todos os pacotes do ambiente'
+            },
+            {
+                'titulo': 'PASSO 5: Desativar quando terminar',
+                'comando_win': 'deactivate',
+                'comando_unix': 'deactivate',
+                'explicacao': 'Volta ao Python do sistema'
+            }
+        ]
+        
+        for i, passo in enumerate(passos, 1):
+            self.print_colored(f"\n{passo['titulo']}", "primary")
+            
+            if sistema == "Windows":
+                comando = passo['comando_win']
+            else:
+                comando = passo['comando_unix']
+            
+            self.print_code_section("COMANDO", comando)
+            self.print_colored(f"💡 {passo['explicacao']}", "info")
+            
+            if i < len(passos):
+                input("\n🔸 Pressione ENTER para o próximo passo...")
+        
+        # === DICAS PROFISSIONAIS ===
+        self.print_colored("\n⭐ DICAS DE OURO:", "warning")
+        dicas = [
+            "Use sempre 'venv' ou '.venv' como nome (padrão da comunidade)",
+            "Adicione venv/ ao .gitignore (NUNCA commite o ambiente!)",
+            "Crie um ambiente por projeto (não compartilhe!)",
+            "Documente no README como criar o ambiente"
+        ]
+        
+        for dica in dicas:
+            self.print_colored(f"• {dica}", "accent")
+        
+        self.pausar()
+    
+    def _secao_pip_maestro(self) -> None:
+        """Seção: pip - O maestro dos pacotes"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("PIP - O MAESTRO DOS PACOTES", "📦", "info")
+        
+        self.print_concept(
+            "pip",
+            "Python Package Installer - sua porta de entrada para 400.000+ pacotes gratuitos!"
+        )
+        
+        # === COMANDOS ESSENCIAIS ===
+        self.print_colored("\n🎯 COMANDOS QUE TODO DEV USA:", "warning")
+        
+        comandos_essenciais = [
+            {
+                'titulo': 'Instalar pacote',
+                'comando': 'pip install requests',
+                'descricao': 'Baixa e instala o pacote requests'
+            },
+            {
+                'titulo': 'Instalar versão específica',
+                'comando': 'pip install django==3.2.0',
+                'descricao': 'Instala exatamente a versão 3.2.0'
+            },
+            {
+                'titulo': 'Atualizar pacote',
+                'comando': 'pip install --upgrade requests',
+                'descricao': 'Atualiza para a versão mais recente'
+            },
+            {
+                'titulo': 'Remover pacote',
+                'comando': 'pip uninstall requests',
+                'descricao': 'Remove o pacote (pergunta confirmação)'
+            },
+            {
+                'titulo': 'Listar pacotes instalados',
+                'comando': 'pip list',
+                'descricao': 'Mostra todos os pacotes do ambiente'
+            },
+            {
+                'titulo': 'Ver detalhes de um pacote',
+                'comando': 'pip show requests',
+                'descricao': 'Informações completas sobre o pacote'
+            }
+        ]
+        
+        for cmd in comandos_essenciais:
+            self.print_colored(f"\n💻 {cmd['titulo']}:", "primary")
+            self.print_code_section("", cmd['comando'])
+            self.print_colored(f"→ {cmd['descricao']}", "text")
+        
+        # === EXEMPLO PRÁTICO ===
+        self.print_colored("\n🚀 VAMOS VER NA PRÁTICA:", "success")
+        exemplo_pratico = '''# Criar um projeto de web scraping
+pip install requests beautifulsoup4
 
-# Deve mostrar o caminho do ambiente virtual
-# Ex: /home/user/meu_projeto/bin/python
-
-# Ver pacotes instalados
+# Ver o que foi instalado
 pip list
 
-# Ver localização do pip
-which pip        # Unix/Linux/macOS
-where pip        # Windows'''
-        print(verificacao)
+# Ops! Preciso de uma versão específica
+pip install requests==2.28.0
+
+# Verificar informações
+pip show requests'''
         
-        print("\n📁 Estrutura do ambiente virtual:")
-        estrutura = '''meu_projeto/
-├── bin/                    # Unix/Linux/macOS
-│   ├── activate           # Script de ativação
-│   ├── python             # Executável Python
-│   └── pip                # Pip do ambiente
-├── Scripts/               # Windows
-│   ├── activate.bat       # Script de ativação
-│   ├── python.exe         # Executável Python
-│   └── pip.exe            # Pip do ambiente
-├── lib/                   # Bibliotecas instaladas
-│   └── python3.x/
-│       └── site-packages/ # Pacotes Python
-├── include/               # Headers C/C++
-└── pyvenv.cfg            # Configuração do ambiente'''
-        print(estrutura)
+        self.exemplo(exemplo_pratico)
         
-        print("\n⚡ Workflow típico:")
-        workflow = '''1. 📂 Criar diretório do projeto
-   mkdir meu_projeto
-   cd meu_projeto
-
-2. 🔨 Criar ambiente virtual
-   python -m venv venv
-
-3. 🔑 Ativar ambiente
-   source venv/bin/activate  # Unix/Linux/macOS
-   venv\\Scripts\\activate     # Windows
-
-4. 📦 Instalar dependências
-   pip install requests pandas flask
-
-5. 💻 Desenvolver o projeto
-   # Seu código aqui
-
-6. 📋 Salvar dependências
-   pip freeze > requirements.txt
-
-7. 🔒 Desativar quando terminar
-   deactivate'''
-        print(workflow)
+        # === DICA IMPORTANTE ===
+        self.print_tip("Sempre use pip DENTRO do ambiente virtual ativado!")
         
-        print("\n🎯 Boas práticas:")
-        praticas = '''✅ FAÇA:
-• Use nomes consistentes (venv, .venv, env)
-• Adicione venv/ ao .gitignore
-• Ative o ambiente antes de instalar pacotes
-• Documente como configurar o ambiente no README
-• Use requirements.txt para dependências
-
-❌ NÃO FAÇA:
-• Commitar a pasta do ambiente virtual
-• Instalar pacotes sem ativar o ambiente
-• Usar o mesmo ambiente para projetos diferentes
-• Esquecer de ativar o ambiente'''
-        print(praticas)
-        
-        print("\n🔧 Opções avançadas do venv:")
-        avancado = '''# Especificar versão do Python
-python3.9 -m venv myproject
-python3.10 -m venv myproject
-
-# Copiar pacotes do sistema (não recomendado)
-python -m venv --system-site-packages myproject
-
-# Sem pip (instalar manualmente depois)
-python -m venv --without-pip myproject
-
-# Limpar e recriar
-rm -rf venv
-python -m venv venv'''
-        print(avancado)
-        
-        input("\n🔸 Pressione ENTER para continuar...")
+        self.pausar()
     
-    def _pip_gerenciamento_pacotes(self):
-        """pip e gerenciamento de pacotes"""
+    def _secao_requirements(self) -> None:
+        """Seção: requirements.txt - A receita do projeto"""
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("📦 PIP E GERENCIAMENTO DE PACOTES")
         
-        print("🛠️ pip - Python Package Installer:")
-        print("• Gerenciador de pacotes padrão do Python")
-        print("• Acesso ao PyPI (Python Package Index)")
-        print("• 400,000+ pacotes disponíveis")
-        print("• Resolução automática de dependências")
+        self.print_section("REQUIREMENTS.TXT - A RECEITA DO PROJETO", "📋", "warning")
         
-        print("\n⚡ Comandos essenciais:")
+        self.print_concept(
+            "requirements.txt",
+            "Arquivo que lista todas as dependências do projeto, como uma receita de bolo!"
+        )
         
-        comandos_pip = '''# Instalação básica
-pip install requests                    # Última versão
-pip install requests==2.28.1           # Versão específica
-pip install "requests>=2.25.0"         # Versão mínima
-pip install "requests>=2.25,<3.0"      # Range de versões
-
-# Múltiplos pacotes
-pip install requests pandas numpy flask
-
-# Instalar de diferentes fontes
-pip install git+https://github.com/user/repo.git
-pip install https://github.com/user/repo/archive/main.zip
-pip install ./local_package/
-pip install -e ./editable_package/     # Modo desenvolvimento
-
-# Upgrade e downgrade
-pip install --upgrade requests         # Atualizar
-pip install --upgrade-strategy eager requests  # Atualizar dependências também
-pip install requests==2.25.0 --force-reinstall  # Forçar reinstalação'''
-        print(comandos_pip)
+        # === ANALOGIA ===
+        self.print_colored("\n🍰 ANALOGIA DA RECEITA:", "accent")
+        self.print_colored("Imagine compartilhar uma receita de bolo:", "text")
+        self.print_colored("• SEM requirements.txt = 'Use farinha, ovos, açúcar...'", "text")
+        self.print_colored("  - Quanto de cada? Que tipo? Vai dar errado!", "text")
+        self.print_colored("• COM requirements.txt = '2 xícaras farinha, 3 ovos grandes...'", "text")
+        self.print_colored("  - Receita exata! Todo mundo faz igual! 🎉", "text")
         
-        print("\n🔍 Investigação e listagem:")
-        listagem = '''# Listar pacotes instalados
-pip list                               # Todos os pacotes
-pip list --outdated                    # Pacotes desatualizados
-pip list --uptodate                    # Pacotes atualizados
-pip list --user                       # Pacotes do usuário
-
-# Informações detalhadas
-pip show requests                      # Info do pacote
-pip show -f requests                   # Incluir arquivos
-
-# Buscar pacotes
-pip search machine learning           # Buscar no PyPI (pode estar desabilitado)
-
-# Verificar dependências
-pip check                             # Verificar compatibilidade'''
-        print(listagem)
+        # === COMO CRIAR ===
+        self.print_colored("\n📝 CRIANDO SEU REQUIREMENTS.TXT:", "success")
         
-        print("\n🗑️ Remoção e limpeza:")
-        remocao = '''# Remover pacotes
-pip uninstall requests                 # Remover um pacote
-pip uninstall -y requests              # Sem confirmação
-pip uninstall -r requirements.txt     # Remover de lista
+        self.print_colored("\n1️⃣ Método automático (recomendado):", "primary")
+        comando_freeze = '''# Depois de instalar todos os pacotes:
+pip freeze > requirements.txt
 
-# Limpeza
-pip cache purge                       # Limpar cache
-pip cache dir                         # Ver diretório do cache
-pip cache info                        # Info do cache'''
-        print(remocao)
-        
-        print("\n📋 Trabalhando com requirements:")
-        requirements = '''# Gerar requirements.txt
-pip freeze > requirements.txt         # Todas as dependências
-pip freeze | grep -v "pkg-resources" > requirements.txt  # Linux bugfix
-
-# Instalar de requirements
-pip install -r requirements.txt       # Instalar tudo
-pip install -r requirements.txt --upgrade  # Com upgrade
-
-# Requirements mais específicos
-echo "requests>=2.25.0" >> requirements.txt
-echo "pandas~=1.3.0" >> requirements.txt    # Compatible release
-echo "numpy==1.21.*" >> requirements.txt    # Wildcard'''
-        print(requirements)
-        
-        print("\n🔧 Configuração avançada:")
-        config_avancado = '''# Arquivo pip.conf / pip.ini
-# ~/.pip/pip.conf (Unix) ou %APPDATA%\\pip\\pip.ini (Windows)
-
-[global]
-timeout = 60
-index-url = https://pypi.org/simple/
-extra-index-url = https://test.pypi.org/simple/
-trusted-host = localhost
-
-[install]
-user = true
-
-# Usar mirror local/corporativo
-pip install -i https://pypi.company.com/simple/ requests
-
-# Instalar sem dependências
-pip install --no-deps requests
-
-# Apenas baixar (não instalar)
-pip download requests
-
-# Verificar antes de instalar
-pip install --dry-run requests'''
-        print(config_avancado)
-        
-        print("\n🚨 Troubleshooting comum:")
-        troubleshooting = '''❌ PROBLEMAS COMUNS:
-
-1. Permission Denied
-   Solução: Usar ambiente virtual ou --user
-   pip install --user requests
-
-2. SSL Certificate Error
-   Solução: Atualizar certificados ou usar --trusted-host
-   pip install --trusted-host pypi.org requests
-
-3. Dependency Hell
-   Solução: Usar pip-tools ou Poetry
-   pip install pip-tools
-   pip-compile requirements.in
-
-4. Slow Installation
-   Solução: Usar wheels pré-compilados
-   pip install --only-binary=all requests
-
-5. Package Not Found
-   Solução: Verificar nome exato no PyPI
-   pip search similar-name'''
-        print(troubleshooting)
-        
-        print("\n💡 Dicas profissionais:")
-        dicas = '''🏆 DICAS AVANÇADAS:
-
-• Use pip-tools para lock files determinísticos
-• Configure mirrors corporativos para velocidade
-• Use --user para instalações globais sem sudo
-• Mantenha pip atualizado: python -m pip install --upgrade pip
-• Use virtual environments SEMPRE
-• Documente versões exatas em produção
-• Use .pip-constraints.txt para limites globais'''
-        print(dicas)
-        
-        input("\n🔸 Pressione ENTER para continuar...")
-    
-    def _requirements_reproducibilidade(self):
-        """requirements.txt e reprodutibilidade"""
-        if self.ui:
-            self.ui.clear_screen()
-            self.ui.header("📋 REQUIREMENTS.TXT E REPRODUTIBILIDADE")
-        
-        print("🎯 Garantindo ambientes consistentes:")
-        print("• Documentar dependências exatas")
-        print("• Reproduzir ambiente em qualquer máquina")
-        print("• Versionamento de dependências")
-        print("• Deploy consistente")
-        
-        print("\n📝 Tipos de requirements:")
-        
-        tipos_req = '''# requirements.txt - dependências principais
-requests>=2.25.0
-pandas~=1.3.0
-flask==2.0.1
-
-# requirements-dev.txt - dependências de desenvolvimento
-pytest>=6.0.0
-black
-flake8
-mypy
-
-# requirements-prod.txt - produção (versões exatas)
+# Isso cria um arquivo com TODAS as versões exatas:
 requests==2.28.1
-pandas==1.3.5
-flask==2.0.1
-
-# requirements-test.txt - apenas para testes
-pytest==7.1.2
-pytest-cov==3.0.0
-factory-boy==3.2.1'''
-        print(tipos_req)
+beautifulsoup4==4.11.1
+certifi==2022.9.24
+...'''
+        self.exemplo(comando_freeze)
         
-        print("\n🔒 Lock files vs Requirements:")
-        lock_vs_req = '''📋 REQUIREMENTS.TXT (Flexível):
-requests>=2.25.0        # Aceita 2.25.0, 2.26.0, 2.27.0...
-pandas~=1.3.0          # Aceita 1.3.0, 1.3.1, mas não 1.4.0
-flask                  # Qualquer versão (perigoso!)
-
-🔐 LOCK FILE (Exato):
-requests==2.28.1        # Exatamente esta versão
-urllib3==1.26.12       # Dependência transitiva específica
-certifi==2022.9.24     # Todas as dependências fixadas
-
-# Gerar lock file
-pip freeze > requirements-lock.txt'''
-        print(lock_vs_req)
+        self.print_colored("\n2️⃣ Método manual (mais controle):", "primary")
+        manual_exemplo = '''# requirements.txt
+requests>=2.25.0         # Versão 2.25.0 ou maior
+django~=3.2.0           # Versão 3.2.x (não 3.3!)
+pandas==1.3.5           # Exatamente esta versão
+beautifulsoup4          # Qualquer versão (cuidado!)'''
+        self.exemplo(manual_exemplo)
         
-        print("\n🏗️ Estrutura de projeto profissional:")
-        estrutura_pro = '''meu_projeto/
-├── requirements/
-│   ├── base.txt           # Dependências principais
-│   ├── development.txt    # Para desenvolvimento
-│   ├── production.txt     # Para produção
-│   └── testing.txt        # Para testes
-├── requirements.txt       # Link para base.txt
-├── setup.py              # Se for um pacote
-├── pyproject.toml         # Configuração moderna
-├── .python-version        # Versão do Python (pyenv)
-└── runtime.txt           # Para Heroku/plataformas
+        # === USANDO REQUIREMENTS ===
+        self.print_colored("\n🚀 INSTALANDO DE REQUIREMENTS.TXT:", "info")
+        uso_requirements = '''# Clone um projeto e:
+cd projeto
+python -m venv venv
+source venv/bin/activate  # ou venv\\Scripts\\activate no Windows
+pip install -r requirements.txt
 
-# base.txt
-django>=3.2,<4.0
-psycopg2-binary>=2.8
-celery>=5.0
-
-# development.txt
--r base.txt
-django-debug-toolbar
-pytest
-black
-flake8
-
-# production.txt
--r base.txt
-gunicorn
-sentry-sdk'''
-        print(estrutura_pro)
+# Pronto! Ambiente idêntico ao do desenvolvedor!'''
+        self.exemplo(uso_requirements)
         
-        print("\n⚙️ Workflow com múltiplos ambientes:")
-        workflow_multi = '''# 1. Desenvolvimento local
+        # === ESTRUTURA PROFISSIONAL ===
+        self.print_colored("\n🏗️ ESTRUTURA PROFISSIONAL:", "warning")
+        estrutura_pro = '''projeto/
+├── requirements.txt          # Dependências principais
+├── requirements-dev.txt      # Ferramentas de desenvolvimento
+├── requirements-test.txt     # Bibliotecas de teste
+└── requirements-prod.txt     # Versões exatas para produção'''
+        
+        self.print_colored(estrutura_pro, "text")
+        
+        self.print_success("\n🎉 Agora você sabe compartilhar projetos como um profissional!")
+        self.pausar()
+    
+    def _secao_ferramentas_modernas(self) -> None:
+        """Seção: Ferramentas modernas"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("FERRAMENTAS MODERNAS", "🚀", "accent")
+        
+        self.print_colored("✨ O futuro do gerenciamento de dependências Python!", "text")
+        
+        # === POETRY ===
+        self.print_colored("\n🎭 POETRY - A estrela em ascensão:", "warning")
+        self.print_colored("• Combina pip + venv + build + publish", "text")
+        self.print_colored("• Um comando para tudo: poetry add requests", "text")
+        self.print_colored("• Lock file automático (como npm)", "text")
+        self.print_colored("• Resolver conflitos inteligentemente", "text")
+        
+        poetry_exemplo = '''# Iniciar projeto
+poetry new meu-projeto
+
+# Adicionar dependência
+poetry add requests
+
+# Instalar tudo
+poetry install
+
+# Rodar código
+poetry run python app.py'''
+        self.exemplo(poetry_exemplo)
+        
+        # === PIPENV ===
+        self.print_colored("\n🐍 PIPENV - Simplicidade primeiro:", "info")
+        self.print_colored("• pip + venv em um só comando", "text")
+        self.print_colored("• Pipfile mais legível que requirements.txt", "text")
+        self.print_colored("• Separa dependências de dev e produção", "text")
+        
+        pipenv_exemplo = '''# Criar ambiente e Pipfile
+pipenv install requests
+
+# Dependência de desenvolvimento
+pipenv install --dev pytest
+
+# Ativar shell
+pipenv shell'''
+        self.exemplo(pipenv_exemplo)
+        
+        # === CONDA ===
+        self.print_colored("\n🔬 CONDA - Para cientistas de dados:", "success")
+        self.print_colored("• Gerencia Python E outras linguagens", "text")
+        self.print_colored("• Ótimo para bibliotecas científicas", "text")
+        self.print_colored("• Resolve dependências complexas", "text")
+        
+        # === RECOMENDAÇÕES ===
+        self.print_colored("\n🎯 QUAL USAR?", "warning")
+        recomendacoes = [
+            "📚 Aprendendo? → pip + venv (básico e essencial)",
+            "🎨 Projeto novo? → Poetry (moderno e completo)",
+            "🔬 Data Science? → conda (ecossistema científico)",
+            "🏢 Empresa? → Siga o padrão da equipe!"
+        ]
+        
+        for rec in recomendacoes:
+            self.print_colored(f"• {rec}", "primary")
+        
+        self.pausar()
+    
+    def _secao_dicas_pro(self) -> None:
+        """Seção: Dicas profissionais"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("DICAS PROFISSIONAIS", "⭐", "success")
+        
+        self.print_colored("🏆 Segredos dos desenvolvedores experientes!", "text")
+        
+        # === DICAS DE OURO ===
+        dicas = [
+            {
+                'titulo': '🎯 SEMPRE use ambientes virtuais',
+                'explicacao': 'Mesmo para projetos pequenos. É um hábito que salva vidas!',
+                'exemplo': 'python -m venv venv && source venv/bin/activate'
+            },
+            {
+                'titulo': '📝 .gitignore é seu amigo',
+                'explicacao': 'NUNCA commite a pasta do ambiente virtual',
+                'exemplo': '''# .gitignore
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+.env'''
+            },
+            {
+                'titulo': '🔄 Mantenha requirements.txt atualizado',
+                'explicacao': 'Sempre que adicionar/remover pacotes',
+                'exemplo': 'pip freeze > requirements.txt'
+            },
+            {
+                'titulo': '📦 Use versões específicas em produção',
+                'explicacao': 'Evita surpresas desagradáveis',
+                'exemplo': 'django==3.2.15  # não use django>=3.2'
+            },
+            {
+                'titulo': '🚀 Automatize com scripts',
+                'explicacao': 'Crie scripts para setup rápido',
+                'exemplo': '''#!/bin/bash
+# setup.sh
 python -m venv venv
 source venv/bin/activate
-pip install -r requirements/development.txt
-
-# 2. Teste automatizado
-pip install -r requirements/testing.txt
-pytest
-
-# 3. Staging/Produção
-pip install -r requirements/production.txt
-
-# 4. Atualizar dependências
-pip install --upgrade -r requirements/development.txt
-pip freeze > requirements/lock.txt'''
-        print(workflow_multi)
+pip install -r requirements.txt
+echo "✅ Ambiente pronto!"'''
+            }
+        ]
         
-        print("\n🔧 Ferramentas avançadas:")
-        ferramentas = '''# pip-tools - Gerenciamento avançado
-pip install pip-tools
-
-# requirements.in (high-level)
-django
-requests
-pandas
-
-# Gerar requirements.txt (detailed)
-pip-compile requirements.in
-
-# Sincronizar ambiente
-pip-sync requirements.txt
-
-# Atualizar dependências
-pip-compile --upgrade requirements.in
-
-# pipdeptree - Visualizar árvore de dependências
-pip install pipdeptree
-pipdeptree --packages pandas
-pipdeptree --graph-output png > deps.png
-
-# pip-audit - Verificar vulnerabilidades
-pip install pip-audit
-pip-audit
-
-# pip-autoremove - Remover dependências órfãs
-pip install pip-autoremove
-pip-autoremove'''
-        print(ferramentas)
+        for i, dica in enumerate(dicas, 1):
+            self.print_colored(f"\n{dica['titulo']}", "warning")
+            self.print_colored(f"💡 {dica['explicacao']}", "text")
+            if dica['exemplo']:
+                self.print_code_section("EXEMPLO", dica['exemplo'])
+            
+            if i < len(dicas):
+                input("\n🔸 Pressione ENTER para a próxima dica...")
         
-        print("\n🐳 Docker para isolamento total:")
-        dockerfile = '''# Dockerfile para Python
-FROM python:3.9-slim
-
-WORKDIR /app
-
-# Copiar requirements primeiro (cache)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar código
-COPY . .
-
-# Comando padrão
-CMD ["python", "app.py"]
-
-# docker-compose.yml
-version: '3.8'
-services:
-  app:
-    build: .
-    volumes:
-      - .:/app
-    ports:
-      - "5000:5000"
-    environment:
-      - FLASK_ENV=development'''
-        print(dockerfile)
+        # === TROUBLESHOOTING ===
+        self.print_colored("\n🔧 PROBLEMAS COMUNS E SOLUÇÕES:", "error")
+        problemas = [
+            "❌ 'pip: command not found' → Ative o ambiente primeiro!",
+            "❌ 'Permission denied' → Use ambiente virtual, não sudo",
+            "❌ Versões conflitantes → Delete venv/ e recrie",
+            "❌ Import error → Pacote não instalado no ambiente atual"
+        ]
         
-        print("\n✅ Checklist de reprodutibilidade:")
-        checklist = '''📋 ANTES DE COMMITAR:
-
-□ requirements.txt atualizado
-□ Versões específicas para dependências críticas
-□ .gitignore inclui venv/ e __pycache__/
-□ README com instruções de setup
-□ Versão do Python documentada (.python-version)
-□ Testes passando em ambiente limpo
-□ Lock file gerado para produção
-
-📋 DEPLOY/PRODUÇÃO:
-
-□ Ambiente virtual dedicado
-□ Requirements de produção (sem dev deps)
-□ Versões exatas fixadas
-□ Backup do ambiente funcionando
-□ Monitoramento de dependências desatualizadas
-□ Processo de atualização documentado'''
-        print(checklist)
+        for problema in problemas:
+            self.print_colored(f"• {problema}", "text")
+        
+        self.print_success("\n🎉 Agora você tem o conhecimento dos profissionais!")
+        self.pausar()
+    
+    def _secao_pratica_interativa(self) -> None:
+        """Seção de prática interativa do módulo"""
+        
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_section("HORA DE PRATICAR!", "🎯", "success")
+        self.print_colored("Vamos testar o que você aprendeu com exercícios práticos!", "text")
+        
+        # === INSTRUÇÕES PARA INICIANTES ===
+        self.print_tip("Para iniciantes: Cada exercício é opcional, mas recomendamos fazer todos!")
+        self.print_colored("\n🎓 SOBRE OS EXERCÍCIOS:", "info")
+        self.print_colored("• Não se preocupe se errar - faz parte do aprendizado!", "text")
+        self.print_colored("• Você pode tentar quantas vezes quiser", "text")
+        self.print_colored("• Digite 'help' se precisar de ajuda", "text")
+        self.print_colored("• Use Ctrl+C para voltar ao menu principal se necessário", "text")
+        
+        # === DEFINIÇÃO DOS EXERCÍCIOS ===
+        exercicios = [
+            {
+                'title': 'Quiz: Conhecimentos sobre Ambientes Virtuais',
+                'type': 'quiz',
+                'questions': [
+                    {
+                        'question': 'Qual comando cria um ambiente virtual chamado "env"?',
+                        'answer': ['python -m venv env', 'python3 -m venv env'],
+                        'hint': 'Use o módulo venv do Python'
+                    },
+                    {
+                        'question': 'Como ativar um ambiente virtual no Linux/Mac?',
+                        'answer': ['source venv/bin/activate', 'source env/bin/activate', '. venv/bin/activate'],
+                        'hint': 'Use o comando source'
+                    },
+                    {
+                        'question': 'Qual comando gera o arquivo requirements.txt?',
+                        'answer': ['pip freeze > requirements.txt', 'pip freeze>requirements.txt'],
+                        'hint': 'Use pip freeze e redirecione a saída'
+                    },
+                    {
+                        'question': 'Por que nunca devemos commitar a pasta venv?',
+                        'answer': ['muito grande', 'específica do sistema', 'pode ser recriada', 'todas'],
+                        'hint': 'Pense no tamanho e portabilidade'
+                    },
+                    {
+                        'question': 'Qual ferramenta moderna combina pip + venv + build?',
+                        'answer': ['poetry', 'Poetry'],
+                        'hint': 'É uma ferramenta com nome artístico'
+                    }
+                ]
+            },
+            {
+                'title': 'Desafio: Complete o Código',
+                'type': 'code_completion',
+                'exercises': [
+                    {
+                        'instruction': 'BÁSICO: Complete o comando para criar um ambiente virtual',
+                        'starter': 'python -m ____ meu_projeto',
+                        'solution': 'venv',
+                        'type': 'simple'
+                    },
+                    {
+                        'instruction': 'INTERMEDIÁRIO: Complete o comando para instalar do requirements.txt',
+                        'starter': 'pip install ____ requirements.txt',
+                        'solution': '-r',
+                        'type': 'intermediate'
+                    },
+                    {
+                        'instruction': 'AVANÇADO: Complete o .gitignore para ignorar ambientes virtuais',
+                        'starter': '# .gitignore\n____/\n.____/\nenv/\n__pycache__/',
+                        'solution': 'venv\nvenv',
+                        'type': 'advanced'
+                    }
+                ]
+            },
+            {
+                'title': 'Exercício Criativo: Crie seu Setup Script',
+                'type': 'creative',
+                'instruction': 'Crie um script (setup.sh ou setup.bat) que automatize a criação do ambiente virtual e instalação de dependências!'
+            }
+        ]
+        
+        # === MENU PRINCIPAL DE EXERCÍCIOS ===
+        while True:
+            print("\nEscolha uma atividade:")
+            print("1. 📝 Quiz de Conhecimentos")
+            print("2. 💻 Complete o Código")
+            print("3. 🎨 Exercício Criativo")
+            print("0. Continuar para o Mini Projeto")
+            
+            try:
+                escolha = input("\n👉 Sua escolha: ").strip().lower()
+                
+                if escolha in ["0", "continuar", "sair", "proximo"]:
+                    break
+                elif escolha in ["1", "quiz", "conhecimentos"]:
+                    try:
+                        self._run_quiz(exercicios[0])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Quiz interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no quiz. Continuando...")
+                elif escolha in ["2", "codigo", "completar"]:
+                    try:
+                        self._run_code_completion(exercicios[1])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício de código interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício de código. Continuando...")
+                elif escolha in ["3", "criativo"]:
+                    try:
+                        self._run_creative_exercise(exercicios[2])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício criativo interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício criativo. Continuando...")
+                elif escolha in ["help", "ajuda", "h", "?"]:
+                    self._show_help()
+                else:
+                    self.print_warning("❌ Opção inválida! Digite 1, 2, 3, 0 ou 'help' para ajuda.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Operação cancelada pelo usuário. Voltando ao menu principal...")
+                return
+            except Exception as e:
+                self.print_warning("❌ Erro inesperado no menu. Tente novamente.")
+    
+    def _show_help(self) -> None:
+        """Mostra ajuda sobre as opções disponíveis"""
+        self.print_section("AJUDA - SEÇÃO DE PRÁTICA", "❓", "info")
+        help_text = [
+            "📝 OPÇÃO 1 - Quiz: Teste seus conhecimentos sobre ambientes virtuais",
+            "💻 OPÇÃO 2 - Complete o Código: 3 exercícios progressivos",
+            "🎨 OPÇÃO 3 - Exercício Criativo: Crie um script de automação",
+            "🔢 OPÇÃO 0 - Continue para o Mini Projeto final",
+            "",
+            "💡 DICAS:",
+            "• Você pode digitar o número ou palavras como 'quiz', 'codigo'",
+            "• Digite 'help' a qualquer momento para ver esta ajuda",
+            "• Use Ctrl+C se quiser voltar ao menu principal",
+            "• Recomendamos fazer todas as atividades para aprender melhor!"
+        ]
+        
+        for line in help_text:
+            if line:
+                self.print_colored(f"  {line}", "text")
+            else:
+                print()
+        
+        input("\n🔸 Pressione ENTER para voltar ao menu...")
+    
+    def _run_quiz(self, quiz_data):
+        """Executa o quiz interativo"""
+        self.print_section(quiz_data['title'], "📝", "info")
+        
+        score = 0
+        total = len(quiz_data['questions'])
+        
+        for i, q in enumerate(quiz_data['questions'], 1):
+            self.print_colored(f"\nPergunta {i}/{total}:", "warning")
+            self.print_colored(q['question'], "text")
+            
+            while True:
+                try:
+                    resposta = input("\n📝 Sua resposta: ").strip().lower()
+                    
+                    if resposta in ["help", "ajuda", "dica"]:
+                        self.print_tip(q['hint'])
+                        continue
+                    
+                    # Verifica se a resposta está correta
+                    respostas_corretas = [ans.lower() for ans in q['answer']]
+                    if resposta in respostas_corretas or any(resposta in ans for ans in respostas_corretas):
+                        self.print_success("✅ Correto!")
+                        score += 1
+                        break
+                    else:
+                        self.print_warning("❌ Não está certo...")
+                        tentar = input("Tentar novamente? (s/n): ").lower()
+                        if tentar not in ['s', 'sim', 'yes']:
+                            self.print_colored(f"💡 Resposta: {q['answer'][0]}", "info")
+                            break
+                
+                except KeyboardInterrupt:
+                    raise
+        
+        # Resultado final
+        self.print_section("RESULTADO DO QUIZ", "🏆", "success")
+        percentual = (score / total) * 100
+        self.print_colored(f"Você acertou {score} de {total} questões ({percentual:.0f}%)", "text")
+        
+        if percentual >= 80:
+            self.print_success("🌟 Excelente! Você domina o conteúdo!")
+        elif percentual >= 60:
+            self.print_colored("💪 Muito bom! Continue praticando!", "warning")
+        else:
+            self.print_colored("📚 Revise o conteúdo e tente novamente!", "info")
         
         input("\n🔸 Pressione ENTER para continuar...")
     
-    def _ferramentas_modernas(self):
-        """Poetry e ferramentas modernas"""
-        if self.ui:
-            self.ui.clear_screen()
-            self.ui.header("🚀 POETRY E FERRAMENTAS MODERNAS")
+    def _run_code_completion(self, exercise_data):
+        """Executa exercícios de completar código"""
+        self.print_section(exercise_data['title'], "💻", "success")
         
-        print("✨ Ferramentas de nova geração para Python:")
-        print("• Poetry - gerenciamento completo de projetos")
-        print("• Pipenv - pip + venv combinados")
-        print("• conda - científico e multiplataforma")
-        print("• pyenv - múltiplas versões do Python")
+        for i, exercise in enumerate(exercise_data['exercises'], 1):
+            nivel = exercise['type'].upper()
+            cor = {'SIMPLE': 'info', 'INTERMEDIATE': 'warning', 'ADVANCED': 'error'}.get(exercise['type'], 'text')
+            
+            self.print_colored(f"\n[{nivel}] {exercise['instruction']}", cor)
+            self.print_code_section("CÓDIGO INICIAL", exercise['starter'])
+            
+            while True:
+                try:
+                    resposta = input("\n💻 Complete o código: ").strip()
+                    
+                    if resposta.lower() in ["help", "ajuda"]:
+                        self.print_tip("Pense no que está faltando para o comando funcionar...")
+                        continue
+                    
+                    if resposta.lower() == exercise['solution'].lower():
+                        self.print_success("✅ Perfeito!")
+                        # Mostra o código completo
+                        codigo_completo = exercise['starter'].replace('____', exercise['solution'])
+                        self.print_code_section("CÓDIGO COMPLETO", codigo_completo)
+                        break
+                    else:
+                        self.print_warning("❌ Não está certo...")
+                        mostrar = input("Ver a resposta? (s/n): ").lower()
+                        if mostrar in ['s', 'sim', 'yes']:
+                            self.print_colored(f"💡 Resposta: {exercise['solution']}", "info")
+                            break
+                
+                except KeyboardInterrupt:
+                    raise
+            
+            if i < len(exercise_data['exercises']):
+                input("\n🔸 Pressione ENTER para o próximo exercício...")
         
-        print("\n🎭 Poetry - Gerenciamento Completo:")
+        self.print_success("\n🎉 Exercícios de código completados!")
+        input("\n🔸 Pressione ENTER para continuar...")
+    
+    def _run_creative_exercise(self, exercise_data):
+        """Executa exercício criativo"""
+        self.print_section(exercise_data['title'], "🎨", "accent")
         
-        poetry_intro = '''🌟 POETRY - O FUTURO DO PYTHON:
-
-✅ O que Poetry faz:
-• Gerenciamento de dependências
-• Ambientes virtuais automáticos
-• Build e publicação de pacotes
-• Lock files determinísticos
-• Resolução inteligente de conflitos
-
-💡 Instalação:
-curl -sSL https://install.python-poetry.org | python3 -
-# ou
-pip install poetry'''
-        print(poetry_intro)
+        self.print_colored(f"\n{exercise_data['instruction']}", "text")
         
-        poetry_comandos = '''# Inicializar projeto
-poetry new meu-projeto          # Criar projeto do zero
-poetry init                     # Inicializar em pasta existente
-
-# Gerenciar dependências
-poetry add requests             # Adicionar dependência
-poetry add pytest --group dev  # Dependência de desenvolvimento
-poetry add "django>=3.0,<4.0"  # Com constraints
-poetry remove requests          # Remover
-
-# Ambiente virtual
-poetry shell                    # Ativar shell do ambiente
-poetry run python script.py    # Executar comando no ambiente
-poetry env info                 # Info do ambiente
-
-# Instalação
-poetry install                  # Instalar dependências
-poetry install --no-dev        # Sem dependências de dev
-poetry update                   # Atualizar dependências
-
-# Build e publicação
-poetry build                    # Criar wheel/tarball
-poetry publish                  # Publicar no PyPI'''
-        print(poetry_comandos)
+        self.print_colored("\n💡 IDEIAS PARA SEU SCRIPT:", "warning")
+        ideias = [
+            "• Criar ambiente virtual automaticamente",
+            "• Detectar sistema operacional (Windows/Linux/Mac)",
+            "• Instalar requirements.txt se existir",
+            "• Criar estrutura de pastas do projeto",
+            "• Mostrar mensagens coloridas de progresso",
+            "• Verificar se Python está instalado"
+        ]
         
-        print("\n📋 pyproject.toml - Configuração moderna:")
-        pyproject = '''[tool.poetry]
-name = "meu-projeto"
-version = "0.1.0"
-description = "Descrição do projeto"
-authors = ["Seu Nome <email@exemplo.com>"]
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.8"
-requests = "^2.25.0"
-pandas = "~1.3.0"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.0.0"
-black = "^22.0.0"
-flake8 = "^4.0.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.black]
-line-length = 88
-target-version = ['py38']
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]'''
-        print(pyproject)
+        for ideia in ideias:
+            self.print_colored(ideia, "text")
         
-        print("\n🐍 Pipenv - Pip + Venv Simplificado:")
-        pipenv_exemplo = '''# Instalação
-pip install pipenv
+        self.print_colored("\n📝 EXEMPLO DE INÍCIO:", "info")
+        exemplo_script = '''#!/bin/bash
+echo "🚀 Configurando projeto Python..."
 
-# Criar ambiente e Pipfile
-pipenv --python 3.9
+# Verificar se Python está instalado
+if ! command -v python3 &> /dev/null; then
+    echo "❌ Python 3 não encontrado!"
+    exit 1
+fi
 
-# Instalar dependências
-pipenv install requests         # Produção
-pipenv install pytest --dev    # Desenvolvimento
+# Criar ambiente virtual
+echo "📦 Criando ambiente virtual..."
+python3 -m venv venv
 
-# Ativar ambiente
-pipenv shell
-
-# Executar comandos
-pipenv run python script.py
-pipenv run pytest
-
-# Pipfile
-[packages]
-requests = "*"
-django = ">=3.0"
-
-[dev-packages]
-pytest = "*"
-black = "*"
-
-[requires]
-python_version = "3.9"'''
-        print(pipenv_exemplo)
+# Continue daqui...'''
         
-        print("\n🐍 pyenv - Múltiplas Versões do Python:")
-        pyenv_exemplo = '''# Instalação (Unix/Linux/macOS)
-curl https://pyenv.run | bash
-
-# Listar versões disponíveis
-pyenv install --list
-
-# Instalar versão específica
-pyenv install 3.9.16
-pyenv install 3.10.8
-
-# Definir versão global
-pyenv global 3.9.16
-
-# Definir versão para projeto
-pyenv local 3.10.8           # Cria .python-version
-
-# Listar versões instaladas
-pyenv versions
-
-# Verificar versão atual
-pyenv version'''
-        print(pyenv_exemplo)
+        self.print_code_section("SCRIPT INICIAL", exemplo_script)
         
-        print("\n🔬 conda - Para Ciência de Dados:")
-        conda_exemplo = '''# Instalação: Anaconda ou Miniconda
-# https://docs.conda.io/en/latest/miniconda.html
-
-# Criar ambiente
-conda create -n myproject python=3.9
-conda create -n data-science python=3.9 pandas numpy matplotlib
-
-# Ativar/desativar
-conda activate myproject
-conda deactivate
-
-# Instalar pacotes
-conda install pandas numpy     # Do repositório conda
-conda install -c conda-forge scikit-learn  # Canal específico
-pip install requests           # Usar pip quando necessário
-
-# Listar ambientes
-conda env list
-
-# Exportar ambiente
-conda env export > environment.yml
-
-# Criar de environment.yml
-conda env create -f environment.yml
-
-# environment.yml
-name: data-science
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - python=3.9
-  - pandas
-  - numpy
-  - matplotlib
-  - pip
-  - pip:
-    - requests
-    - custom-package'''
-        print(conda_exemplo)
+        input("\n🎨 Use sua criatividade! Pressione ENTER quando terminar...")
         
-        print("\n🔄 Comparação de ferramentas:")
-        comparacao = '''🛠️ QUANDO USAR CADA UMA:
-
-📦 pip + venv:
-✅ Projetos simples
-✅ Compatibilidade máxima
-✅ Controle total
-❌ Mais manual
-
-🎭 Poetry:
-✅ Projetos novos
-✅ Publicar pacotes
-✅ Gerenciamento completo
-❌ Curva de aprendizado
-
-🐍 Pipenv:
-✅ Projetos web/aplicações
-✅ Fácil de usar
-✅ Pipfile intuitivo
-❌ Performance
-
-🔬 conda:
-✅ Ciência de dados
-✅ Pacotes não-Python
-✅ Ambientes complexos
-❌ Overhead
-
-🐍 pyenv:
-✅ Múltiplas versões Python
-✅ Compatibilidade
-✅ Testes em diferentes versões
-❌ Só gerencia Python'''
-        print(comparacao)
+        self.print_success("🎉 Ótimo trabalho! Scripts de automação economizam muito tempo!")
         
-        print("\n🏆 Recomendações por cenário:")
-        recomendacoes = '''🎯 ESCOLHA POR CASO DE USO:
-
-🚀 Iniciante:
-   pip + venv (aprender os fundamentos)
-
-📦 Projeto Pessoal:
-   Poetry (experiência moderna)
-
-🏢 Empresa/Equipe:
-   Docker + requirements.txt (consistência)
-
-🔬 Data Science:
-   conda + Jupyter (ecossistema científico)
-
-🌐 Web Development:
-   Poetry ou Pipenv (facilidade)
-
-📱 Múltiplos Projetos:
-   pyenv + Poetry (flexibilidade)
-
-☁️ Deploy/Produção:
-   Docker (isolamento total)'''
-        print(recomendacoes)
+        # Mostra um exemplo completo
+        mostrar = input("\nQuer ver um exemplo completo? (s/n): ").lower()
+        if mostrar in ['s', 'sim', 'yes']:
+            self._mostrar_script_completo()
         
         input("\n🔸 Pressione ENTER para continuar...")
     
-    def _mini_projeto_ambiente(self):
-        """Mini projeto: Setup completo de projeto"""
-        if self.ui:
-            self.ui.clear_screen()
-            self.ui.header("🚀 MINI PROJETO: SETUP PROFISSIONAL DE PROJETO")
-        
-        print("📊 Vamos criar um setup completo e profissional!")
-        print("🎯 Objetivos:")
-        print("• Configurar ambiente isolado")
-        print("• Estrutura de projeto moderna")
-        print("• Gerenciamento de dependências")
-        print("• Automação com scripts")
-        print("• Documentação completa")
-        
-        input("\n🔸 Pressione ENTER para começar o projeto...")
-        
-        print("\n📁 1. ESTRUTURA DO PROJETO:")
-        estrutura = '''projeto-profissional/
-├── .env                       # Variáveis de ambiente
-├── .gitignore                 # Arquivos para ignorar
-├── .python-version            # Versão do Python
-├── README.md                  # Documentação
-├── pyproject.toml             # Configuração moderna
-├── requirements/              # Dependências organizadas
-│   ├── base.txt
-│   ├── development.txt
-│   ├── production.txt
-│   └── testing.txt
-├── scripts/                   # Scripts de automação
-│   ├── setup.sh               # Setup inicial
-│   ├── test.sh                # Executar testes
-│   └── deploy.sh              # Deploy
-├── src/                       # Código fonte
-│   ├── __init__.py
-│   ├── main.py
-│   ├── config.py
-│   └── utils.py
-├── tests/                     # Testes
-│   ├── __init__.py
-│   ├── test_main.py
-│   └── conftest.py
-├── docs/                      # Documentação
-│   ├── installation.md
-│   └── usage.md
-└── docker/                    # Configuração Docker
-    ├── Dockerfile
-    └── docker-compose.yml'''
-        print(estrutura)
-        
-        print("\n📋 2. REQUIREMENTS ORGANIZADOS:")
-        
-        req_base = '''# requirements/base.txt
-requests>=2.25.0
-python-dotenv>=0.19.0
-click>=8.0.0'''
-        
-        req_dev = '''# requirements/development.txt
--r base.txt
+    def _mostrar_script_completo(self):
+        """Mostra exemplo de script completo"""
+        script_completo = '''#!/bin/bash
+# setup.sh - Script de setup automático
 
-# Qualidade de código
-black>=22.0.0
-flake8>=4.0.0
-isort>=5.10.0
-mypy>=0.950
+set -e  # Para se houver erro
 
-# Testing
-pytest>=7.0.0
-pytest-cov>=3.0.0
-pytest-mock>=3.7.0
+echo "🚀 Configurando projeto Python..."
 
-# Desenvolvimento
-ipython>=8.0.0
-jupyter>=1.0.0'''
-        
-        req_prod = '''# requirements/production.txt
--r base.txt
-
-# Servidor
-gunicorn>=20.1.0
-
-# Monitoramento
-sentry-sdk>=1.5.0
-
-# Versões fixadas para produção
-requests==2.28.1
-python-dotenv==0.20.0
-click==8.1.3'''
-        
-        print("📦 base.txt:")
-        print(req_base)
-        print("\n🛠️ development.txt:")
-        print(req_dev)
-        print("\n🚀 production.txt:")
-        print(req_prod)
-        
-        print("\n🔧 3. SCRIPTS DE AUTOMAÇÃO:")
-        
-        script_setup = '''#!/bin/bash
-# scripts/setup.sh - Setup inicial do projeto
-
-set -e
-
-echo "🚀 Configurando projeto..."
+# Cores para output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
 
 # Verificar Python
 if ! command -v python3 &> /dev/null; then
-    echo "❌ Python 3 não encontrado"
+    echo -e "${RED}❌ Python 3 não encontrado!${NC}"
     exit 1
 fi
 
@@ -968,171 +987,176 @@ echo "📦 Criando ambiente virtual..."
 python3 -m venv venv
 
 # Ativar ambiente
-echo "🔑 Ativando ambiente virtual..."
+echo "🔑 Ativando ambiente..."
 source venv/bin/activate
 
 # Atualizar pip
 echo "⬆️ Atualizando pip..."
 pip install --upgrade pip
 
-# Instalar dependências
-echo "📚 Instalando dependências..."
-pip install -r requirements/development.txt
-
-# Criar .env se não existir
-if [ ! -f .env ]; then
-    echo "⚙️ Criando arquivo .env..."
-    cp .env.example .env 2>/dev/null || echo "DEBUG=True" > .env
+# Instalar dependências se existir requirements.txt
+if [ -f requirements.txt ]; then
+    echo "📚 Instalando dependências..."
+    pip install -r requirements.txt
+else
+    echo "⚠️ requirements.txt não encontrado"
 fi
 
-echo "✅ Setup concluído!"
-echo "🔑 Para ativar o ambiente: source venv/bin/activate"'''
+# Criar estrutura de pastas
+echo "📁 Criando estrutura do projeto..."
+mkdir -p src tests docs
+
+# Criar .gitignore se não existir
+if [ ! -f .gitignore ]; then
+    echo "📝 Criando .gitignore..."
+    cat > .gitignore << EOF
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+.idea/
+.vscode/
+EOF
+fi
+
+echo -e "${GREEN}✅ Setup completo!${NC}"
+echo "🎯 Para ativar o ambiente: source venv/bin/activate"'''
         
-        script_test = '''#!/bin/bash
-# scripts/test.sh - Executar testes
-
-set -e
-
-echo "🧪 Executando testes..."
-
-# Ativar ambiente
-source venv/bin/activate
-
-# Linting
-echo "🔍 Verificando código com flake8..."
-flake8 src/ tests/
-
-echo "📏 Verificando formatação com black..."
-black --check src/ tests/
-
-echo "🔤 Verificando imports com isort..."
-isort --check-only src/ tests/
-
-echo "🏷️ Verificando tipos com mypy..."
-mypy src/
-
-# Testes
-echo "🧪 Executando testes com pytest..."
-pytest tests/ --cov=src/ --cov-report=html --cov-report=term
-
-echo "✅ Todos os testes passaram!"'''
+        self.print_code_section("SCRIPT COMPLETO", script_completo)
+    
+    def _mini_projeto_setup_profissional(self) -> None:
+        """Mini Projeto - Setup Profissional de Projeto Python"""
         
-        print("🛠️ setup.sh:")
-        print(script_setup)
-        print("\n🧪 test.sh:")
-        print(script_test)
+        # === CABEÇALHO IMPACTANTE ===
+        if self.ui:
+            self.ui.clear_screen()
+            self.ui.header("🎯 MINI PROJETO: SETUP PROFISSIONAL DE PROJETO")
+        else:
+            print("\n" + "="*50)
+            print("🎯 MINI PROJETO: SETUP PROFISSIONAL DE PROJETO")
+            print("="*50)
         
-        print("\n📝 4. CONFIGURAÇÃO MODERNA (pyproject.toml):")
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_success("🎉 Vamos criar um setup completo e profissional para seus projetos Python!")
         
-        pyproject_completo = '''[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "projeto-profissional"
-version = "0.1.0"
-description = "Projeto Python profissional"
-authors = [
-    {name = "Seu Nome", email = "email@exemplo.com"},
-]
-readme = "README.md"
-requires-python = ">=3.8"
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-]
-dependencies = [
-    "requests>=2.25.0",
-    "python-dotenv>=0.19.0",
-    "click>=8.0.0",
-]
-
-[project.optional-dependencies]
-dev = [
-    "black>=22.0.0",
-    "flake8>=4.0.0",
-    "isort>=5.10.0",
-    "mypy>=0.950",
-    "pytest>=7.0.0",
-    "pytest-cov>=3.0.0",
-]
-
-[project.scripts]
-meu-cli = "src.main:cli"
-
-[tool.black]
-line-length = 88
-target-version = ["py38"]
-include = "\\.pyi?$"
-extend-exclude = """
-/(
-    \\.eggs
-  | \\.git
-  | \\.venv
-  | build
-  | dist
-)/
-"""
-
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-
-[tool.mypy]
-python_version = "3.8"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-addopts = "-v --tb=short --strict-markers"
-markers = [
-    "slow: marks tests as slow",
-    "integration: marks tests as integration tests",
-]
-
-[tool.coverage.run]
-source = ["src"]
-omit = ["tests/*"]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "raise AssertionError",
-    "raise NotImplementedError",
-]'''
-        print(pyproject_completo)
+        self.print_concept(
+            "Setup Profissional",
+            "Uma estrutura organizada com ambientes virtuais, dependências gerenciadas e automação completa"
+        )
         
-        print("\n📚 5. README.md COMPLETO:")
+        # === APLICAÇÕES NO MUNDO REAL ===
+        self.print_colored("\nEste tipo de setup é usado por:", "text")
+        usos_praticos = [
+            "Netflix - Para padronizar todos os microsserviços",
+            "Spotify - Garantir que todos os devs tenham o mesmo ambiente",
+            "Instagram - Facilitar onboarding de novos desenvolvedores",
+            "Startups - Economizar tempo e evitar problemas de configuração"
+        ]
+        for uso in usos_praticos:
+            self.print_colored(f"• {uso}", "accent")
         
-        readme = '''# Projeto Profissional
+        # === DESENVOLVIMENTO PASSO A PASSO ===
+        
+        # PASSO 1: Estrutura do projeto
+        self.print_section("PASSO 1: ESTRUTURA DO PROJETO", "📁", "info")
+        self.print_tip("Uma boa estrutura é a base de todo projeto profissional!")
+        
+        try:
+            nome_projeto = input("\n📝 Nome do seu projeto (ex: meu_app): ").strip() or "meu_projeto"
+            
+            estrutura = f'''{nome_projeto}/
+├── .gitignore              # Arquivos para ignorar no git
+├── README.md               # Documentação do projeto
+├── requirements.txt        # Dependências do projeto
+├── requirements-dev.txt    # Dependências de desenvolvimento
+├── setup.py               # Configuração do pacote
+├── src/                   # Código fonte
+│   ├── __init__.py
+│   └── main.py
+├── tests/                 # Testes
+│   ├── __init__.py
+│   └── test_main.py
+├── docs/                  # Documentação
+│   └── README.md
+└── scripts/               # Scripts úteis
+    └── setup.sh          # Script de setup'''
+            
+            self.print_colored("\n📁 Estrutura criada:", "success")
+            self.print_colored(estrutura, "text")
+            
+        except KeyboardInterrupt:
+            self.print_warning("Projeto cancelado pelo usuário")
+            return
+        
+        # PASSO 2: Arquivos essenciais
+        self.print_section("PASSO 2: ARQUIVOS ESSENCIAIS", "📝", "success")
+        self.print_colored("Vamos criar os arquivos fundamentais:", "text")
+        
+        # .gitignore
+        self.print_colored("\n1️⃣ .gitignore - Para não commitar o que não deve:", "primary")
+        gitignore_content = '''# Ambientes virtuais
+venv/
+.venv/
+env/
+ENV/
 
-Uma demonstração de setup profissional para projetos Python.
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.local
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Distribution
+dist/
+build/
+*.egg-info/'''
+        
+        self.exemplo(gitignore_content)
+        
+        # README.md
+        self.print_colored("\n2️⃣ README.md - Documentação principal:", "primary")
+        readme_content = f'''# {nome_projeto.title()}
+
+Descrição breve do que o projeto faz.
 
 ## 🚀 Quick Start
 
 ```bash
-# Clonar repositório
-git clone https://github.com/usuario/projeto-profissional.git
-cd projeto-profissional
+# Clone o repositório
+git clone https://github.com/seu-usuario/{nome_projeto}.git
+cd {nome_projeto}
 
-# Setup automático
+# Execute o setup automático
 chmod +x scripts/setup.sh
 ./scripts/setup.sh
 
-# Ativar ambiente
-source venv/bin/activate
-
-# Executar aplicação
-python src/main.py
+# Ou setup manual:
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\\Scripts\\activate  # Windows
+pip install -r requirements.txt
 ```
 
 ## 📋 Requisitos
@@ -1142,120 +1166,169 @@ python src/main.py
 
 ## 🛠️ Desenvolvimento
 
-### Configuração Manual
-
 ```bash
-# Criar ambiente virtual
-python -m venv venv
+# Instalar dependências de dev
+pip install -r requirements-dev.txt
 
-# Ativar ambiente
-source venv/bin/activate  # Linux/macOS
-venv\\Scripts\\activate     # Windows
-
-# Instalar dependências
-pip install -r requirements/development.txt
-```
-
-### Executar Testes
-
-```bash
-# Testes completos
-./scripts/test.sh
-
-# Apenas pytest
+# Executar testes
 pytest
 
-# Com coverage
-pytest --cov=src/
+# Executar linter
+flake8 src/
+
+# Executar formatador
+black src/
 ```
 
-### Qualidade de Código
+## 📦 Estrutura
 
-```bash
-# Formatação
-black src/ tests/
-
-# Linting
-flake8 src/ tests/
-
-# Imports
-isort src/ tests/
-
-# Tipos
-mypy src/
+```
+{nome_projeto}/
+├── src/        # Código fonte
+├── tests/      # Testes
+├── docs/       # Documentação
+└── scripts/    # Scripts úteis
 ```
 
-## 🚀 Deploy
-
-### Produção
-
-```bash
-# Instalar dependências de produção
-pip install -r requirements/production.txt
-
-# Executar com gunicorn
-gunicorn src.main:app
-```
-
-### Docker
-
-```bash
-# Build
-docker build -t projeto-profissional .
-
-# Run
-docker run -p 8000:8000 projeto-profissional
-```
-
-## 📁 Estrutura
-
-- `src/` - Código fonte
-- `tests/` - Testes
-- `requirements/` - Dependências organizadas
-- `scripts/` - Scripts de automação
-- `docs/` - Documentação
-
-## 🤝 Contribuição
+## 🤝 Contribuindo
 
 1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -am 'Add nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
+2. Crie sua branch (`git checkout -b feature/MinhaFeature`)
+3. Commit suas mudanças (`git commit -m 'Add MinhaFeature'`)
+4. Push para a branch (`git push origin feature/MinhaFeature`)
 5. Abra um Pull Request
 
 ## 📄 Licença
 
-MIT License - veja [LICENSE](LICENSE) para detalhes.'''
-        print(readme)
+Este projeto está sob a licença MIT.'''
         
-        print("\n✅ 6. CHECKLIST FINAL:")
-        checklist_final = '''📋 VERIFICAÇÃO FINAL:
+        self.print_code_section("README.md", readme_content[:500] + "\n...")
+        
+        # PASSO 3: Script de automação
+        self.print_section("PASSO 3: SCRIPT DE AUTOMAÇÃO", "🔧", "warning")
+        
+        self.print_colored("Criando script de setup automático:", "text")
+        
+        setup_script = '''#!/bin/bash
+# scripts/setup.sh - Setup automático do projeto
 
-□ Ambiente virtual criado e ativado
-□ Dependências instaladas corretamente
-□ Testes passando
-□ Linting sem erros
-□ Formatação consistente
-□ Tipos verificados
-□ README documentado
-□ .gitignore configurado
-□ Scripts executáveis
-□ Estrutura organizada
+set -e  # Para se houver erro
 
-🎉 PROJETO PROFISSIONAL PRONTO!'''
-        print(checklist_final)
+echo "🚀 Configurando projeto..."
+
+# Verificar Python
+if ! command -v python3 &> /dev/null; then
+    echo "❌ Python 3 não encontrado!"
+    exit 1
+fi
+
+# Criar ambiente virtual
+echo "📦 Criando ambiente virtual..."
+python3 -m venv venv
+
+# Ativar ambiente
+echo "🔑 Ativando ambiente..."
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+    # Windows
+    source venv/Scripts/activate
+else
+    # Unix/Linux/macOS
+    source venv/bin/activate
+fi
+
+# Atualizar pip
+echo "⬆️ Atualizando pip..."
+python -m pip install --upgrade pip
+
+# Instalar dependências
+if [ -f requirements.txt ]; then
+    echo "📚 Instalando dependências..."
+    pip install -r requirements.txt
+fi
+
+if [ -f requirements-dev.txt ]; then
+    echo "🛠️ Instalando dependências de desenvolvimento..."
+    pip install -r requirements-dev.txt
+fi
+
+# Criar estrutura se não existir
+echo "📁 Verificando estrutura..."
+mkdir -p src tests docs
+
+echo "✅ Setup completo!"
+echo "🎯 Para ativar o ambiente:"
+echo "   Linux/Mac: source venv/bin/activate"
+echo "   Windows: venv\\Scripts\\activate"'''
         
-        # Pontos do mini projeto
-        if self.progress:
-            self.progress.add_points(self.mini_project_points)
-            print(f"\n🎁 +{self.mini_project_points} pontos pelo projeto completo!")
+        self.exemplo(setup_script)
         
-        print("\n🚀 Próximos passos:")
-        print("• Configurar CI/CD (GitHub Actions, GitLab CI)")
-        print("• Adicionar pre-commit hooks")
-        print("• Configurar dependabot para atualizações")
-        print("• Implementar releases automáticos")
-        print("• Adicionar badges no README")
-        print("• Configurar monitoramento (Sentry)")
+        # === CÓDIGO FINAL GERADO ===
+        self.print_colored("\nAqui está o código completo do arquivo principal:", "text")
         
-        input("\n🔸 Pressione ENTER para finalizar o módulo...")
+        codigo_final = f'''# 🐍 PROJETO: {nome_projeto.upper()}
+# src/main.py
+
+"""
+{nome_projeto.title()} - Aplicação Python profissional
+"""
+
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente
+load_dotenv()
+
+# Configurações
+PROJECT_ROOT = Path(__file__).parent.parent
+VERSION = "0.1.0"
+
+
+def main():
+    """Função principal da aplicação"""
+    print(f"🚀 {nome_projeto.title()} v{VERSION}")
+    print(f"📁 Rodando de: {PROJECT_ROOT}")
+    
+    # Verificar ambiente
+    if os.getenv("DEBUG", "False").lower() == "true":
+        print("🔍 Modo DEBUG ativado")
+    
+    # Sua lógica aqui
+    print("✨ Aplicação iniciada com sucesso!")
+    
+
+if __name__ == "__main__":
+    main()'''
+        
+        self.exemplo(codigo_final)
+        
+        # === EXECUÇÃO DO RESULTADO ===
+        self.print_section("RESULTADO FINAL", "🎬", "warning")
+        
+        # Simular execução
+        print(f"🚀 {nome_projeto.title()} v0.1.0")
+        print(f"📁 Rodando de: /caminho/para/{nome_projeto}")
+        print("✨ Aplicação iniciada com sucesso!")
+        
+        # === MENSAGEM DE CONQUISTA ===
+        self.print_success(f"\n🎉 PARABÉNS! Você criou um setup profissional para {nome_projeto}!")
+        
+        # === APLICAÇÕES AVANÇADAS ===
+        self.print_section("PRÓXIMOS PASSOS", "🚀", "info")
+        proximos_passos = [
+            "Adicionar testes automatizados com pytest",
+            "Configurar CI/CD com GitHub Actions",
+            "Adicionar pre-commit hooks para qualidade",
+            "Configurar Docker para deploy",
+            "Implementar logging profissional",
+            "Adicionar type hints e mypy"
+        ]
+        for passo in proximos_passos:
+            self.print_colored(f"• {passo}", "primary")
+        
+        self.print_success("\n🏆 CONQUISTA DESBLOQUEADA: Arquiteto de Projetos Python!")
+        
+        # === REGISTRO DE CONCLUSÃO ===
+        self.complete_mini_project("Setup Profissional de Projeto")
+        
+        self.pausar()

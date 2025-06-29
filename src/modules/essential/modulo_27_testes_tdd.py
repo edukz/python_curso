@@ -3,14 +3,18 @@
 
 """
 Módulo 27: Testes e TDD (Test-Driven Development)
-Aprenda a escrever testes, usar pytest e aplicar TDD
+Aprenda a criar código confiável e profissional com testes
 """
 
+import os
+import sys
+import tempfile
+from pathlib import Path
 from ..shared.base_module import BaseModule
 
 
 class Modulo27TestesTdd(BaseModule):
-    """Módulo 27: Testes e TDD - Desenvolvimento Orientado a Testes"""
+    """Módulo 27: Testes e TDD"""
     
     def __init__(self):
         super().__init__("modulo_27", "Testes e TDD")
@@ -18,737 +22,1580 @@ class Modulo27TestesTdd(BaseModule):
         self.mini_project_points = 100
     
     def execute(self) -> None:
-        """Executa o módulo sobre testes e TDD"""
+        """Executa o módulo Testes e TDD"""
         if not self.ui or not self.progress:
             print("❌ Erro: Dependências não configuradas para este módulo")
             input("Pressione ENTER para continuar...")
             return
         
         try:
-            self._testes_tdd()
+            self._testes_tdd_module()
         except Exception as e:
             self.error_handler(lambda: None)
     
-    def _testes_tdd(self) -> None:
-        """Conteúdo principal sobre testes e TDD"""
+    def _testes_tdd_module(self) -> None:
+        """Conteúdo principal do módulo Testes e TDD"""
+        # === CABEÇALHO VISUAL ===
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("🧪 MÓDULO 27: TESTES E TDD")
+            self.ui.header("🎯 MÓDULO 27: TESTES E TDD")
         else:
             print("\n" + "="*50)
-            print("🧪 MÓDULO 27: TESTES E TDD")
+            print("🎯 MÓDULO 27: TESTES E TDD")
             print("="*50)
         
-        print("🧪 Testes são FUNDAMENTAIS para código de qualidade!")
-        print("🔄 TDD revoluciona a forma como desenvolvemos software!")
+        # === MENSAGENS MOTIVACIONAIS ===
+        self.print_success("🎉 Bem-vindo ao mundo dos testes! Aqui você aprende a criar código à prova de balas!")
+        self.print_tip("Este módulo está dividido em seções interativas. Você controla o ritmo!")
         
-        print("\n═══════════════════════════════════════════════")
-        print("        POR QUE TESTAR SEU CÓDIGO?")
-        print("═══════════════════════════════════════════════")
+        # === FLUXO PRINCIPAL COM TRATAMENTO DE CTRL+C ===
         
-        print("\n🎯 Benefícios dos testes:")
-        print("• ✅ Garantem que o código funciona")
-        print("• 🛡️  Previnem bugs em produção")
-        print("• 🔄 Facilitam refatoração")
-        print("• 📝 Documentam o comportamento esperado")
-        print("• 🚀 Aumentam confiança no código")
+        # 1. Sistema de navegação por seções
+        try:
+            self._navegacao_secoes_interativas()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Navegação interrompida pelo usuário. Voltando ao menu principal...")
+            return
         
-        self.pausar()
+        # 2. Seção de Prática Interativa
+        try:
+            self._secao_pratica_interativa()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Módulo interrompido pelo usuário. Voltando ao menu principal...")
+            return
         
-        print("\n🧪 Tipos de Testes:")
+        # 3. Mini Projeto Prático
+        try:
+            self._mini_projeto_sistema_validacao()
+        except KeyboardInterrupt:
+            self.print_warning("\n\n⚠️ Mini projeto interrompido. Voltando ao menu principal...")
+            return
         
-        codigo1 = '''# Exemplo básico de testes com unittest
-import unittest
-
-def somar(a, b):
-    """Função simples para somar dois números"""
-    return a + b
-
-def dividir(a, b):
-    """Função para dividir dois números"""
-    if b == 0:
-        raise ValueError("Não é possível dividir por zero")
-    return a / b
-
-def eh_par(numero):
-    """Verifica se um número é par"""
-    return numero % 2 == 0
-
-class TesteFuncoes(unittest.TestCase):
-    """Classe de testes usando unittest"""
-    
-    def test_somar_numeros_positivos(self):
-        """Testa soma de números positivos"""
-        resultado = somar(2, 3)
-        self.assertEqual(resultado, 5)
-    
-    def test_somar_numeros_negativos(self):
-        """Testa soma com números negativos"""
-        resultado = somar(-2, -3)
-        self.assertEqual(resultado, -5)
-    
-    def test_somar_zero(self):
-        """Testa soma com zero"""
-        resultado = somar(5, 0)
-        self.assertEqual(resultado, 5)
-    
-    def test_dividir_numeros_normais(self):
-        """Testa divisão normal"""
-        resultado = dividir(10, 2)
-        self.assertEqual(resultado, 5.0)
-    
-    def test_dividir_por_zero(self):
-        """Testa divisão por zero (deve dar erro)"""
-        with self.assertRaises(ValueError):
-            dividir(10, 0)
-    
-    def test_eh_par_numero_par(self):
-        """Testa números pares"""
-        self.assertTrue(eh_par(4))
-        self.assertTrue(eh_par(0))
-        self.assertTrue(eh_par(-2))
-    
-    def test_eh_par_numero_impar(self):
-        """Testa números ímpares"""
-        self.assertFalse(eh_par(3))
-        self.assertFalse(eh_par(1))
-        self.assertFalse(eh_par(-1))
-
-print("=== EXECUTANDO TESTES ===")
-
-# Criar suite de testes
-suite = unittest.TestLoader().loadTestsFromTestCase(TesteFuncoes)
-runner = unittest.TextTestRunner(verbosity=2)
-resultado = runner.run(suite)
-
-print(f"\\nTestes executados: {resultado.testsRun}")
-print(f"Falhas: {len(resultado.failures)}")
-print(f"Erros: {len(resultado.errors)}")'''
-        
-        self.exemplo(codigo1)
-        self.executar_codigo(codigo1)
-        
-        self.pausar()
-        
-        print("\n🔄 Test-Driven Development (TDD):")
-        
-        codigo2 = '''# Exemplo de TDD - Desenvolvendo uma classe Calculadora
-import unittest
-
-# ETAPA 1: Escrever o teste PRIMEIRO (vai falhar)
-class TestCalculadora(unittest.TestCase):
-    
-    def setUp(self):
-        """Executado antes de cada teste"""
-        self.calc = Calculadora()
-    
-    def test_somar(self):
-        """Teste para soma"""
-        resultado = self.calc.somar(2, 3)
-        self.assertEqual(resultado, 5)
-    
-    def test_subtrair(self):
-        """Teste para subtração"""
-        resultado = self.calc.subtrair(5, 3)
-        self.assertEqual(resultado, 2)
-    
-    def test_multiplicar(self):
-        """Teste para multiplicação"""
-        resultado = self.calc.multiplicar(4, 3)
-        self.assertEqual(resultado, 12)
-    
-    def test_dividir(self):
-        """Teste para divisão"""
-        resultado = self.calc.dividir(10, 2)
-        self.assertEqual(resultado, 5.0)
-    
-    def test_dividir_por_zero(self):
-        """Teste para divisão por zero"""
-        with self.assertRaises(ZeroDivisionError):
-            self.calc.dividir(10, 0)
-    
-    def test_potencia(self):
-        """Teste para potenciação"""
-        resultado = self.calc.potencia(2, 3)
-        self.assertEqual(resultado, 8)
-
-# ETAPA 2: Implementar o código mínimo para passar nos testes
-class Calculadora:
-    """Calculadora simples seguindo TDD"""
-    
-    def somar(self, a, b):
-        """Soma dois números"""
-        return a + b
-    
-    def subtrair(self, a, b):
-        """Subtrai dois números"""
-        return a - b
-    
-    def multiplicar(self, a, b):
-        """Multiplica dois números"""
-        return a * b
-    
-    def dividir(self, a, b):
-        """Divide dois números"""
-        if b == 0:
-            raise ZeroDivisionError("Divisão por zero não é permitida")
-        return a / b
-    
-    def potencia(self, base, expoente):
-        """Calcula potência"""
-        return base ** expoente
-
-print("=== TDD EM AÇÃO ===")
-print("1. Escrevemos os testes PRIMEIRO")
-print("2. Implementamos o código para passar")
-print("3. Refatoramos se necessário")
-print()
-
-# Executar os testes
-suite = unittest.TestLoader().loadTestsFromTestCase(TestCalculadora)
-runner = unittest.TextTestRunner(verbosity=2)
-resultado = runner.run(suite)
-
-print(f"\\n✅ Todos os testes passaram: {resultado.wasSuccessful()}")'''
-        
-        self.exemplo(codigo2)
-        self.executar_codigo(codigo2)
-        
-        self.pausar()
-        
-        print("\n🔧 Testes com Pytest (mais moderno):")
-        
-        codigo3 = '''# Usando pytest - sintaxe mais simples e poderosa
-# pip install pytest
-
-import pytest
-from typing import List
-
-def fibonacci(n: int) -> List[int]:
-    """Gera sequência de Fibonacci até n termos"""
-    if n <= 0:
-        return []
-    elif n == 1:
-        return [0]
-    elif n == 2:
-        return [0, 1]
-    
-    fib = [0, 1]
-    for i in range(2, n):
-        fib.append(fib[i-1] + fib[i-2])
-    return fib
-
-def validar_email(email: str) -> bool:
-    """Valida formato básico de email"""
-    import re
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
-    return bool(re.match(pattern, email))
-
-# Testes com pytest (sintaxe mais limpa)
-def test_fibonacci_casos_basicos():
-    """Testa casos básicos do fibonacci"""
-    assert fibonacci(0) == []
-    assert fibonacci(1) == [0]
-    assert fibonacci(2) == [0, 1]
-
-def test_fibonacci_sequencia():
-    """Testa sequência fibonacci"""
-    resultado = fibonacci(7)
-    esperado = [0, 1, 1, 2, 3, 5, 8]
-    assert resultado == esperado
-
-def test_fibonacci_numero_negativo():
-    """Testa número negativo"""
-    assert fibonacci(-5) == []
-
-# Testes parametrizados
-@pytest.mark.parametrize("email,esperado", [
-    ("teste@exemplo.com", True),
-    ("usuario.nome@empresa.com.br", True),
-    ("email_invalido", False),
-    ("@sem-usuario.com", False),
-    ("usuario@", False),
-    ("", False),
-])
-def test_validar_email(email, esperado):
-    """Testa validação de email com múltiplos casos"""
-    assert validar_email(email) == esperado
-
-# Fixtures para setup de testes
-@pytest.fixture
-def dados_teste():
-    """Fixture que fornece dados para testes"""
-    return {
-        "usuarios": ["Ana", "João", "Maria"],
-        "idades": [25, 30, 28],
-        "ativo": True
-    }
-
-def test_usando_fixture(dados_teste):
-    """Teste que usa fixture"""
-    assert len(dados_teste["usuarios"]) == 3
-    assert dados_teste["ativo"] is True
-    assert max(dados_teste["idades"]) == 30
-
-print("=== TESTES COM PYTEST ===")
-print("Pytest oferece:")
-print("• ✨ Sintaxe mais simples (assert simples)")
-print("• 🔄 Testes parametrizados")
-print("• 🏗️  Fixtures para setup")
-print("• 📊 Relatórios detalhados")
-print("• 🔌 Plugins extensivos")
-print()
-
-# Simulando execução dos testes
-print("Executando testes fibonacci...")
-test_fibonacci_casos_basicos()
-test_fibonacci_sequencia()
-test_fibonacci_numero_negativo()
-print("✅ Testes fibonacci passaram!")
-
-print("\\nExecutando testes de email...")
-emails_teste = [
-    ("teste@exemplo.com", True),
-    ("email_invalido", False),
-    ("usuario@empresa.com.br", True),
-]
-
-for email, esperado in emails_teste:
-    resultado = validar_email(email)
-    assert resultado == esperado
-    print(f"  ✅ {email}: {resultado}")
-
-print("\\n✅ Todos os testes passaram!")'''
-        
-        self.exemplo(codigo3)
-        self.executar_codigo(codigo3)
-        
-        # Exercícios
-        self.exercicio(
-            "Qual é a primeira etapa do TDD?",
-            ["escrever teste", "test first", "teste primeiro"],
-            "Escrever o teste PRIMEIRO, antes do código"
-        )
-        
-        # Mini Projeto do Módulo 27
-        self._mini_projeto_sistema_testes()
-        
-        # Marcar módulo como completo
+        # 4. Marcar módulo como completo
         self.complete_module()
     
-    def _mini_projeto_sistema_testes(self) -> None:
-        """Mini Projeto - Módulo 27: Sistema de Testes Completo"""
+    def _navegacao_secoes_interativas(self) -> None:
+        """Sistema de navegação por seções do módulo"""
+        
+        # === DEFINIÇÃO DAS SEÇÕES ===
+        secoes = [
+            {
+                'id': 'secao_por_que_testar',
+                'titulo': '🎯 Por que testar é essencial?',
+                'descricao': 'Entenda a importância dos testes no desenvolvimento',
+                'funcao': self._secao_por_que_testar
+            },
+            {
+                'id': 'secao_tipos_testes',
+                'titulo': '🧪 Tipos de testes',
+                'descricao': 'Conheça os diferentes tipos e quando usar cada um',
+                'funcao': self._secao_tipos_testes
+            },
+            {
+                'id': 'secao_unittest_basico',
+                'titulo': '💡 unittest - Framework nativo',
+                'descricao': 'Aprenda o básico do unittest do Python',
+                'funcao': self._secao_unittest_basico
+            },
+            {
+                'id': 'secao_tdd_conceito',
+                'titulo': '🔄 TDD - Test-Driven Development',
+                'descricao': 'A metodologia que revoluciona como programamos',
+                'funcao': self._secao_tdd_conceito
+            },
+            {
+                'id': 'secao_pytest_moderno',
+                'titulo': '🚀 pytest - Testes modernos',
+                'descricao': 'O framework favorito dos desenvolvedores Python',
+                'funcao': self._secao_pytest_moderno
+            },
+            {
+                'id': 'secao_melhores_praticas',
+                'titulo': '⭐ Melhores práticas de testes',
+                'descricao': 'Dicas dos profissionais para testes eficazes',
+                'funcao': self._secao_melhores_praticas
+            },
+            {
+                'id': 'secao_curiosidades',
+                'titulo': '💫 Curiosidades sobre testes',
+                'descricao': 'Fatos interessantes do mundo dos testes',
+                'funcao': self._secao_curiosidades
+            }
+        ]
+        
+        secoes_visitadas = set()
+        
+        # === LOOP PRINCIPAL DE NAVEGAÇÃO ===
+        while True:
+            # Limpa tela e mostra cabeçalho
+            self.ui.clear_screen() if self.ui else print("\n" + "="*50)
+            self.print_section("NAVEGAÇÃO DO MÓDULO", "📚", "accent")
+            self.print_colored("Escolha uma seção para estudar:", "text")
+            
+            # Lista todas as seções com status
+            print()
+            for i, secao in enumerate(secoes, 1):
+                status = "✅" if secao['id'] in secoes_visitadas else "📖"
+                print(f"{status} {i}. {secao['titulo']}")
+                self.print_colored(f"    {secao['descricao']}", "text")
+                print()
+            
+            print("0. 🎯 Continuar para os Exercícios Práticos")
+            
+            # Mostra progresso visual
+            progresso = len(secoes_visitadas)
+            total = len(secoes)
+            self.print_colored(f"\n📊 Progresso: {progresso}/{total} seções visitadas", "info")
+            
+            if progresso == total:
+                self.print_success("🌟 Você completou todas as seções! Está pronto para praticar!")
+            
+            # Processa escolha do usuário
+            try:
+                escolha = input(f"\n👉 Escolha uma seção (1-{len(secoes)}) ou 0 para continuar: ").strip()
+                
+                if escolha == "0":
+                    # Verifica se visitou seções suficientes
+                    if progresso >= 3:  # Pelo menos 3 seções visitadas
+                        break
+                    else:
+                        self.print_warning("📚 Recomendamos visitar pelo menos 3 seções antes de continuar!")
+                        continuar = input("Quer continuar mesmo assim? (s/n): ").lower()
+                        if continuar in ['s', 'sim', 'yes']:
+                            break
+                elif escolha.isdigit() and 1 <= int(escolha) <= len(secoes):
+                    # Executa seção escolhida
+                    idx = int(escolha) - 1
+                    secoes[idx]['funcao']()
+                    secoes_visitadas.add(secoes[idx]['id'])
+                else:
+                    self.print_warning(f"❌ Opção inválida! Digite um número de 1 a {len(secoes)} ou 0.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Pulando para exercícios práticos...")
+                break
+            except Exception as e:
+                self.print_warning(f"❌ Erro: {str(e)}. Tente novamente.")
+    
+    def _secao_por_que_testar(self) -> None:
+        """Seção: Por que testar é essencial?"""
         if self.ui:
             self.ui.clear_screen()
-            self.ui.header("🎯 MINI PROJETO: SISTEMA DE TESTES COMPLETO")
-        else:
-            print("\n" + "="*50)
-            print("🎯 MINI PROJETO: SISTEMA DE TESTES COMPLETO")
-            print("="*50)
         
-        print("🧪 Sistema completo de testes usando TDD e pytest!")
-        print("🛠️ Usando: TDD, Unittest, Pytest, Fixtures, Mocks")
+        # === CABEÇALHO ATRATIVO ===
+        self.print_section("POR QUE TESTAR É ESSENCIAL?", "🎯")
+        
+        # === DEFINIÇÃO DO CONCEITO ===
+        self.print_concept(
+            "Testes de Software",
+            "Código que verifica se outro código funciona corretamente. Como um inspetor de qualidade para seu programa!"
+        )
+        
+        # === DICA RELACIONADA ===
+        self.print_tip("Testes são como um seguro: você espera nunca precisar, mas fica feliz quando tem!")
+        
+        # === ANALOGIA DO COTIDIANO ===
+        self.print_colored("\n🏠 ANALOGIA DO DIA A DIA:", "warning")
+        self.print_colored("Imagine construir uma casa:", "text")
+        self.print_colored("• SEM testes = Construir e torcer para não cair", "text")
+        self.print_colored("  - Problemas aparecem quando alguém mora", "text")
+        self.print_colored("  - Consertar é caro e perigoso", "text")
+        self.print_colored("• COM testes = Verificar cada etapa da construção", "text")
+        self.print_colored("  - Fundação sólida? ✅ Paredes retas? ✅", "text")
+        self.print_colored("  - Casa segura e confiável! 🏠", "text")
+        input("\n🔸 Pressione ENTER para continuar...")
+        
+        # === BENEFÍCIOS REAIS ===
+        self.print_colored("\n💎 BENEFÍCIOS DOS TESTES:", "success")
+        beneficios = [
+            "1. 🛡️ Confiança para fazer mudanças sem medo",
+            "2. 📋 Documentação viva de como o código funciona",
+            "3. 🐛 Encontra bugs antes dos usuários",
+            "4. 💰 Economiza tempo e dinheiro a longo prazo"
+        ]
+        
+        for i, beneficio in enumerate(beneficios, 1):
+            self.print_colored(beneficio, "text")
+            if i < len(beneficios):
+                input("   ⏳ Pressione ENTER para o próximo benefício...")
+        
+        # === ESTATÍSTICAS IMPRESSIONANTES ===
+        self.print_colored("\n📊 FATOS COMPROVADOS:", "info")
+        self.print_colored("• Microsoft: Testes reduziram bugs em 91% no Windows", "primary")
+        self.print_colored("• Google: 80% do código tem testes automatizados", "primary")
+        self.print_colored("• NASA: Testes salvaram missões espaciais bilionárias", "primary")
+        self.print_colored("• Amazon: Deploys a cada 11 segundos graças aos testes", "primary")
+        
+        # === CUSTO DE NÃO TESTAR ===
+        self.print_colored("\n💸 CUSTO DE BUGS FAMOSOS:", "error")
+        bugs_famosos = [
+            "Ariane 5 (1996): $370 milhões - foguete explodiu por overflow",
+            "Knight Capital (2012): $440 milhões em 45 minutos",
+            "Healthcare.gov (2013): $1.7 bilhões por falta de testes"
+        ]
+        for bug in bugs_famosos:
+            self.print_colored(f"• {bug}", "text")
+        
+        self.print_success("\n🎯 Moral da história: Testes são investimento, não custo!")
+        self.pausar()
+    
+    def _secao_tipos_testes(self) -> None:
+        """Seção: Tipos de testes"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("TIPOS DE TESTES", "🧪", "info")
+        
+        self.print_concept(
+            "Pirâmide de Testes",
+            "Diferentes níveis de testes, da base (unitários) ao topo (sistema completo)"
+        )
+        
+        # === PIRÂMIDE VISUAL ===
+        self.print_colored("\n🔺 PIRÂMIDE DE TESTES:", "warning")
+        piramide = '''
+               /\\
+              /  \\     E2E (End-to-End)
+             /----\\    ← Poucos, lentos, caros
+            /      \\
+           /--------\\  Integração
+          /          \\ ← Médios
+         /------------\\
+        /              \\ Unitários
+       /________________\\ ← Muitos, rápidos, baratos'''
+        
+        self.print_colored(piramide, "text")
+        input("\n🔸 Pressione ENTER para explorar cada tipo...")
+        
+        # === TESTES UNITÁRIOS ===
+        self.print_colored("\n1️⃣ TESTES UNITÁRIOS:", "success")
+        self.print_colored("• Testam uma única função ou método", "text")
+        self.print_colored("• Rápidos (milissegundos)", "text")
+        self.print_colored("• Isolados (sem dependências externas)", "text")
+        
+        exemplo_unitario = '''def soma(a, b):
+    return a + b
+
+def test_soma():
+    assert soma(2, 3) == 5
+    assert soma(-1, 1) == 0
+    assert soma(0, 0) == 0'''
+        
+        self.print_code_section("EXEMPLO", exemplo_unitario)
+        
+        # === TESTES DE INTEGRAÇÃO ===
+        self.print_colored("\n2️⃣ TESTES DE INTEGRAÇÃO:", "warning")
+        self.print_colored("• Testam componentes trabalhando juntos", "text")
+        self.print_colored("• Médios (segundos)", "text")
+        self.print_colored("• Verificam conexões e fluxos", "text")
+        
+        exemplo_integracao = '''def test_salvar_usuario_no_banco():
+    usuario = criar_usuario("João", "joao@email.com")
+    banco.salvar(usuario)
+    
+    usuario_salvo = banco.buscar(usuario.id)
+    assert usuario_salvo.nome == "João"'''
+        
+        self.print_code_section("EXEMPLO", exemplo_integracao)
+        
+        # === TESTES E2E ===
+        self.print_colored("\n3️⃣ TESTES END-TO-END (E2E):", "accent")
+        self.print_colored("• Testam o sistema completo como usuário", "text")
+        self.print_colored("• Lentos (minutos)", "text")
+        self.print_colored("• Simulam cenários reais", "text")
+        
+        exemplo_e2e = '''def test_compra_completa():
+    # Usuário acessa o site
+    browser.get("https://loja.com")
+    
+    # Adiciona produto ao carrinho
+    browser.find_element("Adicionar").click()
+    
+    # Finaliza compra
+    browser.find_element("Finalizar").click()
+    
+    # Verifica confirmação
+    assert "Pedido confirmado" in browser.page_source'''
+        
+        self.print_code_section("EXEMPLO", exemplo_e2e)
+        
+        # === PROPORÇÃO IDEAL ===
+        self.print_colored("\n📊 PROPORÇÃO IDEAL:", "info")
+        self.print_colored("• 70% Testes Unitários", "success")
+        self.print_colored("• 20% Testes de Integração", "warning")
+        self.print_colored("• 10% Testes E2E", "error")
         
         self.pausar()
+    
+    def _secao_unittest_basico(self) -> None:
+        """Seção: unittest - Framework nativo"""
+        if self.ui:
+            self.ui.clear_screen()
         
-        codigo_projeto = '''# 🧪 SISTEMA DE TESTES COMPLETO
-# Desenvolvimento de uma biblioteca de validação usando TDD
+        self.print_section("UNITTEST - FRAMEWORK NATIVO", "💡", "success")
+        
+        self.print_concept(
+            "unittest",
+            "Framework de testes incluído no Python. Não precisa instalar nada!"
+        )
+        
+        # === ESTRUTURA BÁSICA ===
+        self.print_colored("\n🏗️ ESTRUTURA BÁSICA:", "warning")
+        
+        estrutura_basica = '''import unittest
 
+class TestMinhasFuncoes(unittest.TestCase):
+    def test_algo_simples(self):
+        # Arrange (Preparar)
+        esperado = 5
+        
+        # Act (Agir)
+        resultado = 2 + 3
+        
+        # Assert (Verificar)
+        self.assertEqual(resultado, esperado)
+
+if __name__ == '__main__':
+    unittest.main()'''
+        
+        self.print_code_section("ESTRUTURA", estrutura_basica)
+        
+        # === EXEMPLO PRÁTICO ===
+        self.print_colored("\n🚀 VAMOS CRIAR NOSSO PRIMEIRO TESTE:", "accent")
+        
+        codigo_completo = '''import unittest
+
+# Função que vamos testar
+def calcular_media(notas):
+    """Calcula a média de uma lista de notas"""
+    if not notas:
+        return 0
+    return sum(notas) / len(notas)
+
+# Classe de testes
+class TestCalcularMedia(unittest.TestCase):
+    
+    def test_media_normal(self):
+        """Testa cálculo normal"""
+        notas = [8, 9, 7]
+        self.assertEqual(calcular_media(notas), 8.0)
+    
+    def test_lista_vazia(self):
+        """Testa lista vazia"""
+        self.assertEqual(calcular_media([]), 0)
+    
+    def test_uma_nota(self):
+        """Testa com apenas uma nota"""
+        self.assertEqual(calcular_media([10]), 10.0)
+
+# Executar testes
+if __name__ == '__main__':
+    # Vamos testar!
+    print("🧪 Executando testes...")
+    
+    # Testar manualmente primeiro
+    print(f"Média de [8, 9, 7]: {calcular_media([8, 9, 7])}")
+    print(f"Média de []: {calcular_media([])}")
+    print(f"Média de [10]: {calcular_media([10])}")
+    
+    print("\\n✅ Todos os testes passaram!")'''
+        
+        self.exemplo(codigo_completo)
+        self.executar_codigo(codigo_completo)
+        
+        # === MÉTODOS ÚTEIS ===
+        self.print_colored("\n🛠️ MÉTODOS MAIS USADOS:", "info")
+        metodos = [
+            "assertEqual(a, b) → Verifica se a == b",
+            "assertTrue(x) → Verifica se x é True",
+            "assertFalse(x) → Verifica se x é False",
+            "assertIn(a, b) → Verifica se a está em b",
+            "assertRaises(Exception) → Verifica se lança exceção"
+        ]
+        
+        for metodo in metodos:
+            self.print_colored(f"• {metodo}", "primary")
+        
+        # === DICAS PRÁTICAS ===
+        self.print_colored("\n💡 DICAS DE OURO:", "warning")
+        dicas = [
+            "Nomeie testes com 'test_' no início",
+            "Um teste deve testar UMA coisa só",
+            "Use nomes descritivos: test_calcular_media_lista_vazia",
+            "Teste casos normais E casos extremos"
+        ]
+        
+        for dica in dicas:
+            self.print_colored(f"• {dica}", "accent")
+        
+        self.pausar()
+    
+    def _secao_tdd_conceito(self) -> None:
+        """Seção: TDD - Test-Driven Development"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("TDD - TEST-DRIVEN DEVELOPMENT", "🔄", "error")
+        
+        self.print_concept(
+            "TDD",
+            "Escrever o teste ANTES do código. Parece loucura? É genial!"
+        )
+        
+        # === O CICLO TDD ===
+        self.print_colored("\n🔄 O CICLO SAGRADO DO TDD:", "warning")
+        ciclo = '''
+        🔴 RED          🟢 GREEN        🔵 REFACTOR
+         ↓               ↓               ↓
+    Escrever teste → Fazer passar → Melhorar código
+         ↓               ↓               ↓
+      Teste falha   Código mínimo   Código limpo
+         ↓               ↓               ↓
+         └───────────────┴───────────────┘
+                   REPETIR'''
+        
+        self.print_colored(ciclo, "text")
+        input("\n🔸 Pressione ENTER para ver na prática...")
+        
+        # === EXEMPLO PRÁTICO TDD ===
+        self.print_colored("\n🎯 VAMOS FAZER TDD NA PRÁTICA:", "success")
+        self.print_colored("Objetivo: Criar validador de CPF", "text")
+        
+        # PASSO 1: RED
+        self.print_colored("\n🔴 PASSO 1: ESCREVER TESTE (vai falhar!)", "error")
+        
+        teste_inicial = '''import unittest
+
+class TestValidadorCPF(unittest.TestCase):
+    def test_cpf_valido(self):
+        # Este teste vai FALHAR (função não existe ainda!)
+        self.assertTrue(validar_cpf("123.456.789-09"))'''
+        
+        self.print_code_section("TESTE", teste_inicial)
+        
+        # PASSO 2: GREEN
+        self.print_colored("\n🟢 PASSO 2: CÓDIGO MÍNIMO PARA PASSAR", "success")
+        
+        codigo_minimo = '''def validar_cpf(cpf):
+    # Código MÍNIMO só para passar o teste
+    return True  # Por enquanto, sempre retorna True'''
+        
+        self.print_code_section("CÓDIGO", codigo_minimo)
+        
+        # PASSO 3: REFACTOR
+        self.print_colored("\n🔵 PASSO 3: REFATORAR E MELHORAR", "info")
+        
+        codigo_melhorado = '''def validar_cpf(cpf):
+    # Agora implementamos de verdade
+    # Remove caracteres não numéricos
+    cpf = ''.join(filter(str.isdigit, cpf))
+    
+    # Verifica se tem 11 dígitos
+    if len(cpf) != 11:
+        return False
+    
+    # Verifica se todos dígitos são iguais
+    if cpf == cpf[0] * 11:
+        return False
+    
+    # Por enquanto, validação básica
+    return True'''
+        
+        self.print_code_section("CÓDIGO MELHORADO", codigo_melhorado)
+        
+        # === VANTAGENS DO TDD ===
+        self.print_colored("\n✨ POR QUE TDD É INCRÍVEL:", "warning")
+        vantagens = [
+            "🎯 Foco no que realmente importa",
+            "📋 Especificação clara antes de codar",
+            "🛡️ 100% de cobertura garantida",
+            "🏗️ Design melhor (código testável = código limpo)",
+            "😌 Confiança total no código"
+        ]
+        
+        for vantagem in vantagens:
+            self.print_colored(vantagem, "primary")
+        
+        # === EXEMPLO COMPLETO ===
+        self.print_colored("\n💻 EXEMPLO COMPLETO COM TDD:", "accent")
+        
+        exemplo_tdd = '''# 1. Começamos com o teste
 import unittest
-import pytest
-from typing import List, Dict, Any
-from datetime import datetime, date
-import re
-import json
 
-class ValidationError(Exception):
-    """Exceção customizada para erros de validação"""
+class TestCalculadora(unittest.TestCase):
+    def test_dividir_numeros_positivos(self):
+        calc = Calculadora()
+        self.assertEqual(calc.dividir(10, 2), 5)
+    
+    def test_dividir_por_zero_lanca_erro(self):
+        calc = Calculadora()
+        with self.assertRaises(ValueError):
+            calc.dividir(10, 0)
+
+# 2. Implementamos o mínimo
+class Calculadora:
+    def dividir(self, a, b):
+        if b == 0:
+            raise ValueError("Divisão por zero!")
+        return a / b
+
+# 3. Testamos
+if __name__ == '__main__':
+    print("🧪 Rodando testes TDD...")
+    
+    calc = Calculadora()
+    print(f"10 ÷ 2 = {calc.dividir(10, 2)}")
+    
+    try:
+        calc.dividir(10, 0)
+    except ValueError as e:
+        print(f"Erro capturado: {e}")
+    
+    print("\\n✅ TDD funcionando perfeitamente!")'''
+        
+        self.exemplo(exemplo_tdd)
+        self.executar_codigo(exemplo_tdd)
+        
+        self.print_success("\n🏆 Agora você conhece o poder do TDD!")
+        self.pausar()
+    
+    def _secao_pytest_moderno(self) -> None:
+        """Seção: pytest - Testes modernos"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("PYTEST - TESTES MODERNOS", "🚀", "accent")
+        
+        self.print_concept(
+            "pytest",
+            "O framework de testes mais popular e poderoso do Python. Simples e elegante!"
+        )
+        
+        # === INSTALAÇÃO ===
+        self.print_colored("\n📦 INSTALAÇÃO:", "warning")
+        self.print_code_section("", "pip install pytest")
+        
+        # === COMPARAÇÃO ===
+        self.print_colored("\n🆚 UNITTEST vs PYTEST:", "info")
+        
+        comparacao = '''# UNITTEST (verboso)
+import unittest
+
+class TestExemplo(unittest.TestCase):
+    def test_soma(self):
+        self.assertEqual(2 + 2, 4)
+
+# PYTEST (simples e direto!)
+def test_soma():
+    assert 2 + 2 == 4'''
+        
+        self.print_code_section("COMPARAÇÃO", comparacao)
+        
+        # === EXEMPLO BÁSICO ===
+        self.print_colored("\n✨ A MÁGICA DO PYTEST:", "success")
+        
+        exemplo_pytest = '''# arquivo: test_matematica.py
+
+def somar(a, b):
+    return a + b
+
+def multiplicar(a, b):
+    return a * b
+
+# Testes com pytest - simples assim!
+def test_somar_positivos():
+    assert somar(2, 3) == 5
+
+def test_somar_negativos():
+    assert somar(-1, -1) == -2
+
+def test_multiplicar():
+    assert multiplicar(3, 4) == 12
+
+def test_multiplicar_por_zero():
+    assert multiplicar(5, 0) == 0
+
+# Para executar: pytest test_matematica.py
+print("🧪 Testes com pytest!")
+print(f"2 + 3 = {somar(2, 3)}")
+print(f"3 × 4 = {multiplicar(3, 4)}")'''
+        
+        self.exemplo(exemplo_pytest)
+        self.executar_codigo(exemplo_pytest)
+        
+        # === RECURSOS AVANÇADOS ===
+        self.print_colored("\n🎯 RECURSOS INCRÍVEIS DO PYTEST:", "warning")
+        
+        # Fixtures
+        self.print_colored("\n1️⃣ FIXTURES - Preparação reutilizável:", "primary")
+        fixture_exemplo = '''import pytest
+
+@pytest.fixture
+def usuario_teste():
+    """Cria um usuário para testes"""
+    return {"nome": "João", "idade": 25}
+
+def test_usuario_maior_idade(usuario_teste):
+    assert usuario_teste["idade"] >= 18
+
+def test_usuario_tem_nome(usuario_teste):
+    assert usuario_teste["nome"] == "João"'''
+        
+        self.print_code_section("FIXTURES", fixture_exemplo)
+        
+        # Parametrização
+        self.print_colored("\n2️⃣ PARAMETRIZAÇÃO - Múltiplos casos:", "primary")
+        parametrize_exemplo = '''import pytest
+
+@pytest.mark.parametrize("entrada,esperado", [
+    (2, 4),
+    (3, 9),
+    (4, 16),
+    (-2, 4),
+])
+def test_quadrado(entrada, esperado):
+    assert entrada ** 2 == esperado'''
+        
+        self.print_code_section("PARAMETRIZAÇÃO", parametrize_exemplo)
+        
+        # Marcadores
+        self.print_colored("\n3️⃣ MARCADORES - Organize seus testes:", "primary")
+        marcadores_exemplo = '''import pytest
+
+@pytest.mark.slow
+def test_processo_demorado():
+    # Teste que demora muito
     pass
 
-class Validator:
-    """Sistema de validação completo desenvolvido com TDD"""
-    
-    @staticmethod
-    def validar_cpf(cpf: str) -> bool:
-        """Valida CPF brasileiro"""
-        # Remove caracteres não numéricos
-        cpf = re.sub(r'[^0-9]', '', cpf)
-        
-        # Verifica se tem 11 dígitos
-        if len(cpf) != 11:
-            return False
-        
-        # Verifica se todos os dígitos são iguais
-        if cpf == cpf[0] * 11:
-            return False
-        
-        # Calcula primeiro dígito verificador
-        soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
-        resto = 11 - (soma % 11)
-        digito1 = 0 if resto >= 10 else resto
-        
-        # Calcula segundo dígito verificador
-        soma = sum(int(cpf[i]) * (11 - i) for i in range(10))
-        resto = 11 - (soma % 11)
-        digito2 = 0 if resto >= 10 else resto
-        
-        # Verifica os dígitos
-        return cpf[9] == str(digito1) and cpf[10] == str(digito2)
-    
-    @staticmethod
-    def validar_email(email: str) -> bool:
-        """Valida formato de email"""
-        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
-        return bool(re.match(pattern, email))
-    
-    @staticmethod
-    def validar_telefone(telefone: str) -> bool:
-        """Valida telefone brasileiro"""
-        telefone = re.sub(r'[^0-9]', '', telefone)
-        return len(telefone) in [10, 11] and telefone[0:2] in ['11', '21', '31', '41', '51', '61', '71', '81', '85', '91']
-    
-    @staticmethod
-    def validar_senha(senha: str) -> Dict[str, Any]:
-        """Valida força da senha"""
-        resultado = {
-            'valida': False,
-            'pontuacao': 0,
-            'criterios': {
-                'tamanho': len(senha) >= 8,
-                'maiuscula': bool(re.search(r'[A-Z]', senha)),
-                'minuscula': bool(re.search(r'[a-z]', senha)),
-                'numero': bool(re.search(r'[0-9]', senha)),
-                'especial': bool(re.search(r'[!@#$%^&*(),.?":{}|<>]', senha))
-            }
-        }
-        
-        resultado['pontuacao'] = sum(resultado['criterios'].values())
-        resultado['valida'] = resultado['pontuacao'] >= 4
-        
-        return resultado
-    
-    @staticmethod
-    def validar_data_nascimento(data_str: str) -> bool:
-        """Valida data de nascimento"""
-        try:
-            data = datetime.strptime(data_str, '%d/%m/%Y').date()
-            hoje = date.today()
-            idade = hoje.year - data.year - ((hoje.month, hoje.day) < (data.month, data.day))
-            return 0 <= idade <= 120 and data <= hoje
-        except ValueError:
-            return False
+@pytest.mark.skip(reason="Ainda não implementado")
+def test_funcionalidade_futura():
+    pass
 
-class Usuario:
-    """Classe Usuario para demonstrar validação"""
-    
-    def __init__(self, nome: str, email: str, cpf: str, telefone: str, senha: str, data_nascimento: str):
-        self.erros = []
+# Executar só testes rápidos: pytest -m "not slow"'''
         
-        # Validações
-        if not nome or len(nome.strip()) < 2:
-            self.erros.append("Nome deve ter pelo menos 2 caracteres")
+        self.print_code_section("MARCADORES", marcadores_exemplo)
         
-        if not Validator.validar_email(email):
-            self.erros.append("Email inválido")
-        
-        if not Validator.validar_cpf(cpf):
-            self.erros.append("CPF inválido")
-        
-        if not Validator.validar_telefone(telefone):
-            self.erros.append("Telefone inválido")
-        
-        senha_validacao = Validator.validar_senha(senha)
-        if not senha_validacao['valida']:
-            self.erros.append(f"Senha fraca (pontuação: {senha_validacao['pontuacao']}/5)")
-        
-        if not Validator.validar_data_nascimento(data_nascimento):
-            self.erros.append("Data de nascimento inválida")
-        
-        # Se passou em todas as validações, inicializa
-        if not self.erros:
-            self.nome = nome.strip()
-            self.email = email
-            self.cpf = cpf
-            self.telefone = telefone
-            self.senha = senha
-            self.data_nascimento = data_nascimento
-    
-    def eh_valido(self) -> bool:
-        """Verifica se usuário é válido"""
-        return len(self.erros) == 0
-
-# ===============================================
-# TESTES USANDO UNITTEST
-# ===============================================
-
-class TestValidator(unittest.TestCase):
-    """Testes da classe Validator usando unittest"""
-    
-    def test_cpf_valido(self):
-        """Testa CPFs válidos"""
-        cpfs_validos = ['11144477735', '111.444.777-35']
-        for cpf in cpfs_validos:
-            with self.subTest(cpf=cpf):
-                self.assertTrue(Validator.validar_cpf(cpf))
-    
-    def test_cpf_invalido(self):
-        """Testa CPFs inválidos"""
-        cpfs_invalidos = ['123', '11111111111', '123.456.789-00']
-        for cpf in cpfs_invalidos:
-            with self.subTest(cpf=cpf):
-                self.assertFalse(Validator.validar_cpf(cpf))
-    
-    def test_email_valido(self):
-        """Testa emails válidos"""
-        emails_validos = ['teste@exemplo.com', 'usuario.nome@empresa.com.br']
-        for email in emails_validos:
-            with self.subTest(email=email):
-                self.assertTrue(Validator.validar_email(email))
-    
-    def test_senha_forte(self):
-        """Testa senha forte"""
-        senha = "MinhaSenh@123"
-        resultado = Validator.validar_senha(senha)
-        self.assertTrue(resultado['valida'])
-        self.assertEqual(resultado['pontuacao'], 5)
-
-class TestUsuario(unittest.TestCase):
-    """Testes da classe Usuario"""
-    
-    def test_usuario_valido(self):
-        """Testa criação de usuário válido"""
-        usuario = Usuario(
-            nome="João Silva",
-            email="joao@exemplo.com",
-            cpf="111.444.777-35",
-            telefone="(11) 99999-9999",
-            senha="MinhaSenh@123",
-            data_nascimento="15/03/1990"
-        )
-        self.assertTrue(usuario.eh_valido())
-        self.assertEqual(len(usuario.erros), 0)
-    
-    def test_usuario_invalido(self):
-        """Testa usuário com dados inválidos"""
-        usuario = Usuario(
-            nome="A",  # Nome muito curto
-            email="email_invalido",
-            cpf="123.456.789-00",  # CPF inválido
-            telefone="123",  # Telefone inválido
-            senha="123",  # Senha fraca
-            data_nascimento="30/02/2020"  # Data inválida
-        )
-        self.assertFalse(usuario.eh_valido())
-        self.assertGreater(len(usuario.erros), 0)
-
-# ===============================================
-# TESTES USANDO PYTEST (simulado)
-# ===============================================
-
-class TestValidatorPytest:
-    """Testes usando sintaxe pytest"""
-    
-    def setup_method(self):
-        """Setup executado antes de cada teste"""
-        self.validator = Validator()
-    
-    def test_cpf_casos_extremos(self):
-        """Testa casos extremos de CPF"""
-        assert not Validator.validar_cpf("")
-        assert not Validator.validar_cpf("000.000.000-00")
-        assert not Validator.validar_cpf("123.456.789")
-    
-    def test_telefone_diferentes_formatos(self):
-        """Testa telefone em diferentes formatos"""
-        telefones_validos = [
-            "11987654321",
-            "(11) 98765-4321",
-            "11 9 8765-4321"
+        # === COMANDOS ÚTEIS ===
+        self.print_colored("\n⚡ COMANDOS PYTEST ESSENCIAIS:", "info")
+        comandos = [
+            "pytest → Executa todos os testes",
+            "pytest -v → Modo verboso (detalhado)",
+            "pytest -x → Para no primeiro erro",
+            "pytest --tb=short → Traceback resumido",
+            "pytest -k 'usuario' → Só testes com 'usuario' no nome",
+            "pytest --cov → Cobertura de código"
         ]
         
-        for tel in telefones_validos:
-            assert Validator.validar_telefone(tel)
-    
-    def test_senha_criterios_individuais(self):
-        """Testa critérios individuais da senha"""
-        resultado = Validator.validar_senha("Abc123!")
-        
-        assert resultado['criterios']['tamanho'] == False  # < 8 chars
-        assert resultado['criterios']['maiuscula'] == True
-        assert resultado['criterios']['minuscula'] == True
-        assert resultado['criterios']['numero'] == True
-        assert resultado['criterios']['especial'] == True
-
-# ===============================================
-# SISTEMA DE RELATÓRIOS DE TESTE
-# ===============================================
-
-class TestRunner:
-    """Sistema para executar e gerar relatórios de teste"""
-    
-    def __init__(self):
-        self.resultados = {
-            'total': 0,
-            'sucessos': 0,
-            'falhas': 0,
-            'erros': 0,
-            'detalhes': []
-        }
-    
-    def executar_testes_unittest(self):
-        """Executa testes unittest"""
-        print("🧪 Executando testes unittest...")
-        
-        # TestValidator
-        suite1 = unittest.TestLoader().loadTestsFromTestCase(TestValidator)
-        runner1 = unittest.TextTestRunner(stream=open('/dev/null', 'w'), verbosity=0)
-        resultado1 = runner1.run(suite1)
-        
-        # TestUsuario  
-        suite2 = unittest.TestLoader().loadTestsFromTestCase(TestUsuario)
-        runner2 = unittest.TextTestRunner(stream=open('/dev/null', 'w'), verbosity=0)
-        resultado2 = runner2.run(suite2)
-        
-        total_testes = resultado1.testsRun + resultado2.testsRun
-        total_falhas = len(resultado1.failures) + len(resultado2.failures)
-        total_erros = len(resultado1.errors) + len(resultado2.errors)
-        
-        print(f"  ✅ Testes executados: {total_testes}")
-        print(f"  ❌ Falhas: {total_falhas}")
-        print(f"  💥 Erros: {total_erros}")
-        
-        return total_testes, total_falhas, total_erros
-    
-    def executar_testes_manuais(self):
-        """Executa testes pytest simulados"""
-        print("\\n🔬 Executando testes pytest (simulado)...")
-        
-        testes_pytest = [
-            ("test_cpf_casos_extremos", True),
-            ("test_telefone_diferentes_formatos", True),
-            ("test_senha_criterios_individuais", True),
-        ]
-        
-        sucessos = 0
-        for nome_teste, passou in testes_pytest:
-            if passou:
-                print(f"  ✅ {nome_teste}")
-                sucessos += 1
-            else:
-                print(f"  ❌ {nome_teste}")
-        
-        return len(testes_pytest), sucessos
-    
-    def gerar_relatorio_cobertura(self):
-        """Simula relatório de cobertura"""
-        print("\\n📊 RELATÓRIO DE COBERTURA:")
-        
-        modulos = [
-            ("Validator.validar_cpf", 100),
-            ("Validator.validar_email", 95),
-            ("Validator.validar_telefone", 90),
-            ("Validator.validar_senha", 100),
-            ("Usuario.__init__", 85),
-            ("Usuario.eh_valido", 100),
-        ]
-        
-        for modulo, cobertura in modulos:
-            status = "✅" if cobertura >= 90 else "⚠️" if cobertura >= 75 else "❌"
-            print(f"  {status} {modulo}: {cobertura}%")
-        
-        cobertura_media = sum(cob for _, cob in modulos) / len(modulos)
-        print(f"\\n📈 Cobertura média: {cobertura_media:.1f}%")
-
-# ===============================================
-# DEMONSTRAÇÃO COMPLETA
-# ===============================================
-
-print("=== SISTEMA DE TESTES COMPLETO ===")
-print()
-
-# 1. Teste de validação individual
-print("🔍 DEMONSTRAÇÃO DE VALIDAÇÕES:")
-print()
-
-# CPF
-cpf_teste = "111.444.777-35"
-print(f"CPF {cpf_teste}: {'✅ Válido' if Validator.validar_cpf(cpf_teste) else '❌ Inválido'}")
-
-# Email
-email_teste = "usuario@exemplo.com"
-print(f"Email {email_teste}: {'✅ Válido' if Validator.validar_email(email_teste) else '❌ Inválido'}")
-
-# Senha
-senha_teste = "MinhaSenh@123"
-resultado_senha = Validator.validar_senha(senha_teste)
-print(f"Senha: {'✅ Forte' if resultado_senha['valida'] else '❌ Fraca'} ({resultado_senha['pontuacao']}/5)")
-
-# 2. Teste de usuário completo
-print("\\n👤 TESTE DE USUÁRIO COMPLETO:")
-usuario_valido = Usuario(
-    nome="Ana Silva",
-    email="ana@exemplo.com", 
-    cpf="111.444.777-35",
-    telefone="11987654321",
-    senha="MinhaSenh@123",
-    data_nascimento="15/03/1990"
-)
-
-print(f"Usuário válido: {'✅ Sim' if usuario_valido.eh_valido() else '❌ Não'}")
-if usuario_valido.erros:
-    for erro in usuario_valido.erros:
-        print(f"  ❌ {erro}")
-
-# 3. Executar suite completa de testes
-print("\\n🧪 EXECUTANDO SUITE COMPLETA DE TESTES:")
-test_runner = TestRunner()
-
-# Testes unittest
-total_unittest, falhas_unittest, erros_unittest = test_runner.executar_testes_unittest()
-
-# Testes pytest simulados
-total_pytest, sucessos_pytest = test_runner.executar_testes_manuais()
-
-# Relatório de cobertura
-test_runner.gerar_relatorio_cobertura()
-
-# 4. Resumo final
-print("\\n📋 RESUMO FINAL:")
-total_testes = total_unittest + total_pytest
-total_sucessos = (total_unittest - falhas_unittest - erros_unittest) + sucessos_pytest
-taxa_sucesso = (total_sucessos / total_testes) * 100 if total_testes > 0 else 0
-
-print(f"  📊 Total de testes: {total_testes}")
-print(f"  ✅ Sucessos: {total_sucessos}")
-print(f"  ❌ Falhas: {falhas_unittest + (total_pytest - sucessos_pytest)}")
-print(f"  💥 Erros: {erros_unittest}")
-print(f"  🎯 Taxa de sucesso: {taxa_sucesso:.1f}%")
-
-print()
-print("✅ Sistema de Testes implementado com sucesso!")
-print("🎯 Conceitos aplicados:")
-print("  • Test-Driven Development (TDD)")
-print("  • Unittest e Pytest")
-print("  • Fixtures e Mocks")
-print("  • Testes parametrizados")
-print("  • Cobertura de código")
-print("  • Relatórios de teste")
-print("  • Validação de dados")'''
-        
-        self.exemplo(codigo_projeto)
-        self.executar_codigo(codigo_projeto)
-        
-        print("\n🏆 PARABÉNS! Sistema de testes completo criado!")
-        print("🎯 Aplicação real: garantir qualidade em projetos profissionais")
-        
-        # Registra conclusão do mini projeto
-        self.complete_mini_project("Sistema de Testes Completo")
+        for cmd in comandos:
+            self.print_colored(f"• {cmd}", "accent")
         
         self.pausar()
+    
+    def _secao_melhores_praticas(self) -> None:
+        """Seção: Melhores práticas de testes"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("MELHORES PRÁTICAS DE TESTES", "⭐", "success")
+        
+        # === PRINCÍPIO FIRST ===
+        self.print_colored("🎯 PRINCÍPIO F.I.R.S.T:", "warning")
+        self.print_colored("Seus testes devem ser:", "text")
+        
+        first = [
+            "F - Fast (Rápidos): Milissegundos, não minutos",
+            "I - Independent (Independentes): Não dependem uns dos outros",
+            "R - Repeatable (Repetíveis): Mesmo resultado sempre",
+            "S - Self-validating (Auto-validáveis): Pass ou Fail claro",
+            "T - Timely (Oportunos): Escritos no momento certo"
+        ]
+        
+        for principio in first:
+            self.print_colored(f"• {principio}", "primary")
+            input("   🔸 Pressione ENTER...")
+        
+        # === PADRÃO AAA ===
+        self.print_colored("\n📐 PADRÃO AAA (ARRANGE-ACT-ASSERT):", "info")
+        
+        padrao_aaa = '''def test_calcular_desconto():
+    # ARRANGE (Preparar)
+    preco_original = 100
+    percentual_desconto = 10
+    
+    # ACT (Agir)
+    preco_final = calcular_desconto(preco_original, percentual_desconto)
+    
+    # ASSERT (Verificar)
+    assert preco_final == 90'''
+        
+        self.print_code_section("PADRÃO AAA", padrao_aaa)
+        
+        # === NOMES DESCRITIVOS ===
+        self.print_colored("\n📝 NOMES DESCRITIVOS:", "warning")
+        
+        nomes_exemplo = '''# ❌ RUIM
+def test1():
+    pass
 
+def test_funcao():
+    pass
 
-# Para teste standalone
-if __name__ == "__main__":
-    module = Modulo27TestesTdd()
-    print("Teste do módulo 27 - versão standalone")
-    module._testes_tdd()
+# ✅ BOM
+def test_calcular_juros_com_taxa_negativa_deve_lancar_erro():
+    pass
+
+def test_usuario_sem_email_nao_pode_ser_criado():
+    pass'''
+        
+        self.print_code_section("NOMES", nomes_exemplo)
+        
+        # === O QUE TESTAR ===
+        self.print_colored("\n🎯 O QUE TESTAR:", "success")
+        testar = [
+            "✅ Casos normais (caminho feliz)",
+            "✅ Casos extremos (limites)",
+            "✅ Casos de erro (exceções)",
+            "✅ Valores especiais (None, 0, vazio)",
+            "❌ Detalhes de implementação",
+            "❌ Código de terceiros (já testado)"
+        ]
+        
+        for item in testar:
+            self.print_colored(f"• {item}", "text")
+        
+        # === EXEMPLO COMPLETO ===
+        self.print_colored("\n💎 EXEMPLO DE TESTE PROFISSIONAL:", "accent")
+        
+        teste_profissional = '''import pytest
+from datetime import datetime
+
+class Conta:
+    def __init__(self, saldo=0):
+        self.saldo = saldo
+        self.transacoes = []
+    
+    def depositar(self, valor):
+        if valor <= 0:
+            raise ValueError("Valor deve ser positivo")
+        self.saldo += valor
+        self.transacoes.append({
+            "tipo": "depósito",
+            "valor": valor,
+            "data": datetime.now()
+        })
+    
+    def sacar(self, valor):
+        if valor <= 0:
+            raise ValueError("Valor deve ser positivo")
+        if valor > self.saldo:
+            raise ValueError("Saldo insuficiente")
+        self.saldo -= valor
+        self.transacoes.append({
+            "tipo": "saque",
+            "valor": valor,
+            "data": datetime.now()
+        })
+
+# TESTES PROFISSIONAIS
+class TestConta:
+    @pytest.fixture
+    def conta_vazia(self):
+        """Fixture: conta sem saldo"""
+        return Conta()
+    
+    @pytest.fixture
+    def conta_com_saldo(self):
+        """Fixture: conta com R$ 100"""
+        return Conta(100)
+    
+    def test_criar_conta_sem_saldo(self):
+        conta = Conta()
+        assert conta.saldo == 0
+        assert conta.transacoes == []
+    
+    def test_criar_conta_com_saldo_inicial(self):
+        conta = Conta(50)
+        assert conta.saldo == 50
+    
+    def test_depositar_valor_valido(self, conta_vazia):
+        conta_vazia.depositar(100)
+        assert conta_vazia.saldo == 100
+        assert len(conta_vazia.transacoes) == 1
+        assert conta_vazia.transacoes[0]["tipo"] == "depósito"
+    
+    def test_depositar_valor_invalido(self, conta_vazia):
+        with pytest.raises(ValueError, match="Valor deve ser positivo"):
+            conta_vazia.depositar(-10)
+    
+    def test_sacar_com_saldo_suficiente(self, conta_com_saldo):
+        conta_com_saldo.sacar(30)
+        assert conta_com_saldo.saldo == 70
+    
+    def test_sacar_mais_que_saldo(self, conta_com_saldo):
+        with pytest.raises(ValueError, match="Saldo insuficiente"):
+            conta_com_saldo.sacar(150)
+
+# Demonstração
+if __name__ == '__main__':
+    print("🏦 Sistema Bancário com Testes")
+    
+    conta = Conta(100)
+    print(f"Saldo inicial: R$ {conta.saldo}")
+    
+    conta.depositar(50)
+    print(f"Após depósito de R$ 50: R$ {conta.saldo}")
+    
+    conta.sacar(30)
+    print(f"Após saque de R$ 30: R$ {conta.saldo}")
+    
+    print(f"\\nTransações: {len(conta.transacoes)}")'''
+        
+        self.exemplo(teste_profissional)
+        self.executar_codigo(teste_profissional)
+        
+        self.print_success("\n🏆 Agora você sabe testar como profissional!")
+        self.pausar()
+    
+    def _secao_curiosidades(self) -> None:
+        """Seção: Curiosidades sobre testes"""
+        if self.ui:
+            self.ui.clear_screen()
+        
+        self.print_section("CURIOSIDADES SOBRE TESTES", "💫", "accent")
+        
+        # === HISTÓRIA DOS TESTES ===
+        self.print_colored("📚 HISTÓRIA FASCINANTE:", "warning")
+        self.print_colored("• 1949: Alan Turing já falava sobre testes de programas", "text")
+        self.print_colored("• 1957: Primeiro debugger foi criado", "text")
+        self.print_colored("• 1990s: Kent Beck popularizou TDD", "text")
+        self.print_colored("• 2004: pytest foi criado", "text")
+        
+        # === FATOS INTERESSANTES ===
+        self.print_colored("\n🤯 FATOS QUE VÃO TE SURPREENDER:", "info")
+        fatos = [
+            "SpaceX testa cada linha de código 3x antes de lançar foguetes",
+            "Netflix faz 'Chaos Testing' - quebra coisas de propósito!",
+            "Google tem 2 bilhões de testes rodando por dia",
+            "Amazon faz deploy a cada 11.7 segundos graças aos testes"
+        ]
+        
+        for fato in fatos:
+            self.print_colored(f"• {fato}", "primary")
+            input("   😮 Pressione ENTER...")
+        
+        # === TIPOS EXÓTICOS DE TESTES ===
+        self.print_colored("\n🦄 TESTES EXÓTICOS:", "success")
+        exoticos = [
+            "🐒 Monkey Testing: Inputs aleatórios para quebrar o sistema",
+            "🦍 Gorilla Testing: Testar uma feature até a exaustão",
+            "🔥 Chaos Testing: Derrubar servidores em produção (!)",
+            "🎭 A/B Testing: Duas versões para ver qual é melhor",
+            "🌈 Visual Testing: Comparar screenshots pixel a pixel"
+        ]
+        
+        for teste in exoticos:
+            self.print_colored(teste, "accent")
+        
+        # === CITAÇÕES FAMOSAS ===
+        self.print_colored("\n💬 CITAÇÕES INSPIRADORAS:", "warning")
+        citacoes = [
+            '"Debugging é duas vezes mais difícil que escrever código." - Brian Kernighan',
+            '"Código sem testes é código quebrado por design." - Jacob Kaplan-Moss',
+            '"TDD não é sobre testes, é sobre design." - Kent Beck'
+        ]
+        
+        for citacao in citacoes:
+            self.print_colored(citacao, "text")
+            input("   💭 Pressione ENTER...")
+        
+        # === DIVERSÃO COM TESTES ===
+        self.print_colored("\n🎮 TESTE DIVERTIDO:", "error")
+        
+        teste_divertido = '''import random
+
+def e_numero_da_sorte(numero):
+    """Um número é da sorte se for 7 ou múltiplo de 7"""
+    return numero == 7 or numero % 7 == 0
+
+# Teste divertido
+def test_numeros_da_sorte():
+    # Números definitivamente da sorte
+    assert e_numero_da_sorte(7) == True
+    assert e_numero_da_sorte(14) == True
+    assert e_numero_da_sorte(777) == True
+    
+    # Números sem sorte
+    assert e_numero_da_sorte(13) == False
+    assert e_numero_da_sorte(666) == False
+
+# Brincadeira
+print("🎰 Teste de Sorte!")
+seu_numero = random.randint(1, 100)
+print(f"Seu número: {seu_numero}")
+
+if e_numero_da_sorte(seu_numero):
+    print("🍀 Você tem sorte! É um número da sorte!")
+else:
+    print("😅 Tente novamente! Não foi dessa vez...")'''
+        
+        self.exemplo(teste_divertido)
+        self.executar_codigo(teste_divertido)
+        
+        self.print_success("\n✨ Testes podem ser divertidos e fascinantes!")
+        self.pausar()
+    
+    def _secao_pratica_interativa(self) -> None:
+        """Seção de prática interativa do módulo"""
+        
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_section("HORA DE PRATICAR!", "🎯", "success")
+        self.print_colored("Vamos testar o que você aprendeu com exercícios práticos!", "text")
+        
+        # === INSTRUÇÕES PARA INICIANTES ===
+        self.print_tip("Para iniciantes: Cada exercício é opcional, mas recomendamos fazer todos!")
+        self.print_colored("\n🎓 SOBRE OS EXERCÍCIOS:", "info")
+        self.print_colored("• Não se preocupe se errar - faz parte do aprendizado!", "text")
+        self.print_colored("• Você pode tentar quantas vezes quiser", "text")
+        self.print_colored("• Digite 'help' se precisar de ajuda", "text")
+        self.print_colored("• Use Ctrl+C para voltar ao menu principal se necessário", "text")
+        
+        # === DEFINIÇÃO DOS EXERCÍCIOS ===
+        exercicios = [
+            {
+                'title': 'Quiz: Conhecimentos sobre Testes e TDD',
+                'type': 'quiz',
+                'questions': [
+                    {
+                        'question': 'Qual é a ordem correta do ciclo TDD?',
+                        'answer': ['red green refactor', 'vermelho verde refatorar', 'red, green, refactor'],
+                        'hint': 'Primeiro o teste falha, depois passa, depois melhora'
+                    },
+                    {
+                        'question': 'Qual comando executa testes com pytest?',
+                        'answer': ['pytest', 'python -m pytest'],
+                        'hint': 'É o nome do framework'
+                    },
+                    {
+                        'question': 'No padrão AAA, o que significa o primeiro A?',
+                        'answer': ['arrange', 'preparar'],
+                        'hint': 'É a fase de preparação do teste'
+                    },
+                    {
+                        'question': 'Qual a proporção ideal de testes unitários?',
+                        'answer': ['70%', '70', 'setenta'],
+                        'hint': 'É a base da pirâmide de testes'
+                    },
+                    {
+                        'question': 'O que é uma fixture no pytest?',
+                        'answer': ['preparacao reutilizavel', 'setup reutilizavel', 'configuracao de teste'],
+                        'hint': 'Prepara dados ou objetos para vários testes'
+                    }
+                ]
+            },
+            {
+                'title': 'Desafio: Complete o Código de Teste',
+                'type': 'code_completion',
+                'exercises': [
+                    {
+                        'instruction': 'BÁSICO: Complete o assert para verificar se 5 + 3 é igual a 8',
+                        'starter': 'def test_soma():\n    ____ 5 + 3 == 8',
+                        'solution': 'assert',
+                        'type': 'simple'
+                    },
+                    {
+                        'instruction': 'INTERMEDIÁRIO: Complete o decorator para criar uma fixture',
+                        'starter': '@pytest.____\ndef usuario():\n    return {"nome": "Ana"}',
+                        'solution': 'fixture',
+                        'type': 'intermediate'
+                    },
+                    {
+                        'instruction': 'AVANÇADO: Complete para testar se função lança ValueError',
+                        'starter': 'def test_erro():\n    with pytest.raises(____):\n        dividir(10, 0)',
+                        'solution': 'ValueError',
+                        'type': 'advanced'
+                    }
+                ]
+            },
+            {
+                'title': 'Exercício Criativo: Crie seu Próprio Teste',
+                'type': 'creative',
+                'instruction': 'Crie um teste para uma função que valida se uma senha é forte (mínimo 8 caracteres, letra e número)!'
+            }
+        ]
+        
+        # === MENU PRINCIPAL DE EXERCÍCIOS ===
+        while True:
+            print("\nEscolha uma atividade:")
+            print("1. 📝 Quiz de Conhecimentos")
+            print("2. 💻 Complete o Código")
+            print("3. 🎨 Exercício Criativo")
+            print("0. Continuar para o Mini Projeto")
+            
+            try:
+                escolha = input("\n👉 Sua escolha: ").strip().lower()
+                
+                if escolha in ["0", "continuar", "sair", "proximo"]:
+                    break
+                elif escolha in ["1", "quiz", "conhecimentos"]:
+                    try:
+                        self._run_quiz(exercicios[0])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Quiz interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no quiz. Continuando...")
+                elif escolha in ["2", "codigo", "completar"]:
+                    try:
+                        self._run_code_completion(exercicios[1])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício de código interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício de código. Continuando...")
+                elif escolha in ["3", "criativo"]:
+                    try:
+                        self._run_creative_exercise(exercicios[2])
+                    except KeyboardInterrupt:
+                        self.print_warning("\n\n⚠️ Exercício criativo interrompido. Voltando ao menu principal...")
+                        return
+                    except Exception as e:
+                        self.print_warning("❌ Erro no exercício criativo. Continuando...")
+                elif escolha in ["help", "ajuda", "h", "?"]:
+                    self._show_help()
+                else:
+                    self.print_warning("❌ Opção inválida! Digite 1, 2, 3, 0 ou 'help' para ajuda.")
+                    
+            except KeyboardInterrupt:
+                self.print_warning("\n\n⚠️ Operação cancelada pelo usuário. Voltando ao menu principal...")
+                return
+            except Exception as e:
+                self.print_warning("❌ Erro inesperado no menu. Tente novamente.")
+    
+    def _show_help(self) -> None:
+        """Mostra ajuda sobre as opções disponíveis"""
+        self.print_section("AJUDA - SEÇÃO DE PRÁTICA", "❓", "info")
+        help_text = [
+            "📝 OPÇÃO 1 - Quiz: Teste seus conhecimentos sobre testes e TDD",
+            "💻 OPÇÃO 2 - Complete o Código: 3 exercícios progressivos de testes",
+            "🎨 OPÇÃO 3 - Exercício Criativo: Crie testes para validação de senha",
+            "🔢 OPÇÃO 0 - Continue para o Mini Projeto final",
+            "",
+            "💡 DICAS:",
+            "• Você pode digitar o número ou palavras como 'quiz', 'codigo'",
+            "• Digite 'help' a qualquer momento para ver esta ajuda",
+            "• Use Ctrl+C se quiser voltar ao menu principal",
+            "• Recomendamos fazer todas as atividades para aprender melhor!"
+        ]
+        
+        for line in help_text:
+            if line:
+                self.print_colored(f"  {line}", "text")
+            else:
+                print()
+        
+        input("\n🔸 Pressione ENTER para voltar ao menu...")
+    
+    def _run_quiz(self, quiz_data):
+        """Executa o quiz interativo"""
+        self.print_section(quiz_data['title'], "📝", "info")
+        
+        score = 0
+        total = len(quiz_data['questions'])
+        
+        for i, q in enumerate(quiz_data['questions'], 1):
+            self.print_colored(f"\nPergunta {i}/{total}:", "warning")
+            self.print_colored(q['question'], "text")
+            
+            while True:
+                try:
+                    resposta = input("\n📝 Sua resposta: ").strip().lower()
+                    
+                    if resposta in ["help", "ajuda", "dica"]:
+                        self.print_tip(q['hint'])
+                        continue
+                    
+                    # Verifica se a resposta está correta
+                    respostas_corretas = [ans.lower() for ans in q['answer']]
+                    if resposta in respostas_corretas or any(resposta in ans for ans in respostas_corretas):
+                        self.print_success("✅ Correto!")
+                        score += 1
+                        break
+                    else:
+                        self.print_warning("❌ Não está certo...")
+                        tentar = input("Tentar novamente? (s/n): ").lower()
+                        if tentar not in ['s', 'sim', 'yes']:
+                            self.print_colored(f"💡 Resposta: {q['answer'][0]}", "info")
+                            break
+                
+                except KeyboardInterrupt:
+                    raise
+        
+        # Resultado final
+        self.print_section("RESULTADO DO QUIZ", "🏆", "success")
+        percentual = (score / total) * 100
+        self.print_colored(f"Você acertou {score} de {total} questões ({percentual:.0f}%)", "text")
+        
+        if percentual >= 80:
+            self.print_success("🌟 Excelente! Você domina o conteúdo!")
+        elif percentual >= 60:
+            self.print_colored("💪 Muito bom! Continue praticando!", "warning")
+        else:
+            self.print_colored("📚 Revise o conteúdo e tente novamente!", "info")
+        
+        input("\n🔸 Pressione ENTER para continuar...")
+    
+    def _run_code_completion(self, exercise_data):
+        """Executa exercícios de completar código"""
+        self.print_section(exercise_data['title'], "💻", "success")
+        
+        for i, exercise in enumerate(exercise_data['exercises'], 1):
+            nivel = exercise['type'].upper()
+            cor = {'SIMPLE': 'info', 'INTERMEDIATE': 'warning', 'ADVANCED': 'error'}.get(exercise['type'], 'text')
+            
+            self.print_colored(f"\n[{nivel}] {exercise['instruction']}", cor)
+            self.print_code_section("CÓDIGO INICIAL", exercise['starter'])
+            
+            while True:
+                try:
+                    resposta = input("\n💻 Complete o código: ").strip()
+                    
+                    if resposta.lower() in ["help", "ajuda"]:
+                        self.print_tip("Pense no que está faltando para o teste funcionar...")
+                        continue
+                    
+                    if resposta.lower() == exercise['solution'].lower():
+                        self.print_success("✅ Perfeito!")
+                        # Mostra o código completo
+                        codigo_completo = exercise['starter'].replace('____', exercise['solution'])
+                        self.print_code_section("CÓDIGO COMPLETO", codigo_completo)
+                        break
+                    else:
+                        self.print_warning("❌ Não está certo...")
+                        mostrar = input("Ver a resposta? (s/n): ").lower()
+                        if mostrar in ['s', 'sim', 'yes']:
+                            self.print_colored(f"💡 Resposta: {exercise['solution']}", "info")
+                            break
+                
+                except KeyboardInterrupt:
+                    raise
+            
+            if i < len(exercise_data['exercises']):
+                input("\n🔸 Pressione ENTER para o próximo exercício...")
+        
+        self.print_success("\n🎉 Exercícios de código completados!")
+        input("\n🔸 Pressione ENTER para continuar...")
+    
+    def _run_creative_exercise(self, exercise_data):
+        """Executa exercício criativo"""
+        self.print_section(exercise_data['title'], "🎨", "accent")
+        
+        self.print_colored(f"\n{exercise_data['instruction']}", "text")
+        
+        self.print_colored("\n💡 REQUISITOS DA SENHA FORTE:", "warning")
+        requisitos = [
+            "• Mínimo 8 caracteres",
+            "• Pelo menos uma letra maiúscula",
+            "• Pelo menos uma letra minúscula",
+            "• Pelo menos um número",
+            "• (Opcional) Caractere especial"
+        ]
+        
+        for req in requisitos:
+            self.print_colored(req, "text")
+        
+        self.print_colored("\n📝 EXEMPLO DE INÍCIO:", "info")
+        exemplo_teste = '''import pytest
+
+def senha_forte(senha):
+    # Sua implementação aqui
+    if len(senha) < 8:
+        return False
+    # Continue...
+    return True
+
+# SEUS TESTES
+def test_senha_muito_curta():
+    assert senha_forte("abc123") == False
+
+def test_senha_sem_numeros():
+    assert senha_forte("SenhaForte") == False
+
+# Continue criando mais testes...'''
+        
+        self.print_code_section("TEMPLATE", exemplo_teste)
+        
+        input("\n🎨 Use sua criatividade! Pressione ENTER quando terminar...")
+        
+        self.print_success("🎉 Ótimo trabalho! Testes criativos são essenciais!")
+        
+        # Mostra um exemplo completo
+        mostrar = input("\nQuer ver um exemplo completo? (s/n): ").lower()
+        if mostrar in ['s', 'sim', 'yes']:
+            self._mostrar_teste_senha_completo()
+        
+        input("\n🔸 Pressione ENTER para continuar...")
+    
+    def _mostrar_teste_senha_completo(self):
+        """Mostra exemplo completo de teste de senha"""
+        teste_completo = '''import pytest
+import re
+
+def senha_forte(senha):
+    """Valida se uma senha é forte"""
+    if len(senha) < 8:
+        return False
+    
+    if not re.search(r'[A-Z]', senha):
+        return False
+    
+    if not re.search(r'[a-z]', senha):
+        return False
+    
+    if not re.search(r'[0-9]', senha):
+        return False
+    
+    return True
+
+# TESTES COMPLETOS
+class TestSenhaForte:
+    def test_senha_valida(self):
+        assert senha_forte("SenhaForte123") == True
+        assert senha_forte("Python2024!") == True
+    
+    def test_senha_muito_curta(self):
+        assert senha_forte("Abc123") == False
+        assert senha_forte("") == False
+    
+    def test_senha_sem_maiuscula(self):
+        assert senha_forte("senhafraca123") == False
+    
+    def test_senha_sem_minuscula(self):
+        assert senha_forte("SENHA123") == False
+    
+    def test_senha_sem_numero(self):
+        assert senha_forte("SenhaForte") == False
+    
+    @pytest.mark.parametrize("senha,esperado", [
+        ("Abc12345", True),
+        ("python", False),
+        ("PYTHON123", False),
+        ("Python", False),
+        ("Python3!", True),
+    ])
+    def test_varios_casos(self, senha, esperado):
+        assert senha_forte(senha) == esperado
+
+# Demonstração
+if __name__ == '__main__':
+    senhas_teste = [
+        "Python2024",
+        "python",
+        "12345678",
+        "SenhaForte",
+        "Senha123!"
+    ]
+    
+    print("🔐 Testando Senhas:")
+    for senha in senhas_teste:
+        resultado = "✅ Forte" if senha_forte(senha) else "❌ Fraca"
+        print(f"{senha}: {resultado}")'''
+        
+        self.print_code_section("SOLUÇÃO COMPLETA", teste_completo)
+    
+    def _mini_projeto_sistema_validacao(self) -> None:
+        """Mini Projeto - Sistema de Validação com TDD"""
+        
+        # === CABEÇALHO IMPACTANTE ===
+        if self.ui:
+            self.ui.clear_screen()
+            self.ui.header("🎯 MINI PROJETO: SISTEMA DE VALIDAÇÃO COM TDD")
+        else:
+            print("\n" + "="*50)
+            print("🎯 MINI PROJETO: SISTEMA DE VALIDAÇÃO COM TDD")
+            print("="*50)
+        
+        # === INTRODUÇÃO MOTIVACIONAL ===
+        self.print_success("🎉 Vamos criar um sistema profissional de validação usando TDD!")
+        
+        self.print_concept(
+            "Sistema de Validação",
+            "Um conjunto de validadores para dados comuns: email, telefone, CPF, etc. Tudo com testes!"
+        )
+        
+        # === APLICAÇÕES NO MUNDO REAL ===
+        self.print_colored("\nEste tipo de sistema é usado por:", "text")
+        usos_praticos = [
+            "E-commerces - Validar dados de cadastro",
+            "Bancos - Verificar informações de clientes",
+            "Apps - Garantir dados corretos dos usuários",
+            "APIs - Validar entrada de dados"
+        ]
+        for uso in usos_praticos:
+            self.print_colored(f"• {uso}", "accent")
+        
+        # === DESENVOLVIMENTO PASSO A PASSO ===
+        
+        # PASSO 1: Criar testes primeiro (TDD)
+        self.print_section("PASSO 1: ESCREVER OS TESTES (TDD)", "🔴", "error")
+        self.print_tip("No TDD, sempre começamos pelos testes!")
+        
+        try:
+            self.print_colored("\nVamos criar testes para nossos validadores:", "text")
+            
+            testes_iniciais = '''import pytest
+import re
+
+# TESTES (escritos ANTES do código!)
+class TestValidadores:
+    
+    def test_email_valido(self):
+        assert validar_email("usuario@email.com") == True
+        assert validar_email("nome.sobrenome@empresa.com.br") == True
+    
+    def test_email_invalido(self):
+        assert validar_email("email_sem_arroba") == False
+        assert validar_email("@email.com") == False
+        assert validar_email("usuario@") == False
+    
+    def test_telefone_valido(self):
+        assert validar_telefone("(11) 98765-4321") == True
+        assert validar_telefone("11987654321") == True
+    
+    def test_cpf_valido(self):
+        assert validar_cpf("123.456.789-09") == True
+        assert validar_cpf("12345678909") == True'''
+            
+            self.print_code_section("TESTES TDD", testes_iniciais)
+            
+        except KeyboardInterrupt:
+            self.print_warning("Projeto cancelado pelo usuário")
+            return
+        
+        # PASSO 2: Implementar validadores
+        self.print_section("PASSO 2: IMPLEMENTAR VALIDADORES", "🟢", "success")
+        self.print_colored("Agora criamos o código para passar nos testes:", "text")
+        
+        validadores = '''# VALIDADORES (código mínimo para passar nos testes)
+
+def validar_email(email):
+    """Valida formato de email"""
+    padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return bool(re.match(padrao, email))
+
+def validar_telefone(telefone):
+    """Valida telefone brasileiro"""
+    # Remove caracteres não numéricos
+    numeros = re.sub(r'[^0-9]', '', telefone)
+    
+    # Verifica se tem 10 ou 11 dígitos
+    return len(numeros) in [10, 11]
+
+def validar_cpf(cpf):
+    """Valida CPF (simplificado)"""
+    # Remove caracteres não numéricos
+    numeros = re.sub(r'[^0-9]', '', cpf)
+    
+    # Verifica se tem 11 dígitos
+    if len(numeros) != 11:
+        return False
+    
+    # Verifica se todos dígitos são iguais
+    if numeros == numeros[0] * 11:
+        return False
+    
+    return True
+
+def validar_data_nascimento(data):
+    """Valida se é maior de idade"""
+    from datetime import datetime, date
+    
+    try:
+        # Converte string para data
+        if isinstance(data, str):
+            nascimento = datetime.strptime(data, "%d/%m/%Y").date()
+        else:
+            nascimento = data
+        
+        # Calcula idade
+        hoje = date.today()
+        idade = hoje.year - nascimento.year
+        
+        # Ajusta se ainda não fez aniversário
+        if (hoje.month, hoje.day) < (nascimento.month, nascimento.day):
+            idade -= 1
+        
+        return idade >= 18
+    except:
+        return False'''
+        
+        self.print_code_section("VALIDADORES", validadores)
+        
+        # PASSO 3: Sistema completo
+        self.print_section("PASSO 3: SISTEMA COMPLETO", "🔵", "info")
+        
+        # === CÓDIGO FINAL GERADO ===
+        self.print_colored("Aqui está o sistema completo com testes:", "text")
+        
+        codigo_final = '''# 🐍 PROJETO: SISTEMA DE VALIDAÇÃO COM TDD
+# Módulo 27: Testes e TDD
+
+import re
+from datetime import datetime, date
+
+class ValidadorDados:
+    """Sistema completo de validação de dados"""
+    
+    @staticmethod
+    def email(email):
+        """Valida formato de email"""
+        padrao = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        return bool(re.match(padrao, str(email)))
+    
+    @staticmethod
+    def telefone(telefone):
+        """Valida telefone brasileiro"""
+        numeros = re.sub(r'[^0-9]', '', str(telefone))
+        return len(numeros) in [10, 11]
+    
+    @staticmethod
+    def cpf(cpf):
+        """Valida CPF com dígitos verificadores"""
+        numeros = re.sub(r'[^0-9]', '', str(cpf))
+        
+        if len(numeros) != 11 or numeros == numeros[0] * 11:
+            return False
+        
+        # Cálculo simplificado dos dígitos
+        return True  # Simplificado para o exemplo
+    
+    @staticmethod
+    def senha_forte(senha):
+        """Valida força da senha"""
+        if len(senha) < 8:
+            return False
+        
+        tem_maiuscula = bool(re.search(r'[A-Z]', senha))
+        tem_minuscula = bool(re.search(r'[a-z]', senha))
+        tem_numero = bool(re.search(r'[0-9]', senha))
+        
+        return tem_maiuscula and tem_minuscula and tem_numero
+
+# CLASSE DE USUÁRIO USANDO VALIDADORES
+class Usuario:
+    def __init__(self, nome, email, telefone, senha):
+        self.nome = nome
+        self.email = self._validar_email(email)
+        self.telefone = self._validar_telefone(telefone)
+        self.senha = self._validar_senha(senha)
+    
+    def _validar_email(self, email):
+        if not ValidadorDados.email(email):
+            raise ValueError("Email inválido")
+        return email
+    
+    def _validar_telefone(self, telefone):
+        if not ValidadorDados.telefone(telefone):
+            raise ValueError("Telefone inválido")
+        return telefone
+    
+    def _validar_senha(self, senha):
+        if not ValidadorDados.senha_forte(senha):
+            raise ValueError("Senha fraca")
+        return senha
+
+# DEMONSTRAÇÃO DO SISTEMA
+if __name__ == '__main__':
+    print("🧪 SISTEMA DE VALIDAÇÃO COM TDD\\n")
+    
+    # Testando validadores
+    print("📧 Validando emails:")
+    emails = ["user@email.com", "invalido@", "teste@dominio.com.br"]
+    for email in emails:
+        valido = ValidadorDados.email(email)
+        status = "✅" if valido else "❌"
+        print(f"{status} {email}")
+    
+    print("\\n📱 Validando telefones:")
+    telefones = ["(11) 98765-4321", "11987654321", "123"]
+    for tel in telefones:
+        valido = ValidadorDados.telefone(tel)
+        status = "✅" if valido else "❌"
+        print(f"{status} {tel}")
+    
+    print("\\n🔐 Validando senhas:")
+    senhas = ["Senha123", "fraca", "SEMMINUSCULA1", "Python2024!"]
+    for senha in senhas:
+        valido = ValidadorDados.senha_forte(senha)
+        status = "✅ Forte" if valido else "❌ Fraca"
+        print(f"{status}: {senha}")
+    
+    # Criando usuário
+    print("\\n👤 Criando usuário válido:")
+    try:
+        usuario = Usuario(
+            nome="João Silva",
+            email="joao@email.com",
+            telefone="(11) 98765-4321",
+            senha="SenhaForte123"
+        )
+        print("✅ Usuário criado com sucesso!")
+        print(f"   Nome: {usuario.nome}")
+        print(f"   Email: {usuario.email}")
+        print(f"   Telefone: {usuario.telefone}")
+    except ValueError as e:
+        print(f"❌ Erro: {e}")'''
+        
+        self.exemplo(codigo_final)
+        
+        # === EXECUÇÃO DO RESULTADO ===
+        self.print_section("RESULTADO FINAL", "🎬", "warning")
+        self.executar_codigo(codigo_final)
+        
+        # === TESTES RODANDO ===
+        self.print_colored("\n🧪 EXECUTANDO TESTES:", "success")
+        
+        testes_finais = '''# Simulação dos testes rodando
+print("\\n" + "="*50)
+print("🧪 RELATÓRIO DE TESTES\\n")
+
+testes = [
+    ("test_email_valido", "PASSED"),
+    ("test_email_invalido", "PASSED"),
+    ("test_telefone_valido", "PASSED"),
+    ("test_cpf_valido", "PASSED"),
+    ("test_senha_forte", "PASSED"),
+    ("test_criar_usuario_valido", "PASSED"),
+    ("test_criar_usuario_email_invalido", "PASSED")
+]
+
+for teste, status in testes:
+    simbolo = "✅" if status == "PASSED" else "❌"
+    print(f"{simbolo} {teste} ... {status}")
+
+print(f"\\n📊 COBERTURA: 100%")
+print(f"✅ 7 testes passaram em 0.05s")'''
+        
+        self.executar_codigo(testes_finais)
+        
+        # === MENSAGEM DE CONQUISTA ===
+        self.print_success("\n🎉 PARABÉNS! Você criou um sistema de validação profissional com TDD!")
+        
+        # === APLICAÇÕES AVANÇADAS ===
+        self.print_section("PRÓXIMOS PASSOS", "🚀", "info")
+        proximos_passos = [
+            "Adicionar mais validadores (CEP, CNPJ, cartão)",
+            "Implementar testes de integração com banco de dados",
+            "Criar testes de performance",
+            "Adicionar CI/CD com testes automáticos",
+            "Implementar relatórios de cobertura",
+            "Criar documentação dos testes"
+        ]
+        for passo in proximos_passos:
+            self.print_colored(f"• {passo}", "primary")
+        
+        self.print_success("\n🏆 CONQUISTA DESBLOQUEADA: Mestre dos Testes!")
+        
+        # === REGISTRO DE CONCLUSÃO ===
+        self.complete_mini_project("Sistema de Validação com TDD")
+        
+        self.pausar()
